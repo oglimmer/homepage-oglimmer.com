@@ -66,7 +66,7 @@ const data = [
     {
         imageSrc: "./images/homepage-oglimmer.jpg",
         title: "homepage oglimmer.de itself",
-        text: "How this page is built using Nuxt, Boostrap and static builds",
+        text: "How this page is built using Nuxt, Boostrap, and static builds",
         linkData: [["https://github.com/oglimmer/homepage-oglimmer.de", "source code"]],
         techList: "[Nuxt, Vue, TypeScript, Bootstrap]"
     },
