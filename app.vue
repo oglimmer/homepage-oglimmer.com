@@ -359,7 +359,7 @@ const transformArray = (arr: any) => {
       </div>  
   </div>
 
-  <footer class="footer mt-auto py-3 bg-light">
+  <footer class="footer mt-auto py-3">
       <div class="container mt-5">
           <span class="text-muted">© Copyright 2004-2023 by oglimmer.de - Oliver Zimpasser - All rights reserved.</span>
       </div>
