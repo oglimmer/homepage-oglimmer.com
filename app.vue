@@ -5,7 +5,7 @@ const colorMode = useColorMode();
 useHead({
   title: 'oglimmer`s Web-Tech-Workshop',
   meta: [
-    { name: 'description', content: 'all projects created by oglimmer, oliver zimpasser' }
+    { name: 'description', content: 'oglimmer\'s web-based applications, tools and games' }
   ],
   htmlAttrs: {
     lang: 'en',
