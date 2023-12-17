@@ -4,5 +4,6 @@ export default defineNuxtConfig({
   css: ['~/assets/main.scss'],
   typescript: {
     shim: false
-  }
+  },
+  modules: ['@nuxtjs/color-mode']
 })

@@ -1,5 +1,26 @@
 <script setup lang="ts">
 
+const colorMode = useColorMode();
+
+useHead({
+  title: 'oglimmer`s Web-Tech-Workshop',
+  meta: [
+    { name: 'description', content: 'all projects created by oglimmer, oliver zimpasser' }
+  ],
+  htmlAttrs: {
+    lang: 'en',
+    'data-bs-theme': colorMode.value
+  }
+})
+
+watch(colorMode, _ => {
+  useHead({
+    htmlAttrs: {
+      'data-bs-theme': colorMode.value
+    }
+  })
+})
+
 const data = [
     {
         imageSrc: "./images/github.com.jpg",
@@ -301,7 +322,21 @@ const transformArray = (arr: any) => {
   <div class="bg-primary text-white text-center banner-image">
     <nav class="navbar navbar-expand-lg py-3 navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand font-weight-bold text-uppercase" href="#">oglimmer's Web-Tech-Workshop</a>    
+        <a class="navbar-brand font-weight-bold text-uppercase" href="#"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <select class="form-select form-select-sm" v-model="$colorMode.preference">
+                <option value="system">System color</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
     <h1>coding is the new knitting</h1>
@@ -333,6 +368,19 @@ const transformArray = (arr: any) => {
 </template>
 
 <style scoped>
+@media (max-width: 460px) {
+  .navbar-brand.font-weight-bold.text-uppercase::after {
+    content: "Web-Tech-Workshop";
+    display: block;
+  }
+}
+@media (min-width: 460px) {
+  .navbar-brand.font-weight-bold.text-uppercase::after {
+    content: "oglimmer's Web-Tech-Workshop";
+    display: block;
+  }
+}
+
 div h1 {
   margin-top: 25px;
   font-family: SpecialElite;
