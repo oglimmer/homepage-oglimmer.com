@@ -316,7 +316,7 @@ const transformArray = (arr: any) => {
 }
 
 const switchColorMode = () => {
-  colorMode.value = colorMode.value === 'light' ? 'dark' : 'light';
+  colorMode.preference = colorMode.value === 'light' ? 'dark' : 'light';
   return false;
 }
 
