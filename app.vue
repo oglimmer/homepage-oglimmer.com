@@ -359,7 +359,7 @@ const switchColorMode = () => {
         </div>
         <div class="col-lg-4 text-lg-right text-center mt-5 mt-lg-0">
           <div class="banner-phone-image">
-            <img src="/images/icon.png">
+            <img class="tilt-n-move-shaking" src="/images/icon.png">
           </div>
         </div>
       </div>
@@ -388,6 +388,19 @@ const switchColorMode = () => {
 </template>
 
 <style scoped>
+
+img:hover { 
+    animation: tilt-n-move-shaking 0.5s linear infinite; 
+} 
+
+@keyframes tilt-n-move-shaking {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(5px, 5px) rotate(5deg); }
+  50% { transform: translate(0, 0) rotate(0eg); }
+  75% { transform: translate(-5px, 5px) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
 .banner-phone-image img {
 	width:300px;
 }
