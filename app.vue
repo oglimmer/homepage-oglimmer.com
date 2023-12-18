@@ -332,6 +332,7 @@ const switchColorMode = () => {
 <template>
 
   <div class="bg-primary text-white text-center banner-image">
+
     <nav class="navbar navbar-expand-lg py-3 navbar-dark">
       <div class="container-fluid">
         <a class="navbar-brand font-weight-bold text-uppercase" href="#"></a>
@@ -349,12 +350,21 @@ const switchColorMode = () => {
         </div>
       </div>
     </nav>
-    <h1>coding is the new knitting</h1>
-    <div class="center-container p-4">
-      <p>Born in the 70s. Raised in Germany. Influenced by computers, programming and technology. Enthusiastic about coding. Eager to create small helpful applications or sometimes even web based games.</p>
+
+    <div class="container pb-5">
+      <div class="row py-5 align-items-center">
+        <div class="col-lg-8">
+          <h5 class="display-4 mb-4 font-weight-bold text-white">coding is the new knitting</h5>
+          <p class="h5 aa mb-4 pb-3 text-white-50">Born in the 70s. Raised in Germany. Influenced by computers, programming and technology. Enthusiastic about coding. Eager to create small helpful applications or sometimes even web based games.</p>          
+        </div>
+        <div class="col-lg-4 text-lg-right text-center mt-5 mt-lg-0">
+          <div class="banner-phone-image">
+            <img src="/images/icon.png">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
   
   <div class="container mt-5">
       <div class="row mt-2" v-for="row in transformArray(data)">
@@ -378,6 +388,21 @@ const switchColorMode = () => {
 </template>
 
 <style scoped>
+.banner-phone-image img {
+	width:300px;
+}
+
+.aa {
+  line-height:26px;
+}
+
+@media (min-width: 920px) {
+  .aa  {
+    margin-left: 120px;
+    margin-right: 120px;
+  }
+}
+
 @media (max-width: 460px) {
   .navbar-brand.font-weight-bold.text-uppercase::after {
     content: "Web-Tech-Workshop";
@@ -391,26 +416,14 @@ const switchColorMode = () => {
   }
 }
 
-div h1 {
-  margin-top: 25px;
+div h5 {
   font-family: SpecialElite;
 }
-div h1, div p {
-  margin-bottom: 25px;
-}
-div p {
-  width: 400px;
-  hyphens: auto; 
-	text-align: justify;
-}
+
 .banner-image {
 	background: linear-gradient(rgba(29, 38, 113, 0.8), rgba(195, 55, 100, 0.8)), url(/images/banner-image.jpg);
   background-size: cover;
   background-position: center;
-}
-.center-container {
-  display: flex;
-  justify-content: center;
 }
 
 a {

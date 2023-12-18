@@ -6,3 +6,5 @@ https://www.w3schools.com/bootstrap5/bootstrap_templates.php
 
 https://angrytools.com/bootstrap/editor/
 
+https://bootstraplily.com/responsive-bootstrap-hero-banner-with-mobile-app-image/
+
