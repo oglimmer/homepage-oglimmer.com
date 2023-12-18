@@ -397,7 +397,7 @@ div p {
 	text-align: justify;
 }
 .banner-image {
-	background: linear-gradient(rgba(29, 38, 113, 0.8), rgba(195, 55, 100, 0.8)), url(./images/banner-image.jpg);
+	background: linear-gradient(rgba(29, 38, 113, 0.8), rgba(195, 55, 100, 0.8)), url(/images/banner-image.jpg);
   background-size: cover;
   background-position: center;
 }
