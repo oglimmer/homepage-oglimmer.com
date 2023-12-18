@@ -78,6 +78,13 @@ const data = [
         techList: "[TypeScript, Nodejs, Terraform, AWS, Husky, sqlite]"
     },
     {
+        imageSrc: "./images/OCPP-Chargepoint-Simulator.jpg",
+        title: "OCPP Chargepoint Simulator",
+        text: "A scriptable OCPP Chargepoint Simulator for OCPP 1.6J.",
+        linkData: [["https://github.com/oglimmer/scriptable-ocpp-chargepoint-simulator", "source code"]],
+        techList: "[TypeScript, Nodejs, Websockets, OCPP, FTP]"
+    },
+    {
         imageSrc: "./images/build-server.jpg",
         title: "A (very) simple build server",
         text: "An apache/cgi-bin/bash based build server. Still offers a simple UI.",
