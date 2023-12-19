@@ -5,7 +5,12 @@ const colorMode = useColorMode();
 useHead({
   title: 'oglimmer`s Web-Tech-Workshop',
   meta: [
-    { name: 'description', content: 'oglimmer\'s web-based applications, tools and games' }
+    { name: 'description', content: 'oglimmer\'s web-based applications, tools and games' },
+    { name: 'og:type', content: 'website' },
+    { name: 'og:url', content: 'https://www.oglimmer.de/' },
+    { name: 'og:title', content: 'oglimmer`s Web-Tech-Workshop' },
+    { name: 'og:description', content: 'oglimmer\'s web-based applications, tools and games' },
+    { name: 'og:image', content: 'https://www.oglimmer.de/images/icon.png' }
   ],
   htmlAttrs: {
     lang: 'en',
