@@ -346,8 +346,8 @@ const switchColorMode = () => {
             <li class="nav-item">
               <a href="javascript:void(0);" :onClick="switchColorMode">
                 <span style="font-size: 1.4em;">
-                  <span v-if="colorMode.value === 'light'">☼</span>
-                  <span v-if="colorMode.value === 'dark'">☾</span>
+                  <span v-if="colorMode.value === 'light'"><font-awesome-icon icon="fa-solid fa-sun" /></span>
+                  <span v-if="colorMode.value === 'dark'"><font-awesome-icon icon="fa-solid fa-moon" /></span>
                 </span>
               </a>
             </li>
@@ -359,8 +359,8 @@ const switchColorMode = () => {
     <div class="container pb-5">
       <div class="row py-5 align-items-center">
         <div class="col-lg-8">
-          <h5 class="display-4 mb-4 font-weight-bold text-white">coding is the new knitting</h5>
-          <p class="h5 aa mb-4 pb-3 text-white-50">Born in the 70s. Raised in Germany. Influenced by computers, programming and technology. Enthusiastic about coding. Eager to create small helpful applications or sometimes even web based games.</p>          
+          <h5 class="display-4 mb-4 font-weight-bold text-white">coding is the new <span class="cookingContainer">knitting<span class="cooking">cooking</span></span></h5>
+          <p class="h5 aa mb-4 pb-3 text-white-50">Born in the 70s. Raised in Germany. Influenced by computers, programming and technology. Enthusiastic about coding and cooking. Eager to create small helpful applications or sometimes even web based games.</p>          
         </div>
         <div class="col-lg-4 text-lg-right text-center mt-5 mt-lg-0">
           <div class="banner-phone-image">
@@ -406,12 +406,8 @@ img:hover {
   100% { transform: translate(0, 0) rotate(0deg); }
 }
 
-.banner-phone-image img {
-	width:300px;
-}
-
 .aa {
-  line-height:26px;
+  line-height:30px;
 }
 
 @media (min-width: 920px) {
@@ -432,11 +428,46 @@ img:hover {
     content: "oglimmer's Web-Tech-Workshop";
     display: block;
   }
+
+}
+
+@media (max-width: 992px) {
+  .cooking {
+    font-size: 1.1em;
+    top: -15px;
+  }
+}
+@media (min-width: 992px) {
+  .cooking {
+    font-size: 1.2em;
+    top: -20px;
+  }
+}
+@media (min-width: 1200px) {
+  .cooking {
+    font-size: 1.3em;
+    top: -30px;
+  }  
 }
 
 div h5 {
   font-family: SpecialElite;
 }
+
+.cookingContainer {
+  position: relative;
+}
+.cooking {
+  font-family: CookingRegular;
+  letter-spacing: 10px;
+  text-shadow: 3px 3px 1px rgb(150 228 228);
+  color: rgb(90 173 181);
+  position: absolute;
+  left: -10px;
+  margin: 0;
+  transform: rotate(-10deg);
+}  
+
 
 .banner-image {
 	background: linear-gradient(rgba(29, 38, 113, 0.8), rgba(195, 55, 100, 0.8)), url(/images/banner-image.jpg);

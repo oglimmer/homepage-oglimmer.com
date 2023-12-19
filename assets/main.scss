@@ -1,8 +1,15 @@
 @import 'bootstrap/scss/bootstrap';
 
 @font-face {
-    font-family: 'SpecialElite';
-    src: url('SpecialElite-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
+  font-family: 'SpecialElite';
+  src: url('SpecialElite-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CookingRegular';
+  src: url('NerkoOne-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
