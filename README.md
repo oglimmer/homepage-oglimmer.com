@@ -1,6 +1,6 @@
-# Homepage: oglimmer.de
+# Homepage: oglimmer.com
 
-This repo builds the https://www.oglimmer.de web page.
+This repo builds the https://www.oglimmer.com web page.
 
 It's technicaly based on Boostrap 5 and Nuxt 3 using a static build.
 

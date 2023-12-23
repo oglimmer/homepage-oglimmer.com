@@ -7,10 +7,10 @@ useHead({
   meta: [
     { name: 'description', content: 'oglimmer\'s web-based applications, tools and games' },
     { name: 'og:type', content: 'website' },
-    { name: 'og:url', content: 'https://www.oglimmer.de/' },
+    { name: 'og:url', content: 'https://www.oglimmer.com/' },
     { name: 'og:title', content: 'oglimmer`s Web-Tech-Workshop' },
     { name: 'og:description', content: 'oglimmer\'s web-based applications, tools and games' },
-    { name: 'og:image', content: 'https://www.oglimmer.de/images/icon.png' }
+    { name: 'og:image', content: 'https://www.oglimmer.com/images/icon.png' }
   ],
   htmlAttrs: {
     lang: 'en',
@@ -98,9 +98,9 @@ const data = [
     },
     {
         imageSrc: "./images/homepage-oglimmer.jpg",
-        title: "homepage oglimmer.de itself",
+        title: "homepage oglimmer.com itself",
         text: "How this page is built using Nuxt, Boostrap, and static builds",
-        linkData: [["https://github.com/oglimmer/homepage-oglimmer.de", "source code"]],
+        linkData: [["https://github.com/oglimmer/homepage-oglimmer.com", "source code"]],
         techList: "[Nuxt, Vue, TypeScript, Bootstrap]"
     },
     {
@@ -386,7 +386,7 @@ const switchColorMode = () => {
 
   <footer class="footer mt-auto py-3">
       <div class="container mt-5">
-          <span class="text-muted">© Copyright 2004-2023 by oglimmer.de - Oliver Zimpasser - All rights reserved.</span>
+          <span class="text-muted">© Copyright 2004-2024 by oglimmer.com - Oliver Zimpasser - All rights reserved.</span>
       </div>
   </footer>
 
