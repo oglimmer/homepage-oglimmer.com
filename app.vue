@@ -56,7 +56,7 @@ const data = [
         title: "Picture Sharing Z",
         text: "A vacation photo sharing app for iPhone",
         linkData: [
-          ["https://picz.oglimmer.de", "picz.oglimmer.de"],
+          ["https://picz.oglimmer.com", "Web"],
           ["https://apps.apple.com/app/picture-sharing-z/id6462514741", "App Store"]
         ],
         techList: "[iOS, Swift, SwiftUI, MapKit, OAuth]"
