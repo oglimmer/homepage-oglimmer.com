@@ -117,7 +117,7 @@ const data = [
         title: "BlackJack REST API / JavaScript playground",
         text: "A REST API providing BlackJack (playable via JavaScript)",
         linkData: [
-          ["https://bj.oglimmer.de/", "play"],
+          ["https://bj.oglimmer.com/", "play"],
           ["https://github.com/oglimmer/blackjack-rest-api", "source code"],
         ],
         techList: "[c++20, oat++, cmake, bash-scripting, Dockerfile, github-action, swagger/OpenAPI, JavaScript, Ace]"
@@ -127,7 +127,7 @@ const data = [
         title: "Mathematical Function parser library (C++) and REST API",
         text: "Library parsing and resolving mathematical functions like 'sin(pi)*3^(2+1)' and a REST API providing this service to the public internet.",
         linkData: [
-          ["https://math.oglimmer.de/", "web ui"],          
+          ["https://math.oglimmer.com/", "web ui"],
           ["https://github.com/oglimmer/math_parser_cpp", "parser code"],
           ["https://github.com/oglimmer/math-parser-rest-api", "api code"]
         ],
@@ -197,7 +197,7 @@ const data = [
         title: "Yet Another Tower Defense Game",
         text: "A multiplayer tower-defense fantasy combat game",
         linkData: [
-          ["https://td.oglimmer.de/", "play"],
+          ["https://td.oglimmer.com/", "play"],
           ["https://github.com/oglimmer/yatdg", "source code"],
         ],
         techList: "[HTML5(Canvas, Websockets via Atmosphere), JavaScript, Java]"
@@ -207,7 +207,7 @@ const data = [
         title: "Citybuilder",
         text: "A card based multi player board game",
         linkData: [
-          ["https://cb.oglimmer.de/", "play"],
+          ["https://cb.oglimmer.com/", "play"],
           ["https://github.com/oglimmer/citybuilder", "source code"],
         ],
         techList: "[HTML5(Canvas, Websockets via Socket.io), JavaScript / Node.js / jQuery, CouchDB]"
@@ -217,7 +217,7 @@ const data = [
         title: "Told you so!",
         text: "A web offering for smart asses .... told you so!",
         linkData: [
-          ["https://toldyouso.oglimmer.de/", "web"],
+          ["https://toldyouso.oglimmer.com/", "web"],
           ["https://github.com/oglimmer/toldyouso", "source code"],
         ],
         techList: "[Java8, maven, JSF, CouchDB]"
@@ -227,7 +227,7 @@ const data = [
         title: "Grid Game One",
         text: "A hex-based, no-luck, kinda-turn-based strategy game",
         linkData: [
-          ["https://ggo.oglimmer.de/", "play"],
+          ["https://ggo.oglimmer.com/", "play"],
           ["https://github.com/oglimmer/ggo", "source code"],
         ],
         techList: "[HTML5(Canvas, Websockets via Atmosphere), JavaScript, Java8, maven, Stripes, twitter-bootstrap, jQuery, Lombok]"
@@ -237,7 +237,7 @@ const data = [
         title: "Simple Card Game",
         text: "A game for 4 players playable via email",
         linkData: [
-          ["https://scg.oglimmer.de/", "play"],
+          ["https://scg.oglimmer.com/", "play"],
           ["https://github.com/oglimmer/scg", "source code"],
         ],
         techList: "[Java7, maven]"
@@ -247,7 +247,7 @@ const data = [
         title: "SWLCG Deck Builder",
         text: "An alternative approach to Star Wars LCG deck building",
         linkData: [
-          ["https://swlcg.oglimmer.de/", "web"],
+          ["https://swlcg.oglimmer.com/", "web"],
           ["https://github.com/oglimmer/deckbuilderswlcg", "source code"],
         ],
         techList: "[HTML, jQuery, CouchDB, Groovy]"
@@ -266,7 +266,7 @@ const data = [
         title: "Online card game environment",
         text: "Let's you play SWCCG and SWLCG online card game",
         linkData: [
-          ["https://bcg.oglimmer.de/", "web"],
+          ["https://bcg.oglimmer.com/", "web"],
           ["https://github.com/oglimmer/onlinecardgameassistance", "source code"],
         ],
         techList: "[HTML5 (Websockets via Java-WebSocket), Dojo Toolkit, CouchDB, Java/Groovy]"
