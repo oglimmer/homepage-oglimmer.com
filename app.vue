@@ -332,6 +332,16 @@ const switchColorMode = () => {
   return false;
 }
 
+const cooking = ref("");
+let c = 0;
+const intervalRef = setInterval(() => {
+  cooking.value = "cooking".substring(0, c) + "&nbsp;".repeat(7 - c);
+  c++;
+  if (c > 7) {
+    clearInterval(intervalRef);
+  }
+}, 350);
+
 </script>
 
 <template>
@@ -359,7 +369,7 @@ const switchColorMode = () => {
     <div class="container pb-5">
       <div class="row py-5 align-items-center">
         <div class="col-lg-8">
-          <h5 class="display-4 mb-4 font-weight-bold text-white">coding is the new <span class="cookingContainer">knitting<span class="cooking">cooking</span></span></h5>
+          <h5 class="display-4 mb-4 font-weight-bold text-white">coding is the new <span class="cookingContainer">knitting<span class="cooking" v-html="cooking"></span></span></h5>
           <p class="h5 aa mb-4 pb-3 text-white-50">Born in the 70s. Raised in Germany. Influenced by computers, programming and technology. Enthusiastic about coding and cooking. Eager to create small helpful applications or sometimes even web based games.</p>          
         </div>
         <div class="col-lg-4 text-lg-right text-center mt-5 mt-lg-0">
