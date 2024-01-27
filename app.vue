@@ -52,6 +52,13 @@ const data = [
         linkData: [["https://hub.docker.com/u/oglimmer", "hub.docker.com/u/oglimmer"]]
     },
     {
+        imageSrc: "./images/spring-rest-api-tutorial.jpg",
+        title: "Spring REST API tutorial",
+        text: "A tutorial on how to build a REST API with Spring Boot for beginners",
+        linkData: [["https://github.com/oglimmer/java-spring-boot-class/", "Read the tutorial"]],
+        techList: "[Spring, Java, REST, Vue, Bash, JPA, Postgres, Docker]"
+    },
+    {
         imageSrc: "./images/picz.jpg",
         title: "Picture Sharing Z",
         text: "A vacation photo sharing app for iPhone",

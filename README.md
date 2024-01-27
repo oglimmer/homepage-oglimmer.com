@@ -26,3 +26,8 @@ cd .output/public/
 docker run -v $PWD:/usr/share/nginx/html -p 8080:80 nginx
 ```
 
+# Create picture
+
+* find a picture
+* resize to 382x287
+* 
