@@ -46,6 +46,12 @@ const data = [
         linkData: [["https://oglimmer.medium.com", "oglimmer.medium.com"]]
     },
     {
+        imageSrc: "./images/k8s.jpg",
+        title: "My Kubernetes cluster",
+        text: "My personal Kubernetes cluster running on 4x Raspberry Pis",
+        linkData: [["https://oglimmer.github.io/homepage-k8s", "Sub page"]]
+    },
+    {
         imageSrc: "./images/hub.docker.com.jpg",
         title: "hub.docker.com",
         text: "My docker hub",
