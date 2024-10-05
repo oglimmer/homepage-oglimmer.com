@@ -402,6 +402,7 @@ const graphics = ref("comic");
             <select v-model="graphics">
                 <option value="comic">Comic</option>
                 <option value="fresh">Fresh</option>
+                <option value="fun">Fun</option>
             </select>
         </div>
     </div>
