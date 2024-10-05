@@ -28,44 +28,44 @@ watch(colorMode, _ => {
 
 const data = [
     {
-        imageSrc: "./images/github.com.jpg",
+        imageSrc: "github.com.jpg",
         title: "github.com",
         text: "My github account",
         linkData: [["https://github.com/oglimmer", "github.com/oglimmer"]]
     },
     {
-        imageSrc: "./images/linkedin.com.jpg",
+        imageSrc: "linkedin.com.jpg",
         title: "linkedin.com",
         text: "My Linkedin profile",
         linkData: [["https://www.linkedin.com/in/oliver-zimpasser", "www.linkedin.com/in/oliver-zimpasser"]],
     },
     {
-        imageSrc: "./images/medium.com.jpg",
+        imageSrc: "medium.com.jpg",
         title: "medium.com",
         text: "I've written a couple of articles on medium.com",
         linkData: [["https://oglimmer.medium.com", "oglimmer.medium.com"]]
     },
     {
-        imageSrc: "./images/k8s.jpg",
+        imageSrc: "k8s.jpg",
         title: "My Kubernetes cluster",
         text: "My personal Kubernetes cluster running on 4x Raspberry Pis",
         linkData: [["https://oglimmer.github.io/homepage-k8s", "Sub page"]]
     },
     {
-        imageSrc: "./images/hub.docker.com.jpg",
+        imageSrc: "hub.docker.com.jpg",
         title: "hub.docker.com",
         text: "My docker hub",
         linkData: [["https://hub.docker.com/u/oglimmer", "hub.docker.com/u/oglimmer"]]
     },
     {
-        imageSrc: "./images/spring-rest-api-tutorial.jpg",
+        imageSrc: "spring-rest-api-tutorial.jpg",
         title: "Spring REST API tutorial",
         text: "A tutorial on how to build a REST API with Spring Boot for beginners",
         linkData: [["https://github.com/oglimmer/java-spring-boot-class/", "Read the tutorial"]],
         techList: "[Spring, Java, REST, Vue, Bash, JPA, Postgres, Docker]"
     },
     {
-        imageSrc: "./images/picz.jpg",
+        imageSrc: "picz.jpg",
         title: "Picture Sharing Z",
         text: "A vacation photo sharing app for iPhone",
         linkData: [
@@ -75,7 +75,7 @@ const data = [
         techList: "[iOS, Swift, SwiftUI, MapKit, OAuth]"
     },
     {
-        imageSrc: "./images/karel.jpg",
+        imageSrc: "karel.jpg",
         title: "Karel the Bot",
         text: "A simple Karel the bot engine and UI implemented in JavaScript for HTML",
         linkData: [
@@ -85,7 +85,7 @@ const data = [
         techList: "[JavaScript, Vue, Scripting-Engine, AST]"
     },
     {
-        imageSrc: "./images/blackjack.jpg",
+        imageSrc: "blackjack.jpg",
         title: "Discord Bot for BlackJack",
         text: "My docker hub",
         linkData: [ 
@@ -96,28 +96,28 @@ const data = [
         techList: "[TypeScript, Nodejs, Terraform, AWS, Husky, sqlite]"
     },
     {
-        imageSrc: "./images/OCPP-Chargepoint-Simulator.jpg",
+        imageSrc: "OCPP-Chargepoint-Simulator.jpg",
         title: "OCPP Chargepoint Simulator",
         text: "A scriptable OCPP Chargepoint Simulator for OCPP 1.6J.",
         linkData: [["https://github.com/oglimmer/scriptable-ocpp-chargepoint-simulator", "source code"]],
         techList: "[TypeScript, Nodejs, Websockets, OCPP, FTP]"
     },
     {
-        imageSrc: "./images/build-server.jpg",
+        imageSrc: "build-server.jpg",
         title: "A (very) simple build server",
         text: "An apache/cgi-bin/bash based build server. Still offers a simple UI.",
         linkData: [["https://github.com/oglimmer/simple-build-server", "source code"]],
         techList: "[Docker, apache, cgi-bin, bash, cron]"
     },
     {
-        imageSrc: "./images/homepage-oglimmer.jpg",
+        imageSrc: "homepage-oglimmer.jpg",
         title: "homepage oglimmer.com itself",
         text: "How this page is built using Nuxt, Boostrap, and static builds",
         linkData: [["https://github.com/oglimmer/homepage-oglimmer.com", "source code"]],
         techList: "[Nuxt, Vue, TypeScript, Bootstrap]"
     },
     {
-        imageSrc: "./images/linky1.com.jpg",
+        imageSrc: "linky1.com.jpg",
         title: "Linky",
         text: "A link & surfing management application",
         linkData: [
@@ -126,7 +126,7 @@ const data = [
         techList: "[JavaScript, ES6, Node.js, React, Redux, Nano, Isomorphic/Universal, Bootstrap, CouchDB]"
     },
     {
-        imageSrc: "./images/blackjack-ui.jpg",
+        imageSrc: "blackjack-ui.jpg",
         title: "BlackJack REST API / JavaScript playground",
         text: "A REST API providing BlackJack (playable via JavaScript)",
         linkData: [
@@ -136,7 +136,7 @@ const data = [
         techList: "[c++20, oat++, cmake, bash-scripting, Dockerfile, github-action, swagger/OpenAPI, JavaScript, Ace]"
     },
     {
-        imageSrc: "./images/math.jpg",
+        imageSrc: "math.jpg",
         title: "Mathematical Function parser library (C++) and REST API",
         text: "Library parsing and resolving mathematical functions like 'sin(pi)*3^(2+1)' and a REST API providing this service to the public internet.",
         linkData: [
@@ -147,7 +147,7 @@ const data = [
         techList: "[c++20, oat++, cmake, conan, doctest, Dockerfile, github-action, swagger/OpenAPI, FSM, AST]"
     },
     {
-        imageSrc: "./images/math-java.jpg",
+        imageSrc: "math-java.jpg",
         title: "Mathematical Function parser library (Java)",
         text: "Library parsing and resolving mathematical functions like 'sin(pi)*3^(2+1)'",
         linkData: [
@@ -156,7 +156,7 @@ const data = [
         techList: "[Java, github-action, FSM, AST]"
     },
     {
-        imageSrc: "./images/cyr.jpg",
+        imageSrc: "cyr.jpg",
         title: "Code Your Restaurant",
         text: "A JavaScript coding game",
         linkData: [
@@ -166,7 +166,7 @@ const data = [
         techList: "[Java8, maven, CouchDB, JavaScript, Rhino, Groovy, Ace]"
     },
     {
-        imageSrc: "./images/lunchy.jpg",
+        imageSrc: "lunchy.jpg",
         title: "Lunchy",
         text: "Corporate lunch information system",
         linkData: [
@@ -176,7 +176,7 @@ const data = [
         techList: "[Java8, maven, Jooq, Liquibase, AngularJS, Boostrap, Jersey, Lombok, Webjars]"
     },
     {
-        imageSrc: "./images/junta.jpg",
+        imageSrc: "junta.jpg",
         title: "Junta Online",
         text: "A classic board game played asynchronously via email",
         linkData: [
@@ -185,7 +185,7 @@ const data = [
         techList: "[HTML4, JavaScript, Java, Spring, JDBC, Lombok, Flyway]"
     },        
     {
-        imageSrc: "./images/oglimmer-commons.jpg",
+        imageSrc: "oglimmer-commons.jpg",
         title: "oglimmer-commons",
         text: "Prevent boilerplate code for random strings and names, SPI-based slf4j configuration, sophisticated property files, human readable representation of date differences and getting attributes from MANIFEST.FM files.",
         linkData: [
@@ -195,7 +195,7 @@ const data = [
         techList: "[Java8, maven, Lombok]"
     },        
     {
-        imageSrc: "./images/fulgens.jpg",
+        imageSrc: "fulgens.jpg",
         title: "fulgens",
         text: "A build, local deploy and run script generator",
         linkData: [
@@ -206,7 +206,7 @@ const data = [
         techList: "[JavaScript, ES6, Node.js, Npm Registry, Bash, Docker, Vagrant]"
     },        
     {
-        imageSrc: "./images/yatdg.jpg",
+        imageSrc: "yatdg.jpg",
         title: "Yet Another Tower Defense Game",
         text: "A multiplayer tower-defense fantasy combat game",
         linkData: [
@@ -216,7 +216,7 @@ const data = [
         techList: "[HTML5(Canvas, Websockets via Atmosphere), JavaScript, Java]"
     },        
     {
-        imageSrc: "./images/citybuilder.jpg",
+        imageSrc: "citybuilder.jpg",
         title: "Citybuilder",
         text: "A card based multi player board game",
         linkData: [
@@ -226,7 +226,7 @@ const data = [
         techList: "[HTML5(Canvas, Websockets via Socket.io), JavaScript / Node.js / jQuery, CouchDB]"
     },        
     {
-        imageSrc: "./images/toldyouso.jpg",
+        imageSrc: "toldyouso.jpg",
         title: "Told you so!",
         text: "A web offering for smart asses .... told you so!",
         linkData: [
@@ -236,7 +236,7 @@ const data = [
         techList: "[Java8, maven, JSF, CouchDB]"
     },        
     {
-        imageSrc: "./images/ggo.jpg",
+        imageSrc: "ggo.jpg",
         title: "Grid Game One",
         text: "A hex-based, no-luck, kinda-turn-based strategy game",
         linkData: [
@@ -246,7 +246,7 @@ const data = [
         techList: "[HTML5(Canvas, Websockets via Atmosphere), JavaScript, Java8, maven, Stripes, twitter-bootstrap, jQuery, Lombok]"
     },        
     {
-        imageSrc: "./images/scg.jpg",
+        imageSrc: "scg.jpg",
         title: "Simple Card Game",
         text: "A game for 4 players playable via email",
         linkData: [
@@ -256,7 +256,7 @@ const data = [
         techList: "[Java7, maven]"
     },        
     {
-        imageSrc: "./images/swlcg.jpg",
+        imageSrc: "swlcg.jpg",
         title: "SWLCG Deck Builder",
         text: "An alternative approach to Star Wars LCG deck building",
         linkData: [
@@ -266,7 +266,7 @@ const data = [
         techList: "[HTML, jQuery, CouchDB, Groovy]"
     },        
     {
-        imageSrc: "./images/swccg.jpg",
+        imageSrc: "swccg.jpg",
         title: "SWCCG Deck Builder",
         text: "A web based approach to Star Wars CCG deck building",
         linkData: [
@@ -275,7 +275,7 @@ const data = [
         techList: "[HTML, jQuery, CouchDB, Groovy]"
     },        
     {
-        imageSrc: "./images/virtualdeck.jpg",
+        imageSrc: "virtualdeck.jpg",
         title: "Online card game environment",
         text: "Let's you play SWCCG and SWLCG online card game",
         linkData: [
@@ -285,7 +285,7 @@ const data = [
         techList: "[HTML5 (Websockets via Java-WebSocket), Dojo Toolkit, CouchDB, Java/Groovy]"
     },        
     {
-        imageSrc: "./images/shadowrun-simulator.jpg",
+        imageSrc: "shadowrun-simulator.jpg",
         title: "Shadowrun Crossfire",
         text: "A card game simulator / trainer",
         linkData: [
@@ -294,7 +294,7 @@ const data = [
         techList: "[Java8, maven, Lombok]"
     },        
     {
-        imageSrc: "./images/jfind.jpg",
+        imageSrc: "jfind.jpg",
         title: "jFindPlus",
         text: "A program to find files inside jars and spot duplicate classes inside jars",
         linkData: [
@@ -303,7 +303,7 @@ const data = [
         techList: "[Java]"
     },        
     {
-        imageSrc: "./images/ifcdb.jpg",
+        imageSrc: "ifcdb.jpg",
         title: "Experimental binary store",
         text: "A binary store server, called ifcdb - 'infrequently changed data database'",
         linkData: [
@@ -312,7 +312,7 @@ const data = [
         techList: "[Java7, maven, JBoss-Weld, Hibernate]"
     },        
     {
-        imageSrc: "./images/uaparser.jpg",
+        imageSrc: "uaparser.jpg",
         title: "UASparser",
         text: "The Java side for user agent analysis. The legacy git repo's initial code was provided by me, see the first commit's author name ;) ",
         linkData: [
@@ -321,7 +321,7 @@ const data = [
         techList: "[Java]"
     },        
     {
-        imageSrc: "./images/podcast-sync.jpg",
+        imageSrc: "podcast-sync.jpg",
         title: "podcast-human-syncer",
         text: "Helps with 'who is talking' and 'who wants to talk next / now' for podcasts",
         linkData: [
@@ -355,6 +355,7 @@ const intervalRef = setInterval(() => {
   }
 }, 350);
 
+const graphics = ref("comic");
 </script>
 
 <template>
@@ -393,12 +394,24 @@ const intervalRef = setInterval(() => {
       </div>
     </div>
   </div>
+
+  <div class="container mt-3">
+    <div class="d-flex justify-content-end">
+        <div class="me-2">Graphics:</div>
+        <div class="me-2">
+            <select v-model="graphics">
+                <option value="comic">Comic</option>
+                <option value="fresh">Fresh</option>
+            </select>
+        </div>
+    </div>
+  </div>
   
   <div class="container mt-5">
       <div class="row mt-2" v-for="row in transformArray(data)">
           <div class="col-lg-4 mt-4" v-for="item in row">
             <Project 
-              :image-src="item.imageSrc" 
+              :image-src="`./images/${graphics}/${item.imageSrc}`"
               :title="item.title" 
               :text="item.text" 
               :link-data="item.linkData" 
