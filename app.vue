@@ -2,6 +2,8 @@
 
 const colorMode = useColorMode();
 
+const route = useRoute();
+
 useHead({
   title: 'oglimmer`s Web-Tech-Workshop',
   meta: [
@@ -356,6 +358,11 @@ const intervalRef = setInterval(() => {
 }, 350);
 
 const graphics = ref("comic");
+if (route.query.theme != null && route.query.theme !== "comic") {
+  setTimeout(() => {
+    graphics.value = route.query.theme as string;
+  }, 1);
+}
 </script>
 
 <template>
