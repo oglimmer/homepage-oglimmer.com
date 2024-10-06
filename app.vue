@@ -405,6 +405,7 @@ const graphics = ref("comic");
                 <option value="fun">Fun</option>
                 <option value="winter">Winter</option>
                 <option value="c64">C64</option>
+                <option value="80s">80s</option>
             </select>
         </div>
     </div>
