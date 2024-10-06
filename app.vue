@@ -403,6 +403,7 @@ const graphics = ref("comic");
                 <option value="comic">Comic</option>
                 <option value="fresh">Fresh</option>
                 <option value="fun">Fun</option>
+                <option value="winter">Winter</option>
             </select>
         </div>
     </div>
