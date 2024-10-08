@@ -407,12 +407,13 @@ if (route.query.theme != null && route.query.theme !== "comic") {
         <div class="me-2">Graphics:</div>
         <div class="me-2">
             <select v-model="graphics">
+                <option value="comic-dark">Comic Dark</option>
                 <option value="comic">Comic</option>
-                <option value="fresh">Fresh</option>
-                <option value="fun">Fun</option>
+                <option value="fall">Fall</option>
                 <option value="winter">Winter</option>
                 <option value="c64">C64</option>
                 <option value="80s">80s</option>
+                <option value="scifi">SciFi</option>
             </select>
         </div>
     </div>
