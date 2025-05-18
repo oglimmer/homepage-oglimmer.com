@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 const colorMode = useColorMode();
 
@@ -363,6 +365,111 @@ if (route.query.theme != null && route.query.theme !== "comic") {
     graphics.value = route.query.theme as string;
   }, 1);
 }
+
+// 3D model handling
+const showModel = ref(false);
+const modelContainer = ref<HTMLElement | null>(null);
+
+let scene: THREE.Scene | null = null;
+let camera: THREE.PerspectiveCamera | null = null;
+let renderer: THREE.WebGLRenderer | null = null;
+let model: THREE.Object3D | null = null;
+let animationFrameId: number | null = null;
+
+const toggleModel = () => {
+  showModel.value = !showModel.value;
+  
+  if (showModel.value) {
+    // Allow the DOM to update before initializing Three.js
+    nextTick(() => {
+      initThreeJS();
+      loadModel();
+    });
+  } else {
+    // Clean up Three.js resources when hiding the model
+    if (animationFrameId !== null) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+    
+    if (renderer) {
+      renderer.dispose();
+      renderer = null;
+    }
+    
+    scene = null;
+    camera = null;
+    model = null;
+  }
+}
+
+const initThreeJS = () => {
+  if (!modelContainer.value) return;
+  
+  // Create scene
+  scene = new THREE.Scene();
+  
+  // Add lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(ambientLight);
+  
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+  directionalLight.position.set(1, 1, 1);
+  scene.add(directionalLight);
+  
+  // Set up camera
+  const container = modelContainer.value;
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  camera.position.z = 5;
+  
+  // Create renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  container.appendChild(renderer.domElement);
+  
+  // Start animation loop
+  animate();
+}
+
+const loadModel = () => {
+  if (!scene) return;
+  
+  const loader = new GLTFLoader();
+  loader.load('/my-man.glb', (gltf) => {
+    model = gltf.scene;
+    if (model && scene) {
+      // Make the model 4x larger
+      model.scale.set(5, 5, 5);
+      
+      // Center the model
+      const box = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      model.position.x = -center.x;
+      model.position.y = -center.y;
+      model.position.z = -center.z;
+      
+      scene.add(model);
+    }
+  }, undefined, (error) => {
+    console.error('Error loading model:', error);
+  });
+}
+
+const animate = () => {
+  if (!scene || !camera || !renderer) return;
+  
+  animationFrameId = requestAnimationFrame(animate);
+  
+  // Rotate the model if it exists (faster rotation)
+  if (model) {
+    model.rotation.y += 0.03;
+  }
+  
+  renderer.render(scene, camera);
+}
 </script>
 
 <template>
@@ -395,7 +502,12 @@ if (route.query.theme != null && route.query.theme !== "comic") {
         </div>
         <div class="col-lg-4 text-lg-right text-center mt-5 mt-lg-0">
           <div class="banner-phone-image">
-            <img class="tilt-n-move-shaking" src="/images/icon.png">
+            <template v-if="!showModel">
+              <img class="tilt-n-move-shaking clickable" src="/images/icon.png" @click="toggleModel">
+            </template>
+            <template v-else>
+              <div ref="modelContainer" class="model-container"></div>
+            </template>
           </div>
         </div>
       </div>
@@ -532,5 +644,22 @@ a {
 a:hover {
   text-decoration: none;
   color: inherit;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.model-container {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  position: relative;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 </style>
