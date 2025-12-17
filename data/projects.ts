@@ -7,14 +7,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: "perf-test - System Performance Benchmarking Tool",
-    text: "A comprehensive performance benchmarking tool that evaluates CPU and disk I/O performance. Features multi-threaded prime number calculations for CPU testing and filesystem read/write speed assessments. Offers configurable testing with granular control through command-line flags.",
-    linkData: [
-      ["https://github.com/oglimmer/perf-test", "source code"]
-    ],
-    techList: "[Go]"
-  },
-  {
     title: "Picz2 - Image Sharing System",
     text: "A private photo sharing platform for vacation memories. Share with friends without social media hassle. Features slideshow mode with audio narration. No accounts needed for viewers.",
     linkData: [
@@ -72,6 +64,14 @@ export const projects: Project[] = [
       ["https://apps.apple.com/app/picture-sharing-z/id6462514741", "App Store"]
     ],
     techList: "[iOS, Swift, SwiftUI, MapKit, OAuth]"
+  },
+  {
+    title: "perf-test - System Performance Benchmarking Tool",
+    text: "A performance benchmarking tool that evaluates CPU and disk I/O performance. Features multi-threaded prime number calculations for CPU testing and filesystem read/write speed assessments.",
+    linkData: [
+      ["https://github.com/oglimmer/perf-test", "source code"]
+    ],
+    techList: "[Go]"
   },
   {
     title: "Karel the Bot",
