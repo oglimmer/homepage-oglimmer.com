@@ -1,9 +1,6 @@
-# Personal Homepage v4
+# Personal Homepage
 
 A modern personal homepage built with Nuxt 3, featuring projects, blog, and more.
-
-## Motto
-"coding is the new knitting"
 
 ## Features
 
@@ -13,7 +10,6 @@ A modern personal homepage built with Nuxt 3, featuring projects, blog, and more
 - Blog with Nuxt Content
 - Privacy & Cookie Policy
 - Imprint (Impressum) for German legal compliance
-- Dark mode support
 
 ## Setup
 
@@ -74,12 +70,6 @@ Update the imprint page at `pages/imprint.vue` with your actual contact informat
     └── blog-posts.ts      # All blog posts with markdown content
 ```
 
-## TODO
-
-- [ ] Add more blog posts to `data/blog-posts.ts`
-- [ ] Consider adding social media links
-- [ ] Add analytics if needed
-
 ## Technologies
 
 - Nuxt 3
@@ -88,4 +78,3 @@ Update the imprint page at `pages/imprint.vue` with your actual contact informat
 - @tailwindcss/typography
 - marked (Markdown parser)
 
-Check out the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
