@@ -1,13 +1,29 @@
 <template>
-  <div class="max-w-6xl mx-auto">
+  <div class="max-w-6xl mx-auto relative">
+    <!-- Snowflakes -->
+    <div v-if="showSnowflakes" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <div
+        v-for="flake in snowflakes"
+        :key="flake.id"
+        class="absolute text-white opacity-70 animate-snowfall"
+        :style="{
+          left: flake.left + '%',
+          fontSize: flake.size + 'px',
+          animationDuration: flake.duration + 's',
+          animationDelay: flake.delay + 's',
+        }"
+      >
+        ❄
+      </div>
+    </div>
     <!-- Hero Section -->
     <section class="text-center py-20 relative">
       <div class="absolute inset-0 flex items-center justify-center opacity-10">
-        <div class="text-[20rem] font-bold text-white select-none">oglimmer</div>
+        <div class="text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] 2xl:text-[20rem] font-bold text-white select-none">oglimmer</div>
       </div>
       <div class="relative z-10">
         <div class="inline-block mb-6">
-          <div class="text-primary-300 text-sm font-mono mb-2 tracking-widest">WELCOME TO MY DIGITAL SPACE</div>
+          <div class="text-primary-300 text-sm font-mono mb-2 tracking-widest">WELCOME TO MY DIGITAL HOME</div>
         </div>
         <h1 class="text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
           Hi, I'm <span class="bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">Oli</span>
@@ -15,12 +31,15 @@
         <p class="text-3xl md:text-4xl text-primary-200 italic font-light mb-8 tracking-wide">
           coding is the new knitting
         </p>
-        <div class="flex justify-center gap-4 mt-8">
+        <div class="flex flex-wrap justify-center gap-4 mt-8">
           <a href="#about" class="px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-primary-500/50">
             Learn More
           </a>
           <a href="#projects" class="px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/20">
             View Projects
+          </a>
+          <a href="#blog" class="px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full font-semibold transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/20">
+            View Blog Posts
           </a>
         </div>
       </div>
@@ -34,15 +53,17 @@
       </div>
       <div class="space-y-8">
         <div class="prose prose-invert prose-lg max-w-none">
-          <p class="text-xl text-white/95 leading-relaxed mb-6">
-            A child of the <span class="text-primary-300 font-semibold">70s</span>, raised in <span class="text-primary-300 font-semibold">Germany</span>,
-            I grew up alongside the personal computer revolution—witnessing the transformation from basement hobbyist projects
-            to the interconnected digital world we live in today.
+          <p class="text-lg text-white/90 leading-relaxed">
+            I was born in the seventies and grew up in Germany at a time when home computers started to shape how people think and create. From the C64 and Amiga to PCs and Macs, technology was always part of my daily life. I naturally moved early into smartphones and smart devices, driven by curiosity and a strong interest in how things work.
           </p>
-          <p class="text-lg text-white/85 leading-relaxed">
-            My passion lies in the intersection of <span class="text-primary-300 font-semibold">code and creativity</span>.
-            Whether I'm crafting web-based games, building helpful applications, or experimenting in the kitchen,
-            I approach each project with the same enthusiasm: the joy of creating something meaningful from scratch.
+          <p class="text-lg text-white/90 leading-relaxed">
+            I am a tech enthusiast and a nerd at heart. I enjoy building useful applications and small experimental web games, often as prototypes to explore ideas fast and learn from them. For me, software is both a craft and a playground.
+          </p>
+          <p class="text-lg text-white/90 leading-relaxed">
+            Professionally, I work as a software engineering team lead. My main focus is to build high throughput teams by creating an environment that supports autonomy, trust, and individual growth. I have experience across startups, mid size companies, and corporate environments, which helps me adapt my leadership style to different contexts.
+          </p>
+          <p class="text-lg text-white/90 leading-relaxed">
+            At my core, I believe in people. In their curiosity, their good intentions, and their ability to grow when given trust. I believe in people first, in trust over control and curiosity over certainty. I try to move through my work and everyday life with humility, kindness, and an open mind, because meaningful things are built where people feel respected, trusted, and seen.
           </p>
         </div>
         <div class="flex flex-wrap gap-4 mt-6">
@@ -75,7 +96,8 @@
           </a>
           <a href="https://oglimmer.github.io/homepage-k8s" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/20 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 group">
             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M10.204 14.35l.007.01-.999 2.413a5.171 5.171 0 0 1-2.075-2.597l2.578-.437.004.005a.44.44 0 0 1 .484.606zm-.833-2.129a.44.44 0 0 0 .173-.756l.002-.011-1.319-2.194a5.058 5.058 0 0 1 1.436-1.05l.923 2.33.01.006a.44.44 0 0 0 .73-.012l.01-.002.924-2.33a5.08 5.08 0 0 1 1.436 1.05l-1.32 2.194.004.011a.44.44 0 0 0 .173.756l.003.01 2.582.437a5.174 5.174 0 0 1-.001 2.133l-2.582.437-.003.01a.44.44 0 0 0-.173.756l-.003.011 1.319 2.194a5.058 5.058 0 0 1-1.436 1.05l-.923-2.33-.01-.005a.44.44 0 0 0-.73.01l-.01.004-.924 2.33a5.08 5.08 0 0 1-1.436-1.05l1.32-2.194-.004-.011a.44.44 0 0 0-.173-.756l-.003-.01-2.582-.437a5.174 5.174 0 0 1 .001-2.133l2.582-.437.003-.01zm11.276-5.68c-.393-.734-.967-1.387-1.694-1.897-.726-.51-1.616-.9-2.609-1.14-.992-.239-2.088-.327-3.21-.263-1.122.064-2.27.264-3.39.618a15.423 15.423 0 0 0-3.274 1.512 11.813 11.813 0 0 0-2.656 2.11c-.745.822-1.344 1.766-1.745 2.805-.4 1.04-.605 2.176-.605 3.334 0 1.157.205 2.293.605 3.333.401 1.04 1 1.983 1.745 2.805a11.813 11.813 0 0 0 2.656 2.11 15.423 15.423 0 0 0 3.274 1.512c1.12.354 2.268.554 3.39.618 1.122.064 2.218-.024 3.21-.263.993-.24 1.883-.63 2.609-1.14.727-.51 1.301-1.163 1.694-1.897.393-.734.59-1.556.59-2.437 0-.88-.197-1.703-.59-2.437a6.11 6.11 0 0 0-1.694-1.897 7.465 7.465 0 0 0-2.609-1.14c-.992-.239-2.088-.327-3.21-.263-1.122.064-2.27.264-3.39.618a15.423 15.423 0 0 0-3.274 1.512 11.813 11.813 0 0 0-2.656 2.11c-.745.822-1.344 1.766-1.745 2.805-.4 1.04-.605 2.176-.605 3.334 0 1.157.205 2.293.605 3.333.401 1.04 1 1.983 1.745 2.805a11.813 11.813 0 0 0 2.656 2.11 15.423 15.423 0 0 0 3.274 1.512c1.12.354 2.268.554 3.39.618 1.122.064 2.218-.024 3.21-.263.993-.24 1.883-.63 2.609-1.14.727-.51 1.301-1.163 1.694-1.897.393-.734.59-1.556.59-2.437 0-.88-.197-1.703-.59-2.437z"/>
+              <path d="M12 2.496a9.504 9.504 0 1 0 0 19.008 9.504 9.504 0 0 0 0-19.008zm-.668 1.376c.088 0 .176.008.264.024l.256 1.296a.384.384 0 0 0 .752-.016l.048-1.304c1.544.376 2.888 1.248 3.856 2.44l-1.08.808a.384.384 0 0 0 .456.616l1.168-.808c.752 1.056 1.232 2.344 1.328 3.744l-1.304.144a.384.384 0 0 0 .088.76l1.304-.016c-.08 1.416-.568 2.72-1.352 3.784l-1.016-.824a.384.384 0 0 0-.488.592l.968.856c-1.008 1.136-2.344 1.968-3.856 2.304l-.176-1.296a.384.384 0 0 0-.76.008l-.088 1.312c-1.52-.312-2.872-1.136-3.896-2.28l.912-.888a.384.384 0 0 0-.544-.544l-.928.92a7.712 7.712 0 0 1-1.408-3.72l1.304.048a.384.384 0 0 0 .04-.768l-1.288-.136c.056-1.424.504-2.736 1.24-3.816l1.096.856a.384.384 0 0 0 .472-.608l-1.128-.848a7.68 7.68 0 0 1 3.776-2.392l.12 1.296a.384.384 0 0 0 .752.04l-.088-1.288c.088-.016.176-.024.264-.024z"/>
+              <circle cx="12" cy="12" r="1.5"/>
             </svg>
             Kubernetes Cluster
             <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,4 +206,32 @@ const formatDate = (dateString: string) => {
   const date = new Date(dateString)
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }
+
+// Snowflakes logic
+const showSnowflakes = ref(false)
+
+// Generate snowflakes with random properties
+const snowflakes = computed(() => {
+  const flakes = []
+  const count = 50 // Number of snowflakes
+
+  for (let i = 0; i < count; i++) {
+    flakes.push({
+      id: i,
+      left: Math.random() * 100, // Random horizontal position (0-100%)
+      size: Math.random() * 10 + 10, // Random size (10-20px)
+      duration: Math.random() * 5 + 10, // Random fall duration (10-15s)
+      delay: Math.random() * 5, // Random start delay (0-5s)
+    })
+  }
+
+  return flakes
+})
+
+// Start snowfall after 15 seconds
+onMounted(() => {
+  setTimeout(() => {
+    showSnowflakes.value = true
+  }, 15000) // 15 seconds
+})
 </script>

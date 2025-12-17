@@ -1,0 +1,12 @@
+# Custom values for local/development environment
+# Use with: helm install homepage ./helm -f ./helm/custom-values.yaml
+
+replicaCount: 1
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 64Mi
+  requests:
+    cpu: 25m
+    memory: 32Mi

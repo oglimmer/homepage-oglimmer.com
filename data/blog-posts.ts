@@ -8,6 +8,838 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'web-analytics-grafana-loki',
+    title: 'Web analytics with Grafana Loki',
+    description: 'Building a web analytics system using Grafana Loki, Traefik access logs, and Promtail for log processing and geolocation',
+    date: '2024-06-14',
+    content: `*Originally published on Medium, June 14, 2024*
+
+I recently asked myself if it is possible to build a typical web analytics system using Grafana Loki.
+
+Throughout the article, I have removed all code that is unnecessary for this purpose. For a complete yet simple example, visit [https://github.com/oglimmer/traefik-loki-grafana-web-analytics](https://github.com/oglimmer/traefik-loki-grafana-web-analytics).
+
+This is what the overall architecture and its building blocks look like:
+
+![Architecture Diagram](/images/architecture-diagram.png)
+
+**Flow of information from a user issuing an http request to showing diagrams in grafana**
+
+The architecture consists of:
+1. Traefik (reverse proxy with access logging)
+2. Promtail (log processor with GeoIP enrichment)
+3. Loki (log aggregation)
+4. Grafana (visualization)
+
+## traefik
+
+We have to enable access logs for traefik. Additionally it makes our life easier to write json instead of a common log format. Finally we want to see the User-Agent and Referer headers in the log.
+
+For the purpose of Web Analytics traefik also has to see the source IP of all incoming http requests. There are various ways to achieve this, one simple — but not recommended way in production — is to enable \`network_mode: host\`. You might want to look up how to enable the proxy protocol between your edge load balancers and traefik for a more secure way.
+
+\`\`\`yaml
+# docker-compose.yml ...
+  traefik:
+    image: traefik:v3.0
+    command:
+      - "--accesslog=true"
+      - "--accesslog.filepath=/opt/access-logs/access.json"
+      - "--accesslog.format=json"
+      - "--accesslog.fields.defaultmode=keep"
+      - "--accesslog.fields.headers.defaultmode=keep"
+      - "--accesslog.fields.headers.names.User-Agent=keep"
+      - "--accesslog.fields.headers.names.Referer=keep"
+    network_mode: host
+    volumes:
+      - ./access-logs:/opt/access-logs
+\`\`\`
+
+Now we have traefik writing proper access logs with source IPs.
+
+## promtail
+
+The next step is to push these access logs into Loki, which is done by promtail.
+
+promtail needs a configuration file, which configures where to look for access logs, how to transform and enrich it and finally where to send it.
+
+Adding promtail to a docker compose definition is mostly defining volumes:
+
+\`\`\`yaml
+# docker-compose.yml ...
+  promtail:
+    image: grafana/promtail:2.9.3
+    command: -config.file=/etc/promtail/promtail.yaml
+    volumes:
+      - "./promtail-config.yml:/etc/promtail/promtail.yaml"
+      - "./access-logs:/var/log"
+      - "./promtail-data:/tmp/positions"
+      - "./GeoLite2-City.mmdb:/etc/promtail/GeoLite2-City.mmdb"
+\`\`\`
+
+For IP to geographical location lookup we have to provide MaxMind's GeoLite2-City.mmdb file. You can download a version from the [MaxMind Homepage](https://www.maxmind.com/en/solutions/ip-geolocation-databases-api-services).
+
+I have commented the promtail-config.yml on the different sections for a better understanding. You can find the full documentation [here](https://grafana.com/docs/loki/latest/clients/promtail/configuration/).
+
+\`\`\`yaml
+# for a simple access log push we don't need the server capabilities
+server:
+  disable: true
+
+# where to send the logs - our Loki server / container
+clients:
+- url: "http://loki:3100/loki/api/v1/push"
+
+# stores the file pointer inside access logs which have been sent
+positions:
+  filename: /tmp/positions/positions.yaml
+
+target_config:
+  sync_period: 10s
+
+scrape_configs:
+- job_name: traefik-logs
+  pipeline_stages:
+    # extracts json fields to make them labels
+    - json:
+        expressions:
+          client_host: ClientHost
+          user_agent: "\"request_User-Agent\""
+          request_path: RequestPath
+    # uses MaxMind GeoLite2 to map IP addresses to geo locations
+    - geoip:
+        source: client_host
+        db: /etc/promtail/GeoLite2-City.mmdb
+        db_type: city
+    # drop certain geoip labels, as we are limited to 15 labels in total
+    - labeldrop:
+      - geoip_postal_code
+      - geoip_subdivision_code
+      - geoip_continent_code
+      - geoip_continent_name
+      - geoip_subdivision_name
+      - geoip_timezone
+    # uses a regex to extract the OS from the user_agent
+    - regex:
+        source: user_agent
+        expression: "(?P<OS>Windows \\\\w+ \\\\d+(?:\\\\.\\\\d+)*|Linux(?: (?:i686|x86_64))?|Macintosh|(?:CPU )?iPhone OS|CPU OS.*?like Mac OS X)"
+    # uses a regex to extract the Device type from the user_agent
+    - regex:
+        source: user_agent
+        expression: "(?P<Device>iPhone|iPad|Mobile|Android(?: \\\\d+(?:\\\\.\\\\d+)*))"
+    # uses a regex to extract the Browser from the user_agent
+    - regex:
+        source: user_agent
+        expression: "(?P<Browser>(MSIE|(?:Mobile )?Safari|Chrome|\\\\b\\\\w+\\\\b Chromium|Firefox|Version|Mobile|GSA|QuickLook|OPR)[ \\\\\\\\/](?:[A-Z\\\\d]+\\\\b|\\\\d+(?:\\\\.\\\\d+)*))"
+    # defines new labels from extracted fields within the pipeline processing
+    - labels:
+        client_host:
+        user_agent:
+        request_path:
+        OS:
+        Device:
+        Browser:
+  # define the static labels and the filesystem location to find the
+  # log to be scraped
+  static_configs:
+  - targets:
+    - localhost
+    labels:
+      job: traefik
+      host: localhost
+      __path__: /var/log/*.json
+\`\`\`
+
+## Grafana
+
+Finally we have to create a Grafana dashboard to visually present all this information. I have added the Grafana dashboard as JSON in the [github repository](https://github.com/oglimmer/traefik-loki-grafana-web-analytics) linked at the beginning.
+
+![Grafana Dashboard](/images/grafana-dashboard.png)
+
+While this cannot catch up to full-grown web analytics tools, it certainly contains some useful information.
+
+## Key Features
+
+This setup provides:
+- Geographic location of visitors
+- Browser and OS statistics
+- Device type tracking
+- Request path analysis
+- All based on standard access logs
+
+## Conclusion
+
+Using Grafana Loki for web analytics is a lightweight alternative to traditional analytics platforms. While it may not have all the features of dedicated solutions, it provides valuable insights without additional tracking scripts or privacy concerns.`
+  },
+  {
+    slug: 'tomcat-behind-reverse-proxy',
+    title: 'Tomcat behind a Reverse-Proxy',
+    description: 'How to properly configure Tomcat when running behind a reverse proxy to handle source IPs, context paths, and HTTPS correctly',
+    date: '2023-01-08',
+    content: `*Originally published on Medium, January 8, 2023*
+
+As long as you offer only http and do simple host based routing on the Reverse-Proxy your application doesn't have to do anything to support being behind a Reverse-Proxy. Having said that you still might find it odd to see only the Reverse-Proxy's IP in your Tomcat's access log files.
+
+As soon as you use https or a different path prefix on the Reverse-Proxy, your application might run into problems.
+
+Let's look at those problems and their solutions.
+
+## The possible Problems
+
+### Your application sees the Reverse-Proxy's IP as the Source IP
+
+As the TCP connections are terminated on the Reverse-Proxy and traffic is forwarded on a second TCP connection you only see the Reverse-Proxy's IP as the "Remote IP" in Tomcat. This is also seen in access logs or anywhere in your application where you use \`HttpServletRequest.getRemoteAddr()\`.
+
+### Your application might be deployed under a different URL path prefix
+
+You might have developed your application — and thus always deployed it — as a myapp.war, so the context path — the prefix on the URL path — was \`/myapp/\`. Maybe your application is now running on a Reverse-Proxy, configured by an administrator who wants to run your application on a different path prefix or just without any in case of a host based routing scenario.
+
+### You see Http protocol is "http" even the user accesses your system via https
+
+If your application uses \`HttpServletRequest.isSecure()\` you will notice that this value is set to what the Reverse-Proxy is using, not what the client is actually asking for.
+
+## Fixing the Source IP
+
+Assuming that your Reverse-Proxy is setting the http header \`X-Forwarded-For\` and \`X-Forwarded-Proto\`, Tomcat provides a very elegant and simple solution to replace all relevant TCP level information in a HttpServletRequest with this configuration:
+
+\`\`\`xml
+<!-- inside conf/server.xml -->
+
+<Host ...>
+  <Valve className="org.apache.catalina.valves.RemoteIpValve" />
+</Host>
+\`\`\`
+
+See [here](https://tomcat.apache.org/tomcat-9.0-doc/config/valve.html#Remote_IP_Valve) for the full documentation to configure the validation for trusted Reverse-Proxy IPs and different http/https server ports. By default, 10/8, 192.168/16, 169.254/16, 127/8, 172.16/12, and ::1 are allowed as Reverse-Proxy IPs.
+
+## Fixing Access Logs
+
+There is another configuration change needed to let Tomcat use the X-Forwarded-For header information for the access logs:
+
+\`\`\`xml
+<!-- inside conf/server.xml -->
+
+<Host ...>
+  <Valve className="org.apache.catalina.valves.RemoteIpValve"
+         httpServerPort="8080" httpsServerPort="8443" />
+
+  <Valve className="org.apache.catalina.valves.AccessLogValve"
+         directory="logs"
+         prefix="localhost_access_log"
+         suffix=".txt"
+         pattern="combined"
+         requestAttributesEnabled="true" />
+</Host>
+\`\`\`
+
+The attribute \`requestAttributesEnabled="true"\` tells Tomcat to use a possible X-Forwarded-For for the access logs.
+
+As a side note \`pattern="combined"\` switches Tomcat's access logs to the combined log format known from Apache.
+
+## Context Path configuration
+
+At this point it is worth to mention that your application must not hardcode URL path prefix nor is it necessary to make it configurable in your application.
+
+Whenever you construct an absolute URL you have to call \`HttpServletRequest.getContextPath()\` for the URL prefix.
+
+Then you can freely configure the context path via \`<Context>\`. This can be done in two ways:
+
+### Inside server.xml
+
+To define a different context path you can simple add a \`<Context>\` element inside \`<Host>\` of server.xml.
+
+\`\`\`xml
+<Host appBase="webapps" ...>
+  <Context docBase="path/to/myapp" path="app" />
+</Host>
+\`\`\`
+
+Leave path empty to use the \`/\` path. docBase can be relative to appBase or absolute. Keep in mind that if you don't want to load your application twice you have to move the docBase outside of appBase.
+
+As the documentation says:
+
+> It is NOT recommended to place \`<Context>\` elements directly in the server.xml file.
+
+### As a XML file in conf/Catalina/localhost
+
+So the recommended way is to put a file into \`conf/Catalina/localhost\` (replace localhost in case of virtual hosting with your domain) and here the filename of the XML file will define the path prefix.
+
+Use \`ROOT.xml\` if you want the \`/\` path, for \`/myapp\` use \`myapp.xml\`, like this:
+
+\`\`\`xml
+<Context
+  docBase="/path/to/myapp"
+/>
+\`\`\`
+
+As a side note: while you can have \`<Context>\` inside your application's directory's \`META-INF/Context.xml\` file, this cannot define a different path.
+
+## Examples of wrongly and properly configured systems
+
+Let's assume we are running a HAproxy Reverse-Proxy on port 8000/8443. All traffic is forwarded via http only to a Tomcat running on 8080, where we have deployed an application into \`webapps/myapp\`.
+
+Let's also accept that we are not redirecting http to https for this analysis.
+
+### Without configuration
+
+Let's check what Tomcat sees without any configuration.
+
+![Tomcat HTTPS request without configuration](/images/tomcat-http-without-config.png)
+
+We have configured HAProxy to add several http headers defining what has happened, but Tomcat and its HttpServletRequest API is not taking this into account and thus shows wrong data for Remote Address, Remote Host in case of this http request.
+
+![Tomcat HTTP request with configuration](/images/tomcat-https-without-config.png)
+
+For an https request even \`isSecure()\` is wrong.
+
+### With proper configuration
+
+Let's fix this by adding:
+
+\`\`\`xml
+<Valve className="org.apache.catalina.valves.RemoteIpValve"
+       httpServerPort="8000"
+       httpsServerPort="8443" />
+\`\`\`
+
+to \`conf/server.xml\`.
+
+Now we see:
+
+![Tomcat HTTP request with configuration](/images/tomcat-http-with-config.png)
+
+That all information retrieved from Tomcat's \`HttpServletRequest\` API is equal to the client side's point of view.
+
+![Tomcat HTTP request with configuration](/images/tomcat-https-with-config.png)
+
+Even for an https request, the \`isSecure()\` shows true.
+
+### Tomcat logs
+
+After adding \`requestAttributesEnabled="true"\` to the logger definition in server.xml you also see the right Source IP in the access logs.
+
+![Tomcat access logs](/images/tomcat-access-logs.png)
+
+## Download all files for your own tests
+
+I have uploaded a project with HAProxy, Tomcat and all files you need to reproduce the experiments shown in this article.
+
+[https://github.com/oglimmer/tomcat-behind-reverse-proxy](https://github.com/oglimmer/tomcat-behind-reverse-proxy)`
+  },
+  {
+    slug: 'source-ips-traefik-kubernetes',
+    title: 'Getting Source IPs behind Traefik in Kubernetes at home',
+    description: 'How to properly configure HAProxy, Traefik, and Kubernetes to preserve client source IPs for applications running in a home cluster',
+    date: '2023-01-04',
+    content: `*Originally published on Medium, January 4, 2023*
+
+I am running all my applications on a Kubernetes cluster in my living room. Like every good DevOps person I want to see the source IPs in my application logs, for all IPv4 and IPv6 clients. As Traefik is fabulously taking care of getting and renewing Letsencrypt certificates, even with wildcard domains, I am terminating TLS on Traefik.
+
+## Setup description
+
+My living room hosting setup looks like this:
+
+![Traefik Kubernetes setup diagram](/images/traefik-k8s-setup.png)
+
+1. **Fritzbox** is my DSL/Router, it forwards all incoming TCP for IPv4 and IPv6 on 80 and 443 to the host where HAProxy is running
+2. I am running **HAProxy** in between the Router and the Kubernetes cluster because I want to support IPv6 and as this address changes frequently, this host and its HAProxy helps to adopt to every changing IPv6. I have written another article how this works, you can find it [here](/blog/hosting-website-home-fritzbox-ipv6). The HAProxy forwards all IPv4 and IPv6 traffic on layer 4 to the IPv4 address of Traefik
+3. **Traefik** is my Kubernetes ingress controller, it terminates TLS, refreshes all my Letsencrypt certificates and forwards the http requests to my applications (e.g. "My App")
+4. **My App** gets the requests with all X-Forward-* headers properly set
+
+## HAProxy
+
+The host running HAProxy runs Ubuntu 22.04, so the configuration for my layer 3 forwarding looks like this:
+
+\`\`\`
+global
+  log /dev/log  local0
+  log /dev/log  local1 notice
+  chroot /var/lib/haproxy
+  stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+  stats timeout 30s
+  user haproxy
+  group haproxy
+  daemon
+
+defaults
+  timeout client          30s
+  timeout server          30s
+  timeout connect         30s
+
+frontend frontend-http
+  bind    :::80 v6only
+  bind    :80
+  default_backend backend-http
+
+backend backend-http
+  mode   tcp
+  server upstream 192.168.178.50:80 send-proxy check
+
+frontend frontend-https
+  bind    :::443 v6only
+  bind    :443
+  default_backend backend-https
+
+backend backend-https
+  mode   tcp
+  server upstream 192.168.178.50:443 send-proxy check
+
+frontend stats
+  bind :1936
+  default_backend stats
+
+backend stats
+  mode http
+  stats enable
+  stats hide-version
+  stats realm Haproxy Statistics
+  stats uri /
+  stats auth admin:foobar
+\`\`\`
+
+This configuration enables a statistics page on port 1936, while also forwarding all IPv4 and IPv6 traffic on 80 and 443 to my Traefik host.
+
+It is worth to mention that we need to enable \`send-proxy\` on the upstream servers, as this transports the source IP to the Traefik host.
+
+## Traefik
+
+To install Traefik on Kubernetes [this page](https://doc.traefik.io/traefik/getting-started/install-traefik/) explains this very well. Having said that, one needs to make a couple of additional configurations to enable source IPs:
+
+\`\`\`yaml
+---
+  additionalArguments:
+    - --certificatesresolvers.digitalocean.acme.dnschallenge.provider=digitalocean
+    - --certificatesresolvers.digitalocean.acme.email=my@email.com
+    - --certificatesresolvers.digitalocean.acme.storage=/certs/acme.json
+
+  ports:
+    web:
+      redirectTo: websecure
+      proxyProtocol:
+        trustedIPs: ["192.168.178.52"]
+    websecure:
+      proxyProtocol:
+        trustedIPs: ["192.168.178.52"]
+
+  env:
+    - name: DO_AUTH_TOKEN
+      valueFrom:
+        secretKeyRef:
+          key: apiKey
+          name: digitalocean-api-credentials
+
+  ingressRoute:
+    dashboard:
+      enabled: false
+
+  persistence:
+    enabled: true
+    path: /certs
+    size: 128Mi
+
+  service:
+    spec:
+      externalTrafficPolicy: Local
+    externalIPs:
+      - 192.168.178.50
+
+  logs:
+    general:
+      level: INFO
+
+  hostNetwork: true
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-role.kubernetes.io/master
+            operator: Exists
+
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+\`\`\`
+
+The first section \`additionalArguments\` configures Traefik for DNS challenge with Digitalocean.
+
+The second section \`ports\` makes sure that all http (port 80) traffic is redirected to https (port 443). It also enables the proxy protocol for 80 and 443 requests. This is the counterpart of the \`send-proxy\` configuration we have done in HAproxy. You also have to define the trusted IPs, which in my case is the HAProxy host's IP.
+
+The third section \`env\` defines a variable \`DO_AUTH_TOKEN\` which is used by the certificationResolver written for DigitalOcean. Of course you have to create the Kubernetes secret as well, like this:
+
+\`\`\`yaml
+---
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: digitalocean-api-credentials
+    namespace: traefik
+
+  type: Opaque
+  stringData:
+    apiKey: dop_v1_here_goes_your_digital_ocean_api_key
+\`\`\`
+
+The fourth section \`ingressRoute\` simply deactivates the Traefik dashboard.
+
+The fifth section \`persistence\` defines a PersistentVolume where the Letsencrypt private key and its certificates are stored. You have to define this PersistentVolume elsewhere.
+
+The sixth section \`service\` enables "[Preserving the client source IP](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip)" via \`externalTrafficPolicy: Local\`. It also defines the IP address where Traefik can be found from the outside local network. As I will run Traefik on the master node, this is the IP address of my Kubernetes master node. You don't have to run Traefik on the master node, but my master node has a lot of capacity left.
+
+The seventh section \`logs\` simply sets the logging level to INFO. DEBUG or ERROR are also useful values.
+
+The eighth section \`hostNetwork\` switches the Traefik Kubernetes Pod to use the host's network directly. This is necessary to get and pass through the source IP.
+
+The ninth section \`affinity\` configures Kubernetes so Traefik will always run on the master node.
+
+The tenth section \`tolerations\` will remove the restriction to not install the Traefik Pod on the master node.
+
+## My App
+
+Finally I want to show the ingress configuration for my applications. This can be done either with an IngressRoute or with Ingress.
+
+This is how it looks with an IngressRoute:
+
+\`\`\`yaml
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: test-ingress
+  namespace: default
+
+spec:
+  entryPoints:
+    - websecure
+
+  routes:
+    - match: Host(\`test.oglimmer.de\`)
+      kind: Rule
+      services:
+        - name: test-service
+          kind: Service
+          namespace: default
+          port: 80
+  tls:
+    certresolver: digitalocean
+    domains:
+    - main: "*.oglimmer.de"
+\`\`\`
+
+or this for Ingress:
+
+\`\`\`yaml
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: test-ingress
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls.certresolver: digitalocean
+      traefik.ingress.kubernetes.io/router.tls.domains.0.main: "*.oglimmer.de"
+spec:
+  rules:
+  - host: "test.oglimmer.de"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: test-service
+            port:
+              number: 80
+\`\`\`
+
+In the application you now get the following X-Forwarded-* headers:
+
+- \`X-Forwarded-For: 92.117.246.225\`
+- \`X-Forwarded-Host: test.oglimmer.de\`
+- \`X-Forwarded-Port: 443\`
+- \`X-Forwarded-Proto: https\`
+- \`X-Forwarded-Server: k8s-p2-master\`
+- \`X-Real-Ip: 92.117.246.225\`
+
+## Final words of wisdom
+
+As you have already realized this is not a recommended production setup. Using \`hostNetwork: true\` is not the best idea, as for example written [here](https://kubernetes.io/docs/concepts/configuration/overview/).`
+  },
+  {
+    slug: 'hosting-website-home-ds-lite',
+    title: 'Hosting a website at home with DS-Lite',
+    description: 'A guide to hosting websites at home when your ISP uses DS-Lite, combining dynamic DNS and IPv6 reverse-proxy solutions',
+    date: '2022-07-28',
+    content: `*Originally published on Medium, July 28, 2022*
+
+If you like to play around with Web technologies like I do, you might have also the need to host those projects somewhere. One possibility is to run them on a RaspberryPi in your living room.
+
+To do this you have to solve 2 problems:
+
+1. Your ISP frequently assigns you different IP addresses. Some ISPs do this every 24h, some only now and then, but as you don't have a fixed IP address you need some sort of dynamic DNS.
+2. Your ISP might not give you a public IPv4. This is called "DS Lite" (Dual Stack Lite) and basically means that your Router is behind a NAT gateway and you share your public IPv4 with other people. This makes you "not reachable" via IPv4 from the Internet and you need to use IPv6 for inbound connections.
+
+## Issue 1 — Dynamic DNS
+
+Usually your Router (DSL or Cable Modem) should support dynamic DNS. So you only need to pick a provider, set it up on their Webpage and finally configure it within your Router.
+
+These are the DynDNS providers my Fritzbox 7520 supports:
+
+![Fritzbox DynDNS providers](/images/fritzbox-dyndns-providers.png)
+
+### Using a self hosted Dynamic DNS solution
+
+As we want to host our own webserver anyway, we can also run our own DynDNS solution.
+
+This requires the following components:
+
+- A 3rd party DNS server hosting our domain
+- A Router (DSL/Cable modem) allowing to call an HTTP endpoint when it gets a new public IP address
+- A host running at your home (like a RaspberryPi) — but that's also our home server we want to use as our web server
+
+To summarize it, we need to tell the Router to call an http endpoint when a new public IP is assigned. A script behind this endpoint will then use the new IP to update the DNS records on the DNS Server's API.
+
+## Issue 2 — ISP connects you via DS-Lite (a.k.a. no public IPv4)
+
+Depending on your ISP you might not have a public IPv4, what means while you see a IPv4 on your Router, this IPv4 is behind a NAT gateway, thus you are sharing this IPv4 with other users / Routers on your ISP network.
+
+A solution can be a very tiny resourced host running in a public data-center, which takes in all IPv4 and IPv6 connections to our domain and forwards them via IPv6 only to our (home) router which in turn forwards it to our RaspberryPi.
+
+## Target architecture
+
+This is the target architecture to solve both problems:
+
+![DS-Lite target architecture](/images/ds-lite-target-architecture.png)
+
+## Implementation hints
+
+Here are a couple of ideas how to implement this architecture.
+
+### Dynamic DNS
+
+A free DNS server with an easy to use REST API is provided by Digital Ocean. Here is a link to the PATCH endpoint for domain records and this is how a curl to update the IPv6 for a domain (in this case test-backend.oglimmer.de) could look like:
+
+\`\`\`bash
+curl -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" \\
+     -H "Content-Type: application/json" \\
+     "https://api.digitalocean.com/v2/domains/oglimmer.de/records/326215399" \\
+     -X PATCH \\
+     -d '{"type": "AAAA", "data": "'$IPV6'"}'
+\`\`\`
+
+### Static DNS
+
+There is nothing special with the A and AAAA records you need for your main domain (in this case test.oglimmer.de), just serve them from the DNS server you have used for the dynamic part.
+
+### IPv4 + IPv6 to IPv6 only reverse-proxy
+
+The host can be as small as you can get it, like 512 MB RAM and 1 vCPU.
+
+Here are a couple of options:
+- At DigitalOcean this is $4 / month
+- If you dare to use AWS you can run a t3.micro instance for 12 months free of charge
+- A company called v6node provides for just 9€ per year (sic!) such a tiny host
+
+Install an HAProxy and configure it as a reverse-proxy for your IPv6 sub-domain. These are the important lines in a haproxy.cfg file:
+
+\`\`\`
+resolvers dns
+  parse-resolv-conf
+  hold valid 60s
+
+frontend all
+  bind :::80
+  bind :::443 <here your usual parameters>
+  default_backend haproxy
+
+backend haproxy
+  option httpchk
+  server haproxy1 test-backend.oglimmer.de:443 ssl check \\
+    ca-file ISRG_Root_X1.pem check-ssl resolvers dns \\
+    init-addr libc
+\`\`\`
+
+You need to use a resolver as you want to use a FQDN for the backend server. We cannot use an IPv6 directly as the IP changes frequently (like once a day) and you need to tell haproxy to constantly re-query the DNS. \`hold valid 60s\` lets haproxy query the DNS every 60 seconds.
+
+### Using IPv6 inside your home network
+
+Running IPv6 in your internal home network makes the IP forwarding between your Router and the web server host a lot more difficult. I wrote a separate article about that. Unless you are interested in IPv6 in particular, I would recommend to use IPv4 for your home network.
+
+## Conclusion
+
+By combining dynamic DNS with a small cloud-based reverse proxy, you can successfully host websites at home even when your ISP uses DS-Lite. The key is leveraging IPv6 connectivity while maintaining IPv4 accessibility through the proxy server.`
+  },
+  {
+    slug: 'unit-testing-stdin-stdout-java',
+    title: 'Unit testing a stdin / stdout based Java program',
+    description: 'How to properly test Java programs that take input from stdin and write results to stdout using JUnit 5',
+    date: '2022-07-04',
+    content: `# Unit testing a stdin / stdout based Java program
+
+*Originally published on Medium, July 4, 2022*
+
+How to (unit) test a Java program which takes input from stdin and writes its results to stdout?
+
+JUnit 5 is not offering any support for this scenario out of the box. Of course it would be easy to just redirect stdin / stdout like that:
+
+\`\`\`java
+System.setIn(new FileInputStream("test_input.txt"));
+OutputStream baos = new ByteArrayOutputStream();
+System.setOut(new PrintStream(baos));
+
+UserManagerApp.main(null); // this is our stdin-stdout program
+
+// test expected output against baos
+\`\`\`
+
+The problem is, that you don't get precise feedback if anything fails and you also don't test if the output was generated in return to a specific input line.
+
+## What we want to achieve
+
+What we want to do is more like:
+
+\`\`\`java
+@Test
+public void testMethod() {
+
+    try (TestCase testCase = TestCase.build()
+            .input("add-user John Quil").expect("user added")
+            .input("add-user Anita Bath").expect("user added")
+            .input("list-users").expect(
+                     "user:", "1,John,Quil", "2,Anita,Bath")
+            .input("del-user 1").expect("user deleted")
+            .input("list-users").expect("user:", "2,Anita,Bath")
+            .input("quit")) {
+
+        UserManagerApp.main(null);
+
+    }
+}
+\`\`\`
+
+This should test each input line, terminated by \`<enter>\`, against each expected output line, terminated by \`<enter>\`.
+
+## Implementation
+
+This is a class implementing such a logic:
+
+\`\`\`java
+public class TestCase {
+
+    class TestStep {
+        List<String> inputs;
+        List<String> expectedOutputs;
+
+        TestStep(List<String> inputs) {
+            this.inputs = inputs;
+        }
+    }
+
+    class TestInputStream extends InputStream {
+
+        @Override
+        public int read(byte b[], int off, int len) {
+            if (expectedQueueType != QueueType.INPUT) {
+                //FAIL
+            }
+            List<String> inputs = testSteps.get(mainCounter).inputs;
+            String inputString = inputs.get(readSubCounter) + "\\n";
+            readSubCounter++;
+
+            if (readSubCounter == inputs.size()) {
+                expectedQueueType = QueueType.OUTPUT;
+            }
+            ByteArrayInputStream bais =
+                  new ByteArrayInputStream(inputString.getBytes());
+            return bais.read(b, off, len);
+        }
+    }
+
+    class TestOutputStream extends OutputStream {
+
+        private String buffer = "";
+
+        @Override
+        public void write(byte[] b, int off, int len) {
+            if (expectedQueueType != QueueType.OUTPUT) {
+                // FAIL
+            }
+            buffer += new String(b, 0, len);
+            if (buffer.contains("\\n")) {
+                // remove string to test from buffer (0...\\n)
+                int posNewline = buffer.indexOf("\\n");
+                String stringToTest
+                                  = buffer.substring(0, posNewline);
+                if (posNewline < buffer.length() - 1) {
+                    buffer = buffer.substring(posNewline + 1);
+                } else {
+                    buffer = "";
+                }
+                // check string against expected result
+                String expectedOutput
+                          = testSteps.get(mainCounter)
+                             .expectedOutputs.get(writeSubCounter);
+                if (!stringToTest.equals(expectedOutput)) {
+                    // FAIL
+                }
+                writeSubCounter++;
+                // when all expected blocks are found -> to input
+                if (writeSubCounter ==
+                                testSteps.get(mainCounter)
+                                         .expectedOutputs.size()) {
+                    expectedQueueType = QueueType.INPUT;
+                    writeSubCounter = 0;
+                    readSubCounter = 0;
+                    mainCounter++;
+                }
+            }
+        }
+    }
+
+    enum QueueType {
+        INPUT, OUTPUT
+    }
+
+    private int mainCounter;
+    private int writeSubCounter;
+    private int readSubCounter;
+
+    private QueueType expectedQueueType = QueueType.INPUT;
+
+    private List<TestStep> testSteps = new ArrayList<>();
+
+    private TestCase() {
+        System.setIn(new TestInputStream());
+        System.setOut(new PrintStream(new TestOutputStream()));
+    }
+
+    public static TestCase build() {
+        return new TestCase();
+    }
+
+    public TestCase input(String... input) {
+        testSteps.add(new TestStep(Arrays.asList(input)));
+        return this;
+    }
+
+    public TestCase expect(String... expectedOutput) {
+        testSteps.get(testSteps.size() - 1)
+                   .expectedOutputs = Arrays.asList(expectedOutput);
+        return this;
+    }
+
+    // Removed some code not necessary for the core logic
+    // see the github repo for the complete code
+}
+\`\`\`
+
+## Known issues
+
+A known issue is the missing possibility to reset the program between tests, so you also need to instantiate a custom ClassLoader and load UserManagerApp into this ClassLoader, so you can throw it away between tests easily.
+
+## Complete code
+
+You can find the code and its usage in this GitHub repository: [https://github.com/oglimmer/junit-stdin-stdout](https://github.com/oglimmer/junit-stdin-stdout)`
+  },
+  {
     slug: 'zoom-recordings-to-discourse',
     title: 'How to automatically publish Zoom recordings to discourse.org',
     description: 'An automated pipeline using AWS Lambda, Vimeo, and Discourse to publish Zoom cloud recordings with hashtag-based categorization',

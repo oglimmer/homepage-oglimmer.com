@@ -45,6 +45,7 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
         'gradient': 'gradient 8s ease infinite',
+        'snowfall': 'snowfall linear infinite',
       },
       keyframes: {
         float: {
@@ -58,6 +59,10 @@ export default {
         gradient: {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
+        },
+        snowfall: {
+          '0%': { transform: 'translateY(-10px) rotate(0deg)' },
+          '100%': { transform: 'translateY(100vh) rotate(360deg)' },
         },
       },
     },

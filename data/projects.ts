@@ -7,6 +7,50 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Picz2 - Image Sharing System",
+    text: "A private photo sharing platform for vacation memories. Share with friends without social media hassle. Features slideshow mode with audio narration. No accounts needed for viewers.",
+    linkData: [
+      ["https://picz2.oglimmer.com/", "Web"],
+      ["https://github.com/oglimmer/picz2", "source code"]
+    ],
+    techList: "[Java, Spring, JPA, Vue.js, iOS, Swift]"
+  },
+  {
+    title: "Status Tacos - HTTP Monitoring & Alerting",
+    text: "A comprehensive HTTP monitoring and alerting system. Monitor your websites and APIs with real-time status checks, uptime tracking, and instant notifications when services go down.",
+    linkData: [
+      ["https://tacos.oglimmer.com/", "Web"],
+      ["https://github.com/oglimmer/status-tacos/", "source code"]
+    ],
+    techList: "[Java, Spring Boot, JPA, Vue.js]"
+  },
+  {
+    title: "Deep Digest RSS - AI-Powered News Reader",
+    text: "An intelligent RSS feed reader powered by AI and LLM technology. Automatically summarizes and digests news articles, helping you stay informed without information overload.",
+    linkData: [
+      ["https://news.oglimmer.com/", "Web"],
+      ["https://github.com/oglimmer/deep-digest-rss/", "source code"]
+    ],
+    techList: "[Java, Spring Boot, AI, LLM, RSS]"
+  },
+  {
+    title: "Lord Renovate - Dependency Management Dashboard",
+    text: "A powerful dashboard for managing Renovate bot dependency updates across multiple repositories. Visualize, track, and manage automated dependency updates with ease.",
+    linkData: [
+      ["https://oglimmer.github.io/lord-renovate/", "Web"],
+      ["https://github.com/oglimmer/lord-renovate", "source code"]
+    ],
+    techList: "[Vue.js, Renovate Bot, Dependency Management]"
+  },
+  {
+    title: "Traefik OIDC Auth Plugin",
+    text: "A Traefik middleware plugin that adds OpenID Connect (OIDC) authentication capabilities to your reverse proxy. Secure your services with OAuth2/OIDC authentication flows.",
+    linkData: [
+      ["https://github.com/oglimmer/traefik-plugin-auth-oidc", "source code"]
+    ],
+    techList: "[Go, Traefik, Plugin, OIDC, OAuth2]"
+  },
+  {
     title: "Spring REST API tutorial",
     text: "A tutorial on how to build a REST API with Spring Boot for beginners",
     linkData: [["https://github.com/oglimmer/java-spring-boot-class/", "Read the tutorial"]],

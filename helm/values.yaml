@@ -1,0 +1,104 @@
+# Default values for homepage-oglimmer-2025
+
+global:
+  imageRegistry: registry.oglimmer.com
+
+# Image pull secrets for private registry
+imagePullSecrets:
+  - name: oglimmerregistrykey
+
+replicaCount: 2
+
+image:
+  repository: homepage-oglimmer-2025
+  pullPolicy: Always
+  tag: "latest"
+
+nameOverride: ""
+fullnameOverride: ""
+
+# Service account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+# Pod security context
+podSecurityContext:
+  fsGroup: 1001
+
+# Container security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: ""
+  annotations: {}
+  certManager:
+    enabled: true
+    clusterIssuer: "oglimmer-com-dns"
+  hosts:
+    - host: oglimmer.com
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: www.oglimmer.com
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: oglimmer.de
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: www.oglimmer.de
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    enabled: true
+    secretName: "tls-homepage-oglimmer-ingress-dns"
+    hosts:
+      - "oglimmer.com"
+      - "www.oglimmer.com"
+      - "oglimmer.de"
+      - "www.oglimmer.de"
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Horizontal Pod Autoscaler
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity: {}
+
+# Pod disruption budget
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
