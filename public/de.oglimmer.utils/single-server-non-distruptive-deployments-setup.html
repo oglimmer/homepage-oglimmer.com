@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>WebTechWorkshop @ oglimmer.de / de.oglimmer.utils</title>
+	
+  	<script type="text/javascript" src="syntaxhighlighter.js"></script>
+  	<link type="text/css" rel="stylesheet" href="theme.css">
+  	<link type="text/css" rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+	<div id="mainBox">
+
+		<h1>Single server non disruptive deployments setup</h1>
+        
+        <p>
+        	If you run a single server setup and still want to have non disruptive deployments, here is a simple howto.
+        </p>
+
+        <h2>HOWTO</h2>
+
+        <ul>
+        	<li>Install <a href="http://redis.io">redis</a>. This should be available in all package repositories.</li>
+        	<li>Copy 3 jar into your $TOMCAT/lib</li>
+        </ul>
+        <p class='subItemInList'>- <a href="https://commons.apache.org/proper/commons-pool/">commons-pool2-2.4.2.jar</a></p>
+        <p class='subItemInList'>- <a href="https://github.com/jcoleman/tomcat-redis-session-manager">tomcat-redis-session-manager-1.2.jar</a></p>
+        <p class='subItemInList'>- <a href="https://github.com/xetorthio/jedis">jedis-2.8.0.jar</a></p>
+        <ul>
+        	<li>I ran into serious trouble when setting this up. Finally I had to build tomcat-redis-session-manager against a current tomcat-catalina. You can get this build <a href="https://github.com/oglimmer/cyc/tree/master/web/src/3rdparty/resources">here</a></li>
+        	<li>
+        		Add this to your project's META-INF/context.xml:
+
+        		<script type="text/syntaxhighlighter" class="brush: xml"><![CDATA[<?xml version='1.0' encoding='utf-8'?>
+<Context reloadable="false" privileged="false">
+  <Valve className="com.radiadesign.catalina.session.RedisSessionHandlerValve" />
+  <Manager className="com.radiadesign.catalina.session.RedisSessionManager"
+    host="localhost" 
+    port="6379"
+    database="0" 
+    maxInactiveInterval="60" />  
+</Context>]]></script>
+
+        	</li>      
+        	<li>Deploy new versions of your war file as described <a href="https://tomcat.apache.org/tomcat-7.0-doc/config/context.html#Parallel_deployment">here</a>. In short: foo##1.war defines Version 1, foo##2.war Version 2. Both are depoyed in parallel. New sessions will go to the latest version, while existing sessions keep their version. As we have moved the session management to Redis, Tomcat will <b>always</b> move request to the latest version. So as long as your session data is binary compatible between versions, you have true non disruptive deployments.</li>
+        	<li>
+        		Using the version I used, you need to keep in mind that the session-timeout in web.xml is treated as seconds (as per servlet spec it should be minutes)
+
+        		<script type="text/syntaxhighlighter" class="brush: xml"><![CDATA[<session-config>
+	<!-- WITH THE REDIS SESSION BACKEND THIS NEEDS TO BE IN SECONDS!!! -->
+	<session-timeout>7200</session-timeout>
+</session-config>]]></script>
+
+        	</li>
+        	<li>Also the <a href="https://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html">manager app</a> doesn't know anything about the session anymore. But you can look into all KEYS in Redis.</li>
+        	<li>I used Tomcat 7.0.68 which worked. I can confirm that 7.0.52 (as in Ubuntu 14.04) doesn't work.</li>
+        </ul>
+
+	</div>
+
+	<div id="copyright">Done 2016 by oglimmer.de - Oliver Zimpasser - <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></div>	
+</body>
+</html>

@@ -178,7 +178,7 @@ export const projects: Project[] = [
     title: "fulgens",
     text: "A build, local deploy and run script generator",
     linkData: [
-      ["https://medium.com/@oglimmer/fulgens-c11016fdd5d8", "medium article"],
+      ["/blog/fulgens-build-deploy-script-generator", "blog post"],
       ["https://github.com/oglimmer/fulgens", "source code"],
       ["http://npmjs.com/package/fulgens", "npm repo"],
     ],

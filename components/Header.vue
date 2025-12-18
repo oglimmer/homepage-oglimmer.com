@@ -43,6 +43,11 @@
             </NuxtLink>
           </li>
           <li>
+            <NuxtLink to="/k8s-portal" class="px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm">
+              K8S Portal
+            </NuxtLink>
+          </li>
+          <li>
             <NuxtLink to="/privacy" class="px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm">
               Privacy
             </NuxtLink>
@@ -86,6 +91,15 @@
               class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm"
             >
               Blog
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink
+              to="/k8s-portal"
+              @click="mobileMenuOpen = false"
+              class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm"
+            >
+              K8S Portal
             </NuxtLink>
           </li>
           <li>

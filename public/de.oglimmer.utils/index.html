@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>WebTechWorkshop @ oglimmer.de / de.oglimmer.utils</title>
+	
+  	<script type="text/javascript" src="syntaxhighlighter.js"></script>
+  	<link type="text/css" rel="stylesheet" href="theme.css">
+  	<link type="text/css" rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+	<div id="mainBox">
+
+		<h1>Origins of this project: some best practices</h1>
+        <div>
+            <ul>
+            	<li>Minimize the payload in the server side session and use a non in-memory session storage backend to provide non-disruptive deployments</li>
+            </ul>
+            <p class='subItemInList'>For a <b>single server</b> scenario this can be achieved with combining it with <a href="https://tomcat.apache.org/tomcat-7.0-doc/config/context.html#Parallel_deployment">Tomcat's parallel deployment</a> feature. [<a href="single-server-non-disruptive-deployments-setup.html">Example</a>]</p>
+            <p class='subItemInList'>In a <b>multi server + load balancer</b> set up, this also provides fully transparant fail-over in case of any failure on the hosts.</p>
+            <ul>            	 
+            	<li>Put your (web-)application config files into /etc, make it reloadable, make it possible to overwrite entries via System.setProperty to support config changes in unit-tests. <a href="#AbstractProperties">AbstractProperties</a> implements everything you need.</li>
+            	<li>Put your logging config (like logback.xml) into /etc. Consider making it reloadable and write log files to /var/log. <a href="#BaseConfigurator">BaseConfigurator</a> makes this very simple.</li>
+            	<li>Put the git commit hash, build time and build tag during build time into your artifacts and show it somewhere. See <a href="#VersionFromManifest">VersionFromManifest</a> how this library can help.</li>
+            	<li>Start right away with secure connections. Use <a href="https://letsencrypt.org">letsencrypt</a>, set up your database connections securely. A <a href="https://github.com/oglimmer/cert_gen_tomcat/blob/master/cert_gen.sh">script</a> to use letsencrypt with Tomcat.</li>
+            	<li>Consider <a href="https://github.com/jmxtrans/jmxtrans-agent">jmxtrans</a> to <a href="https://graphiteapp.org/">monitor</a> your Tomcat instance. A <a href="https://github.com/oglimmer/cyc/blob/master/ansible/roles/tomcat7/files/jmxtrans/jmxtrans.xml">template config file</a>, using is just adding this to your tomcat start script: JAVA_OPTS="${JAVA_OPTS} -javaagent:/var/lib/tomcat7/jmxtrans/jmxtrans-agent.jar=/var/lib/tomcat7/jmxtrans/jmxtrans.xml" and putting adding the jar.</li>
+            </ul>
+        </div>
+
+		<h1>Project: de.oglimmer.utils</h1>
+
+		<h2>Description</h2>
+        <p>
+        	The library helps to prevent boilerplate code for random strings and names, SPI-based slf4j configuration, sophisticated property files, human readable representation of date differences and getting attributes from MANIFEST.FM files.
+        </p>
+
+        <h2>Source / JavaDoc / Binaries</h2>
+        <p>
+            The sources can be found at <a href="https://github.com/oglimmer/utils">github</a>. The javadoc can be found at <a href="http://www.javadoc.io/doc/de.oglimmer.utils/common-utils/">here</a>. Download/use the latest binaries from <a href="https://search.maven.org/artifact/de.oglimmer.utils/common-utils">maven central</a>.
+        </p>
+
+        <h2>Detailed information with examples</h2>
+        <h3>Class: <a name="VersionFromManifest">de.oglimmer.utils.VersionFromManifest</a></h3>
+
+        <p>Helps to read attributes from a Manifest file and provides a uniform "version" string which has version, git-commit, creation date and a html-link to git</p>
+
+        <p>An <a href="https://github.com/oglimmer/sample-VersionFromManifest">example project</a> is on github.</p>
+
+        1.) add this to your pom.xml, to add the information into the MANIFEST.FM file:
+
+        <script type="text/syntaxhighlighter" class="brush: xml"><![CDATA[
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<git-commit>${buildNumber}</git-commit>
+							<git-url>${project.scm.url}</git-url>
+							<creation-date>${timestamp}</creation-date>
+							<project-version>${project.version}</project-version>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		]]></script>
+
+
+		2.) add this to your pom.xml to retrieve the git commit hash:
+
+		<script type="text/syntaxhighlighter" class="brush: xml"><![CDATA[
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<shortRevisionLength>7</shortRevisionLength>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+				</configuration>
+			</plugin>
+		]]></script>
+
+		3.) use a ServletContextListener.contextInitialized(ServletContextEvent) to get a proper version string
+
+		<script type="text/syntaxhighlighter" class="brush: java"><![CDATA[
+		VersionFromManifest vfm = new VersionFromManifest();
+		vfm.initFromFile(sce.getServletContext().getRealPath("/META-INF/MANIFEST.MF"));
+		longVersion = vfm.getLongVersion();
+		]]></script>
+
+		<h3>Class: <a name="BaseConfigurator">de.oglimmer.utils.BaseConfigurator</a></h3>
+
+		<p>
+		Implements SPI-based slf4j configuration. It changes the order and places where slf4j looks for configuration files.     
+		The "APP_NAME" is given as a parameter in the constructor. Checks first the system parameter "APP_NAME"-logback for a    
+		filename, if this parameter is not given or the file doesn't exist it looks in /etc/logback-custom.xml. If all this      
+		doesn't exist it uses /logback-custom.xml in the $CLASSPATH. It also sets the slf4j variable "application-name" with     
+		the "APP_NAME".                                                                                                          
+		</p>
+
+		<ol>
+		<li>Create a class in your project and extend it from de.oglimmer.utils.BaseConfigurator</li>
+		<li>Have a parameter less constructor and set your application name in super("....");</li>
+		<li>Create META-INF/services/ch.qos.logback.classic.spi.Configurator under src/main/resources</li>
+		<li>Put the full qualified filename of your class from (1) into that file</li>
+		<li>make sure you have a logback-custom.xml in your project (and not logback.xml)</li>
+		</ol>
+
+		<h3>Class: <a name="AbstractProperties">de.oglimmer.utils.AbstractProperties</a></h3>
+
+		<p>
+		A base class for application property classes. Supports json-based config files, automatic reloads when the file      
+		changes, merging in-classpath and out-of-classpath files and can take the whole configuration from a string to        
+		support unit test configurations.                                                                                     
+		</p>
+
+		<ol>
+		<li>Create a (singleton) class in your project and extends it from de.oglimmer.utils.AbstractProperties</li>
+		<li>Have a parameter less constructor and pass the name of the system parameter to your production config file to super("...."), e.g. super("my_app")</li>
+		<li>create as many getters as you need like </li>
+		
+		<script type="text/syntaxhighlighter" class="brush: java"><![CDATA[
+		public String getSmtpUser() {
+			return getJson().getString("smtp.user");
+		}
+		]]></script>
+
+		<li>put a default.properties into src/main/resources. this needs to be a json file and should hold all default/development values for all properties</li>
+		<li>On your production host start the server with -Dmy_app=/etc/my_app.properties</li>
+		</ol>
+
+
+	</div>
+
+	<div id="copyright">Done 2019 by oglimmer.de - Oliver Zimpasser - <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></div>	
+</body>
+</html>
