@@ -1,19 +1,17 @@
 <template>
   <div class="max-w-6xl mx-auto relative">
-    <!-- Snowflakes -->
-    <div v-if="showSnowflakes" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <!-- Shooting Stars -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       <div
-        v-for="flake in snowflakes"
-        :key="flake.id"
-        class="absolute text-white opacity-70 animate-snowfall"
+        v-for="star in activeShootingStars"
+        :key="star.id"
+        class="absolute shooting-star"
         :style="{
-          left: flake.left + '%',
-          fontSize: flake.size + 'px',
-          animationDuration: flake.duration + 's',
-          animationDelay: flake.delay + 's',
+          top: star.top + 'px',
+          left: star.left + 'px',
         }"
       >
-        ❄
+        <div class="shooting-star-tail"></div>
       </div>
     </div>
     <!-- Hero Section -->
@@ -248,31 +246,98 @@ const formatDate = (dateString: string) => {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-// Snowflakes logic
-const showSnowflakes = ref(false)
+// Shooting Stars logic
+const activeShootingStars = ref([])
+let starIdCounter = 0
+let shootingStarInterval = null
 
-// Generate snowflakes with random properties
-const snowflakes = computed(() => {
-  const flakes = []
-  const count = 50 // Number of snowflakes
-
-  for (let i = 0; i < count; i++) {
-    flakes.push({
-      id: i,
-      left: Math.random() * 100, // Random horizontal position (0-100%)
-      size: Math.random() * 10 + 10, // Random size (10-20px)
-      duration: Math.random() * 5 + 10, // Random fall duration (10-15s)
-      delay: Math.random() * 5, // Random start delay (0-5s)
-    })
+const createShootingStar = () => {
+  const star = {
+    id: starIdCounter++,
+    top: Math.random() * (window.innerHeight * 0.4), // Start from top 40% of screen
+    left: window.innerWidth + Math.random() * 100, // Start from right side, slightly off-screen
   }
 
-  return flakes
-})
+  activeShootingStars.value.push(star)
 
-// Start snowfall after 15 seconds
+  // Remove star after animation completes
+  setTimeout(() => {
+    activeShootingStars.value = activeShootingStars.value.filter(s => s.id !== star.id)
+  }, 3000) // Match animation duration
+}
+
+const startShootingStars = () => {
+  // Create a shooting star every 3-8 seconds
+  const scheduleNextStar = () => {
+    const delay = Math.random() * 5000 + 3000 // 3-8 seconds
+    setTimeout(() => {
+      createShootingStar()
+      scheduleNextStar()
+    }, delay)
+  }
+
+  scheduleNextStar()
+}
+
+// Start shooting stars after 15 seconds
 onMounted(() => {
   setTimeout(() => {
-    showSnowflakes.value = true
+    startShootingStars()
   }, 15000) // 15 seconds
 })
+
+onUnmounted(() => {
+  if (shootingStarInterval) {
+    clearInterval(shootingStarInterval)
+  }
+})
 </script>
+
+<style scoped>
+.shooting-star {
+  animation: shooting 3s linear forwards;
+}
+
+.shooting-star-tail {
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8), transparent);
+  border-radius: 50%;
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.3);
+  transform: rotate(-45deg);
+  position: relative;
+}
+
+.shooting-star-tail::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 1),
+    0 0 20px rgba(200, 230, 255, 0.8),
+    0 0 30px rgba(150, 200, 255, 0.6);
+}
+
+@keyframes shooting {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-800px, 800px);
+    opacity: 0;
+  }
+}
+</style>

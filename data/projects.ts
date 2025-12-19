@@ -16,6 +16,14 @@ export const projects: Project[] = [
     techList: "[Java, Spring, JPA, Vue.js, iOS, Swift]"
   },
   {
+    title: "Video-Msg - Screen Recording Platform",
+    text: "A full stack web application for sending screen recordings with audio commentary. Built with modern frameworks featuring a Vue 3 SPA frontend and a Spring Boot REST API backend.",
+    linkData: [
+      ["https://github.com/oglimmer/video-msg", "source code"]
+    ],
+    techList: "[Vue 3, TypeScript, Vite, Pinia, Spring Boot, Java 21, MariaDB]"
+  },
+  {
     title: "Status Tacos - HTTP Monitoring & Alerting",
     text: "A comprehensive HTTP monitoring and alerting system. Monitor your websites and APIs with real-time status checks, uptime tracking, and instant notifications when services go down.",
     linkData: [
