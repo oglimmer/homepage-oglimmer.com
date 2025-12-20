@@ -2,7 +2,7 @@
   <div class="max-w-6xl mx-auto">
     <div class="mb-12">
       <div class="flex items-center mb-4">
-        <div class="w-1 h-16 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"></div>
+        <div class="w-1 h-16 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
         <div>
           <h1 class="text-5xl md:text-6xl font-bold text-white mb-2">
             K8S Portal
@@ -22,7 +22,7 @@
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="item in k8sPortalItems" :key="item.title" class="group backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/20">
         <div class="p-6 relative">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full filter blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"></div>
+          <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full filter blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"/>
           <div class="relative">
             <h3 class="text-xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
               {{ item.title }}

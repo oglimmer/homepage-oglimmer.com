@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between">
         <NuxtLink to="/" class="group flex items-center space-x-2">
           <div class="w-10 h-10 rounded-lg overflow-hidden shadow-lg group-hover:shadow-primary-500/50 transition-all duration-300 group-hover:scale-110">
-            <img src="/images/icon.png" alt="oglimmer logo" class="w-full h-full object-cover" />
+            <img src="/images/icon.png" alt="oglimmer logo" class="w-full h-full object-cover" >
           </div>
           <span class="text-2xl font-bold text-white hover:text-primary-300 transition-colors">
             oglimmer
@@ -13,9 +13,9 @@
 
         <!-- Hamburger button (mobile only) -->
         <button
-          @click="mobileMenuOpen = !mobileMenuOpen"
           class="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-all duration-300"
           aria-label="Toggle menu"
+          @click="mobileMenuOpen = !mobileMenuOpen"
         >
           <svg v-if="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -69,8 +69,8 @@
           <li>
             <NuxtLink
               to="/"
-              @click="mobileMenuOpen = false"
               class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm"
+              @click="mobileMenuOpen = false"
             >
               Home
             </NuxtLink>
@@ -78,8 +78,8 @@
           <li>
             <NuxtLink
               to="/projects"
-              @click="mobileMenuOpen = false"
               class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm"
+              @click="mobileMenuOpen = false"
             >
               Projects
             </NuxtLink>
@@ -87,8 +87,8 @@
           <li>
             <NuxtLink
               to="/blog"
-              @click="mobileMenuOpen = false"
               class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm"
+              @click="mobileMenuOpen = false"
             >
               Blog
             </NuxtLink>
@@ -96,8 +96,8 @@
           <li>
             <NuxtLink
               to="/k8s-portal"
-              @click="mobileMenuOpen = false"
               class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm"
+              @click="mobileMenuOpen = false"
             >
               K8S Portal
             </NuxtLink>
@@ -105,8 +105,8 @@
           <li>
             <NuxtLink
               to="/privacy"
-              @click="mobileMenuOpen = false"
               class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm"
+              @click="mobileMenuOpen = false"
             >
               Privacy
             </NuxtLink>
@@ -114,8 +114,8 @@
           <li>
             <NuxtLink
               to="/imprint"
-              @click="mobileMenuOpen = false"
               class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300 font-medium backdrop-blur-sm"
+              @click="mobileMenuOpen = false"
             >
               Imprint
             </NuxtLink>

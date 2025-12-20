@@ -11,7 +11,7 @@
           left: star.left + 'px',
         }"
       >
-        <div class="shooting-star-tail"></div>
+        <div class="shooting-star-tail"/>
       </div>
     </div>
     <!-- Hero Section -->
@@ -49,7 +49,7 @@
     <!-- About Section -->
     <section id="about" class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8 md:p-12 mb-16 hover:bg-white/15 transition-all duration-300">
       <div class="flex items-center mb-6">
-        <div class="w-1 h-12 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"></div>
+        <div class="w-1 h-12 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
         <h2 class="text-4xl font-bold text-white">About Me</h2>
       </div>
       <div class="space-y-8">
@@ -103,7 +103,7 @@
     <section id="projects" class="mb-16">
       <div class="flex items-center justify-between mb-8">
         <div class="flex items-center">
-          <div class="w-1 h-12 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"></div>
+          <div class="w-1 h-12 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
           <h2 class="text-4xl font-bold text-white">Projects</h2>
         </div>
         <NuxtLink to="/projects" class="text-primary-300 hover:text-primary-200 font-semibold flex items-center gap-2">
@@ -116,7 +116,7 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="project in projects" :key="project.title" class="group backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/20">
           <div class="p-6 relative">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full filter blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"></div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full filter blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"/>
             <div class="relative">
               <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
                 {{ project.title }}
@@ -147,7 +147,7 @@
     <section id="blog" class="mb-16">
       <div class="flex items-center justify-between mb-8">
         <div class="flex items-center">
-          <div class="w-1 h-12 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"></div>
+          <div class="w-1 h-12 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
           <h2 class="text-4xl font-bold text-white">Latest Blog Posts</h2>
         </div>
         <NuxtLink to="/blog" class="text-primary-300 hover:text-primary-200 font-semibold flex items-center gap-2">
@@ -183,7 +183,7 @@
     <section id="k8s-portal" class="mb-16">
       <div class="flex items-center justify-between mb-8">
         <div class="flex items-center">
-          <div class="w-1 h-12 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"></div>
+          <div class="w-1 h-12 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
           <h2 class="text-4xl font-bold text-white">K8S Portal</h2>
         </div>
         <NuxtLink to="/k8s-portal" class="text-primary-300 hover:text-primary-200 font-semibold flex items-center gap-2">
@@ -196,7 +196,7 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="item in k8sPortalItemsPreview" :key="item.title" class="group backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/20">
           <div class="p-6 relative">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full filter blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"></div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full filter blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"/>
             <div class="relative">
               <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
                 {{ item.title }}
@@ -247,9 +247,14 @@ const formatDate = (dateString: string) => {
 }
 
 // Shooting Stars logic
-const activeShootingStars = ref([])
+interface ShootingStar {
+  id: number
+  top: number
+  left: number
+}
+
+const activeShootingStars = ref<ShootingStar[]>([])
 let starIdCounter = 0
-let shootingStarInterval = null
 
 const createShootingStar = () => {
   const star = {
@@ -284,12 +289,6 @@ onMounted(() => {
   setTimeout(() => {
     startShootingStars()
   }, 15000) // 15 seconds
-})
-
-onUnmounted(() => {
-  if (shootingStarInterval) {
-    clearInterval(shootingStarInterval)
-  }
 })
 </script>
 

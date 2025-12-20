@@ -2,7 +2,7 @@
   <div class="max-w-4xl mx-auto">
     <div class="mb-12">
       <div class="flex items-center mb-4">
-        <div class="w-1 h-16 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"></div>
+        <div class="w-1 h-16 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
         <div>
           <h1 class="text-5xl md:text-6xl font-bold text-white mb-2">
             Blog

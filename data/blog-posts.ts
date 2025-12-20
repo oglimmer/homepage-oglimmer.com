@@ -102,7 +102,7 @@ scrape_configs:
     - json:
         expressions:
           client_host: ClientHost
-          user_agent: "\"request_User-Agent\""
+          user_agent: ""request_User-Agent""
           request_path: RequestPath
     # uses MaxMind GeoLite2 to map IP addresses to geo locations
     - geoip:
@@ -1532,7 +1532,7 @@ chsh -s /usr/bin/fish
 At this point I would like to point out two arguable decisions I made:
 
 - all my configurations assume fish as the default shell
-- I will use remote X11 forwarding to show GUI Linux applications, but you could do that via VNC or RDP as well — it\'s just that I think X11 creates a more homogeneous experience and it completely eradicates multi-monitor issues
+- I will use remote X11 forwarding to show GUI Linux applications, but you could do that via VNC or RDP as well — it's just that I think X11 creates a more homogeneous experience and it completely eradicates multi-monitor issues
 
 Starting a Ubuntu VM with WSL 2 is super simple, but for a real-world usage, there are a couple of issue to overcome.
 
@@ -1547,7 +1547,7 @@ as you see WSL is installing Visual Studio Code in Ubuntu. From now on you can s
 
 ## Issue 1: No systemd
 
-The first issue you will find with WSL is that it doesn\'t come with systemd, but many things require systemd, so people created genie.
+The first issue you will find with WSL is that it doesn't come with systemd, but many things require systemd, so people created genie.
 
 To install genie und you need a .NET runtime. So we start with installing this:
 
@@ -1566,7 +1566,7 @@ sudo apt update
 sudo apt install -y systemd-genie
 \`\`\`
 
-Now genie — aka systemd — can be started with \`genie -s\`. But before we do this let\'s look into a couple of other issues.
+Now genie — aka systemd — can be started with \`genie -s\`. But before we do this let's look into a couple of other issues.
 
 ## Issue 2: Changing PATH
 
@@ -1680,7 +1680,7 @@ If your company has its own docker registry and authentication is done via clien
 C:\\Users\\<username>\\.docker\\certs.d\\docker.mycompany.com
 \`\`\`
 
-Unfortunately this is not enough and after each restart of Docker\'s Desktop for Windows application you need to run this command from PowerShell:
+Unfortunately this is not enough and after each restart of Docker's Desktop for Windows application you need to run this command from PowerShell:
 
 \`\`\`powershell
 docker run --rm --privileged -d -v /:/host -v $env:UserProfile\\.docker\\certs.d:/certs.d alpine cp -r /certs.d /host/etc/docker/certs.d
@@ -1717,7 +1717,7 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 - Selecting a text in PowerShell should select full paths, so open the Settings and add:
 
 \`\`\`json
-"wordDelimiters": " \\\\()\"'-:,;<>~!@#$%^&*|+=[]{}~?│",
+"wordDelimiters": " \\\\()"'-:,;<>~!@#$%^&*|+=[]{}~?│",
 \`\`\`
 
 - Using FanzyZone in PowerToys enables you do quickly drop and resize windows into different zones. Very handy for ultra-wide monitors.
@@ -1742,7 +1742,7 @@ While I can run natively under Windows:
 - Windows Terminal
 - Postman
 
-All programs look and behave the same. They all have it\'s own box in the Windows taskbar, can be moved to different monitors and share the Windows Clipboard.
+All programs look and behave the same. They all have it's own box in the Windows taskbar, can be moved to different monitors and share the Windows Clipboard.
 
 ## File system access
 
@@ -1759,10 +1759,10 @@ You can use docker from Windows and Ubuntu as both share the same docker daemon 
 - When docker has strange network issues reboot Windows 10
 - Sometimes the Windows 10 X server cannot be reached (e.g. when you want to start gnome-terminal) and you need to shutdown the WSL instances
 - Sometimes the docker process holds a handle on directories. This results in a file/directory cannot be written/read within WSL with the error message "file a resource busy". In those cases quit Docker, then delete the directory.
-- If starting gnome-terminal doesn\'t work inside a genie bottle, unset DBUS_SESSION_BUS_ADDRESS and XDG_RUNTIME_DIR, still I am unable to create new tabs via " -- tab" while inside a bottle.
-- If starting gnome-terminal brings an error "Couldn\'t register with accessibility bus" set NO_AT_BRIDGE to 1.
+- If starting gnome-terminal doesn't work inside a genie bottle, unset DBUS_SESSION_BUS_ADDRESS and XDG_RUNTIME_DIR, still I am unable to create new tabs via " -- tab" while inside a bottle.
+- If starting gnome-terminal brings an error "Couldn't register with accessibility bus" set NO_AT_BRIDGE to 1.
 
-## Don\'ts
+## Don'ts
 
 - Do not install Visual Studio Code inside the Ubuntu VM. It has to be used from \`/mnt/c/Users/oglimmer/AppData/Local/Programs/Microsoft VS Code/bin\`
 - Do not install docker, docker.io or docker-compose inside the Ubuntu VM. It has to be used from \`/mnt/c/Program Files/Docker/Docker/resources/bin\` or \`/mnt/c/ProgramData/DockerDesktop/version-bin\`
@@ -1781,8 +1781,8 @@ A dream came true and I got the best of both worlds: the development tools from 
 ### Cons:
 
 - The docker issue around "file and resource is busy" is annoying and forces you into occasional restarts of Docker
-- Using remote X11 makes the regular Ubuntu Desktop not available (at least I haven\'t figured it out)
-- Using "genie" to start and use systemd creates many problems you usually don\'t have to deal with`
+- Using remote X11 makes the regular Ubuntu Desktop not available (at least I haven't figured it out)
+- Using "genie" to start and use systemd creates many problems you usually don't have to deal with`
   },
   {
     slug: 'tomee-jpa-datasources',
@@ -1844,7 +1844,7 @@ TomEE adds even more DataSource definition locations [[2]](http://tomee.apache.o
 
 ## The bad news
 
-Defining the \`<Resource>\` at any location in a \`<Context>\` does add a DataSource object into JDNI, but it doesn\'t work for your application - this bug is filed under [https://issues.apache.org/jira/browse/TOMEE-263](https://issues.apache.org/jira/browse/TOMEE-263)
+Defining the \`<Resource>\` at any location in a \`<Context>\` does add a DataSource object into JDNI, but it doesn't work for your application - this bug is filed under [https://issues.apache.org/jira/browse/TOMEE-263](https://issues.apache.org/jira/browse/TOMEE-263)
 
 I came up with a (maybe too simple) solution.
 
@@ -1953,7 +1953,7 @@ MAILTO="my-email@address.com"
 
 So the cron daemon will execute the script \`build-queue-processor.sh\` every minute, as we want to trigger a requested deployment — via a file in \`/var/opt/build-queue\` — as soon as possible.
 
-5. The yellow box is the main script called \`build-queue-processor.sh\` and contains the core code of the setup. The script loops over all files in \`/var/opt/build-queue\` and executes a \`docker-compose up -d --build\` on the project given through the file\'s content.
+5. The yellow box is the main script called \`build-queue-processor.sh\` and contains the core code of the setup. The script loops over all files in \`/var/opt/build-queue\` and executes a \`docker-compose up -d --build\` on the project given through the file's content.
 
 \`\`\`bash
 #!/usr/bin/env bash
@@ -1975,7 +1975,7 @@ rm /var/opt/build-queue.lock
 
 All lines in regards to \`/var/opt/build-queue.lock\` ensure that there are never more than one script executions in parallel.
 
-6. The grey box is the final part of the build pipeline. It\'s a \`docker-compose.yml\` file as the entry point from \`build-queue-processor.sh\`. Like all docker-compose files with a build attribute, my actual build script sits inside a Dockerfile.
+6. The grey box is the final part of the build pipeline. It's a \`docker-compose.yml\` file as the entry point from \`build-queue-processor.sh\`. Like all docker-compose files with a build attribute, my actual build script sits inside a Dockerfile.
 
 While the docker-compose.yml and Dockerfile are not part of my particular CD pipeline, I would like to look at my project GridGameOne [play here] as an example here:
 
@@ -2021,11 +2021,11 @@ This Dockerfile uses a multi-stage build.
 
 In stage 0 — called \`build-env\` — a maven build is executed after a git repository is cloned. This stage contains a neat trick to work around the docker image cache by adding \`/git/refs/heads/master\` into \`/tmp/version.json\`. So the cache is invalidated when the HEAD of the master branch had changed. No need to use \`--no-cache\`.
 
-The final stage of the Dockerfile just copies the previously built WAR file into it. As mentioned in my last article I use OpenJ9 instead of Oracle\'s Hotspot JVM to minimize the memory usage.
+The final stage of the Dockerfile just copies the previously built WAR file into it. As mentioned in my last article I use OpenJ9 instead of Oracle's Hotspot JVM to minimize the memory usage.
 
 ## Build log via email
 
-As the build is executed from the cron daemon, I have \`MAILTO=\"my-email@address.com\"\` on the top of my cron file, so I always get the entire build log output via email.
+As the build is executed from the cron daemon, I have \`MAILTO="my-email@address.com"\` on the top of my cron file, so I always get the entire build log output via email.
 
 ## Drawbacks
 
@@ -2066,9 +2066,9 @@ At the dawn of Containerization I asked myself, how much memory does the host ne
 
 So the host runs 20 Docker containers in total. But to run so many Docker containers on just 4GB of RAM, all containers need to have restricted memory.
 
-Before we look into details, I would like to point out that this is not a recommendation for a production setup nor a recommendation in terms of how much memory one should assign to Docker containers. This just answers the question, "How many Dockerized Java and Nodejs applications can run on a host with 4GB of RAM" when stability and performance is not a priority. My goal is to run all my showcase applications as cheap as possible inside Docker. That\'s all.
+Before we look into details, I would like to point out that this is not a recommendation for a production setup nor a recommendation in terms of how much memory one should assign to Docker containers. This just answers the question, "How many Dockerized Java and Nodejs applications can run on a host with 4GB of RAM" when stability and performance is not a priority. My goal is to run all my showcase applications as cheap as possible inside Docker. That's all.
 
-Now let\'s look at the memory limits for the different container types.
+Now let's look at the memory limits for the different container types.
 
 ## Tomcats
 
@@ -2080,9 +2080,9 @@ The 4 CouchDBs use Version 1.7 and have 200M to 250M of memory assigned. CouchDB
 
 ## PouchDB
 
-As one system doesn\'t use any fancy feature of CouchDB it can also run on PouchDB with memory limited to 90M.
+As one system doesn't use any fancy feature of CouchDB it can also run on PouchDB with memory limited to 90M.
 
-## Nodejs\'s
+## Nodejs's
 
 The two nodejs containers have 50M respectively 200M max set. Both use version 11 of Nodejs. While Citybuilder uses just a few dependencies and runs with 50M, Linky has many dependencies plus Babel and Webpack and needs 200M to run.
 
@@ -2100,9 +2100,9 @@ The nginx container with support for php is limited to 30M.
 
 ## JVM
 
-I always use OpenJ9 instead of Oracle\'s Hotspot JVM. It has a smaller memory footprint which means it runs with less memory.
+I always use OpenJ9 instead of Oracle's Hotspot JVM. It has a smaller memory footprint which means it runs with less memory.
 
-I tried to run containers with the same memory settings but with Oracle\'s Hotspot but they often get terminated by the OOM-killer. So I have build Tomcat running OpenJ9 images.
+I tried to run containers with the same memory settings but with Oracle's Hotspot but they often get terminated by the OOM-killer. So I have build Tomcat running OpenJ9 images.
 
 ## Java Memory Settings
 
@@ -2116,7 +2116,7 @@ When using Java 8 or 9 you need to set 2 JVM parameters to ensure Java and Docke
 
 As you might have realized a primary goal of my setup is to run everything on one host. Therefore my CD pipeline runs on the same host as well.
 
-I will talk about this in a later article, but for now I would like to mention that for all builds Docker containers are started on this. Those containers don\'t have any memory limit set and (of course) are short lived.
+I will talk about this in a later article, but for now I would like to mention that for all builds Docker containers are started on this. Those containers don't have any memory limit set and (of course) are short lived.
 
 ## Additional non-Docker host setup
 
@@ -2148,7 +2148,7 @@ build & local deploy & run
 
 ## Motivation
 
-Over the last 15 years I have built a couple of projects (all the stuff on www.oglimmer.de) and while it is very simple to build a Java project via a brain-friendly 'mvn package' it is always a bit cumbersome to start-up a project you haven\'t worked on for quite a while.
+Over the last 15 years I have built a couple of projects (all the stuff on www.oglimmer.de) and while it is very simple to build a Java project via a brain-friendly 'mvn package' it is always a bit cumbersome to start-up a project you haven't worked on for quite a while.
 
 Starting a project usually needs a build, a local deployment of the webserver and the database, an initial set up of the database and sometimes a couple of config changes to connect everything together — how this all is done heavily depends on the project and the used technologies.
 
@@ -2160,17 +2160,17 @@ Now this is where Fulgens comes into play.
 
 ## Possible solutions with existing technologies
 
-We have maven, gradle, npm and many other standardized build tools to install dependencies and easily build a piece of software. And in my opinion the most important features of these systems are, that you don\'t need any particular knowledge on how to build the software. A build is as easy as 'mvn package' or 'npm install'. So great, the problem how to build an unknown piece of software is already solved.
+We have maven, gradle, npm and many other standardized build tools to install dependencies and easily build a piece of software. And in my opinion the most important features of these systems are, that you don't need any particular knowledge on how to build the software. A build is as easy as 'mvn package' or 'npm install'. So great, the problem how to build an unknown piece of software is already solved.
 
-But how to start the software locally? 'npm start'? Oh wait, it needs a database…. And when it comes to Java you are lost even more. For sure, you could write a maven config to start a database and initialize it, but that gets really ugly, it isn\'t the purpose of maven and thus it is far away from 'easily starting the software locally'.
+But how to start the software locally? 'npm start'? Oh wait, it needs a database…. And when it comes to Java you are lost even more. For sure, you could write a maven config to start a database and initialize it, but that gets really ugly, it isn't the purpose of maven and thus it is far away from 'easily starting the software locally'.
 
 ### But we have provisioning tools like Ansible/Chef/Puppet!
 
-These system tend to have a high complexity, as they have been built to solve a much bigger problem: installing infrastructure — not providing a local setup! Maybe Ansible is easy enough — at least it\'s just an SSH-based remote shell command executor. Still Ansible needs a whole bunch of configuration files and the execution mechanism was made for SSH connections, it\'s again too complex for what we actually want: just a simple local deployment.
+These system tend to have a high complexity, as they have been built to solve a much bigger problem: installing infrastructure — not providing a local setup! Maybe Ansible is easy enough — at least it's just an SSH-based remote shell command executor. Still Ansible needs a whole bunch of configuration files and the execution mechanism was made for SSH connections, it's again too complex for what we actually want: just a simple local deployment.
 
-### Can\'t Docker spin up environments?
+### Can't Docker spin up environments?
 
-A docker-compose.yml file is well suited to spin up all software components of your project but it doesn\'t change your config files, it\'s not set up your database and most important it doesn\'t give you the flexibility to run your components outside of Docker. So even leaving the last aspect aside, you still need some bash code to cover the missing pieces to (initially) start your project.
+A docker-compose.yml file is well suited to spin up all software components of your project but it doesn't change your config files, it's not set up your database and most important it doesn't give you the flexibility to run your components outside of Docker. So even leaving the last aspect aside, you still need some bash code to cover the missing pieces to (initially) start your project.
 
 ## Defining our goals for a new solution
 
@@ -2187,11 +2187,11 @@ A docker-compose.yml file is well suited to spin up all software components of y
 
 ## Introducing Fulgens and the Fulgensfile.js
 
-Let\'s assume we have a Java, web-based project, using a Mysql database.
+Let's assume we have a Java, web-based project, using a Mysql database.
 
 To start this project, you would probably need to build the java project, start the Mysql database daemon, create a schema, set up some tables and data there and finally deploy the generated war file into a Tomcat server while adding a configuration file.
 
-Let\'s write a Fulgensfile.js to describe the project:
+Let's write a Fulgensfile.js to describe the project:
 
 \`\`\`javascript
 module.exports = {
@@ -2216,7 +2216,7 @@ This is a minimal length Fulgensfile.js for a Java, web-based project as it desc
 
 It also defines a Tomcat web server and connects the result of the first step into the Servlet container.
 
-Let\'s add a database:
+Let's add a database:
 
 \`\`\`javascript
 ...
@@ -2242,7 +2242,7 @@ Let\'s add a database:
 
 The new object "mysql" in the Fulgensfile.js will start a Mysql instance inside Docker, it will create a schema 'java_code' and import the sql file ./src/db/mysql.dump.
 
-There is still one problem, the JavaCode.war doesn\'t know how to find the Mysql host if it is not 'localhost'.
+There is still one problem, the JavaCode.war doesn't know how to find the Mysql host if it is not 'localhost'.
 
 \`\`\`javascript
 ...
@@ -2255,7 +2255,7 @@ software: {
       Content: [{
         Source:"mysql",
         Regexp: ".*db.host.*",
-        Line: \"db.host\": \"$VALUE$\""
+        Line: "db.host": "$VALUE$""
       }],
       LoadDefaultContent: "src/main/resources/default.properties",
       AttachAsEnvVar: [
@@ -2314,7 +2314,7 @@ The script can be started with \`-h\` to get the help information.
 
 ## Executing the script to build, deploy and run the project
 
-One of the most simple things one can do with the script is to start it via \`./run_local.sh -f\`. This will build the WAR file, start the Mysql database, set up the schema, table and initial data and finally start a Tomcat with the deployed WAR file. As we have given -f the script will finally tail Tomcat\'s log file.
+One of the most simple things one can do with the script is to start it via \`./run_local.sh -f\`. This will build the WAR file, start the Mysql database, set up the schema, table and initial data and finally start a Tomcat with the deployed WAR file. As we have given -f the script will finally tail Tomcat's log file.
 
 If we want to start the Tomcat inside a Docker container, we use \`./run_local.sh -t tomcat:docker\`. This still builds the WAR file, starts the Mysql database, sets up the schema, table and initial data and finally starts a Tomcat within Docker with the deployed WAR file.
 
@@ -2326,7 +2326,7 @@ To build, deploy and start the project inside a Vagrant (VirtualBox) environment
 
 Fulgens can also be used to document and limit software versions.
 
-Let\'s assume our project must be build with Java 1.8, the Mysql must be a Version 5.x and the Tomcat a 7.0.92 using JRE-8.
+Let's assume our project must be build with Java 1.8, the Mysql must be a Version 5.x and the Tomcat a 7.0.92 using JRE-8.
 
 In this case a versions object can be added to the Fulgensfile.js:
 

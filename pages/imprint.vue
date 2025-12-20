@@ -2,13 +2,14 @@
   <div class="max-w-4xl mx-auto">
     <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-8 md:p-12">
       <div class="flex items-center mb-8">
-        <div class="w-1 h-16 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"></div>
+        <div class="w-1 h-16 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
         <h1 class="text-4xl md:text-5xl font-bold text-white">
           Imprint (Impressum)
         </h1>
       </div>
 
-      <div class="prose prose-invert prose-lg max-w-none
+      <div
+class="prose prose-invert prose-lg max-w-none
         prose-headings:text-white
         prose-h2:text-3xl prose-h2:mb-4 prose-h2:mt-8
         prose-h3:text-xl prose-h3:mb-3 prose-h3:mt-6
