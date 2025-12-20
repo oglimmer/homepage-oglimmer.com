@@ -56,13 +56,9 @@
       "minimumReleaseAge": "2 days"
     },
     {
-      "description": "Security updates - immediate automerge",
-      "matchUpdateTypes": ["patch"],
-      "matchDatasources": ["npm"],
-      "matchDepTypes": ["dependencies"],
-      "vulnerabilitySeverity": ["low", "medium", "high", "critical"],
-      "automerge": true,
-      "minimumReleaseAge": "0 days"
+      "description": "Pin digest updates",
+      "matchUpdateTypes": ["pin", "digest"],
+      "automerge": true
     },
     {
       "description": "Major updates - require manual review",
