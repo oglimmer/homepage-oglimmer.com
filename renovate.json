@@ -1,14 +1,74 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:best-practices"
+    "config:best-practices",
+    ":disableDependencyDashboard"
   ],
   "ignoreTests": true,
+  "rebaseWhen": "auto",
+  "platformAutomerge": true,
+  "schedule": [
+    "before 5am on monday"
+  ],
+  "semanticCommits": "enabled",
+  "automergeType": "pr",
   "packageRules": [
     {
+      "description": "Automerge non-major updates with stabilization period",
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true,
-      "minimumReleaseAge": "14 days"
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Automerge Nuxt ecosystem packages (minor/patch)",
+      "groupName": "Nuxt ecosystem",
+      "matchPackagePatterns": ["^nuxt", "^@nuxt/", "^@nuxtjs/"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "description": "Automerge dev dependencies (minor/patch) faster",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "minimumReleaseAge": "1 day"
+    },
+    {
+      "description": "Group ESLint packages",
+      "groupName": "ESLint",
+      "matchPackagePatterns": ["^eslint", "^@eslint/"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "description": "Group Tailwind CSS packages",
+      "groupName": "Tailwind CSS",
+      "matchPackagePatterns": ["^tailwindcss", "^@tailwindcss/"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "description": "Automerge patch updates for major dependencies",
+      "matchUpdateTypes": ["patch"],
+      "matchDepTypes": ["dependencies"],
+      "automerge": true,
+      "minimumReleaseAge": "2 days"
+    },
+    {
+      "description": "Security updates - immediate automerge",
+      "matchUpdateTypes": ["patch"],
+      "matchDatasources": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "vulnerabilitySeverity": ["low", "medium", "high", "critical"],
+      "automerge": true,
+      "minimumReleaseAge": "0 days"
+    },
+    {
+      "description": "Major updates - require manual review",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "minimumReleaseAge": "7 days"
     }
   ]
 }
