@@ -19,6 +19,7 @@ export const projects: Project[] = [
     title: "Video-Msg - Screen Recording Platform",
     text: "A full stack web application for sending screen recordings with audio commentary. Built with modern frameworks featuring a Vue 3 SPA frontend and a Spring Boot REST API backend.",
     linkData: [
+      ["https://vmsg.oglimmer.com/", "Web"],
       ["https://github.com/oglimmer/video-msg", "source code"]
     ],
     techList: "[Vue 3, TypeScript, Vite, Pinia, Spring Boot, Java 21, MariaDB]"
