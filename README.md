@@ -7,7 +7,7 @@ A modern personal homepage built with Nuxt 3, featuring projects, blog, and more
 - Modern, responsive design with Tailwind CSS
 - Homepage with personal bio
 - Projects showcase
-- Blog with Nuxt Content
+- Blog with markdown content (using marked library)
 - Privacy & Cookie Policy
 - Imprint (Impressum) for German legal compliance
 

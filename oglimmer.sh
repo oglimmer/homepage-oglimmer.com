@@ -24,7 +24,7 @@ DRY_RUN="${DRY_RUN:-false}"
 RESTART="${RESTART:-true}"
 PUSH="${PUSH:-true}"
 HELP=false
-PLATFORM="${PLATFORM:-auto}"
+PLATFORM="${PLATFORM:-arm64}"
 
 # Color output (only if terminal supports it)
 if [[ -t 1 ]] && command -v tput >/dev/null 2>&1; then
