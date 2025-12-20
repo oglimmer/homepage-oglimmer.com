@@ -15,54 +15,90 @@
   "packageRules": [
     {
       "description": "Automerge non-major updates with stabilization period",
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
       "minimumReleaseAge": "3 days"
     },
     {
       "description": "Automerge Nuxt ecosystem packages (minor/patch)",
       "groupName": "Nuxt ecosystem",
-      "matchPackagePatterns": ["^nuxt", "^@nuxt/", "^@nuxtjs/"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
-      "minimumReleaseAge": "7 days"
+      "minimumReleaseAge": "7 days",
+      "matchPackageNames": [
+        "/^nuxt/",
+        "/^@nuxt//",
+        "/^@nuxtjs//"
+      ]
     },
     {
       "description": "Automerge dev dependencies (minor/patch) faster",
-      "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
       "minimumReleaseAge": "1 day"
     },
     {
       "description": "Group ESLint packages",
       "groupName": "ESLint",
-      "matchPackagePatterns": ["^eslint", "^@eslint/"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "matchPackageNames": [
+        "/^eslint/",
+        "/^@eslint//"
+      ]
     },
     {
       "description": "Group Tailwind CSS packages",
       "groupName": "Tailwind CSS",
-      "matchPackagePatterns": ["^tailwindcss", "^@tailwindcss/"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "matchPackageNames": [
+        "/^tailwindcss/",
+        "/^@tailwindcss//"
+      ]
     },
     {
       "description": "Automerge patch updates for major dependencies",
-      "matchUpdateTypes": ["patch"],
-      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "matchDepTypes": [
+        "dependencies"
+      ],
       "automerge": true,
       "minimumReleaseAge": "2 days"
     },
     {
       "description": "Pin digest updates",
-      "matchUpdateTypes": ["pin", "digest"],
+      "matchUpdateTypes": [
+        "pin",
+        "digest"
+      ],
       "automerge": true
     },
     {
       "description": "Major updates - require manual review",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "automerge": false,
       "minimumReleaseAge": "7 days"
     }
