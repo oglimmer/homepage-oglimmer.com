@@ -43,11 +43,11 @@ export const projects: Project[] = [
     techList: "[Java, Spring Boot, AI, LLM, RSS]"
   },
   {
-    title: "Lord Renovate - Dependency Management Dashboard",
+    title: "Renovate Initializr - an easy way to start with Renovate Bot",
     text: "A powerful dashboard for managing Renovate bot dependency updates across multiple repositories. Visualize, track, and manage automated dependency updates with ease.",
     linkData: [
-      ["https://oglimmer.github.io/lord-renovate/", "Web"],
-      ["https://github.com/oglimmer/lord-renovate", "source code"]
+      ["https://oglimmer.github.io/start-renovate/", "Web"],
+      ["https://github.com/oglimmer/start-renovate", "source code"]
     ],
     techList: "[Vue.js, Renovate Bot, Dependency Management]"
   },
