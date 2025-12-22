@@ -1,106 +1,71 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:best-practices",
-    ":disableDependencyDashboard"
+    "config:recommended",
+    ":enableVulnerabilityAlerts",
+    ":dependencyDashboard",
+    ":semanticCommits"
   ],
-  "ignoreTests": true,
-  "rebaseWhen": "auto",
-  "platformAutomerge": true,
-  "schedule": [
-    "before 5am on monday"
-  ],
-  "semanticCommits": "enabled",
-  "automergeType": "pr",
+  "timezone": "Europe/Berlin",
+  "prHourlyLimit": 10,
+  "prConcurrentLimit": 20,
+  "rebaseWhen": "behind-base-branch",
+  "rangeStrategy": "bump",
+  "automergeType": "branch",
   "packageRules": [
     {
-      "description": "Automerge non-major updates with stabilization period",
+      "automerge": true,
       "matchUpdateTypes": [
         "minor",
         "patch"
-      ],
-      "automerge": true,
-      "minimumReleaseAge": "3 days"
-    },
-    {
-      "description": "Automerge Nuxt ecosystem packages (minor/patch)",
-      "groupName": "Nuxt ecosystem",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "automerge": true,
-      "minimumReleaseAge": "7 days",
-      "matchPackageNames": [
-        "/^nuxt/",
-        "/^@nuxt//",
-        "/^@nuxtjs//"
       ]
     },
     {
-      "description": "Automerge dev dependencies (minor/patch) faster",
-      "matchDepTypes": [
-        "devDependencies"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "automerge": true,
-      "minimumReleaseAge": "1 day"
+      "matchCurrentVersion": "/^0\\./",
+      "automerge": false
     },
     {
-      "description": "Group ESLint packages",
-      "groupName": "ESLint",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
+      "matchManagers": [
+        "npm"
       ],
-      "automerge": true,
-      "matchPackageNames": [
-        "/^eslint/",
-        "/^@eslint//"
-      ]
+      "groupName": "npm dependencies"
     },
     {
-      "description": "Group Tailwind CSS packages",
-      "groupName": "Tailwind CSS",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
+      "matchManagers": [
+        "dockerfile",
+        "docker-compose"
       ],
-      "automerge": true,
-      "matchPackageNames": [
-        "/^tailwindcss/",
-        "/^@tailwindcss//"
-      ]
+      "groupName": "Docker dependencies"
     },
     {
-      "description": "Automerge patch updates for major dependencies",
-      "matchUpdateTypes": [
-        "patch"
+      "matchManagers": [
+        "helmv3",
+        "helmfile"
       ],
-      "matchDepTypes": [
-        "dependencies"
-      ],
-      "automerge": true,
-      "minimumReleaseAge": "2 days"
+      "groupName": "Helm dependencies"
     },
     {
-      "description": "Pin digest updates",
-      "matchUpdateTypes": [
-        "pin",
-        "digest"
+      "matchManagers": [
+        "github-actions"
       ],
-      "automerge": true
-    },
-    {
-      "description": "Major updates - require manual review",
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "automerge": false,
-      "minimumReleaseAge": "7 days"
+      "groupName": "GitHub Actions"
     }
-  ]
+  ],
+  "ignoreTests": true,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "at any time"
+    ],
+    "automerge": true
+  },
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ],
+    "schedule": [
+      "at any time"
+    ],
+    "automerge": true
+  }
 }
