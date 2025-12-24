@@ -46,7 +46,7 @@ export const projects: Project[] = [
     title: "Renovate Initializr - an easy way to start with Renovate Bot",
     text: "A small web app that helps you create a clear, best‑practice renovate.json without reading the entire Renovate docs. Pick your preferences, preview the JSON live, and download the file for your repo.",
     linkData: [
-      ["https://oglimmer.github.io/start-renovate/", "Web"],
+      ["https://renovate.oglimmer.com", "Web"],
       ["https://github.com/oglimmer/start-renovate", "source code"]
     ],
     techList: "[Vue.js, Renovate Bot, Dependency Management]"
