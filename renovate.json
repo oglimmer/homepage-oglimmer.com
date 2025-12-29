@@ -53,7 +53,7 @@
   ],
   "ignoreTests": true,
   "lockFileMaintenance": {
-    "enabled": true,
+    "enabled": false,
     "schedule": [
       "at any time"
     ],
