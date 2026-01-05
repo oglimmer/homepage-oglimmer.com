@@ -52,6 +52,15 @@ export const projects: Project[] = [
     techList: "[Vue.js, Renovate Bot, Dependency Management]"
   },
   {
+    title: "Recipes - Recipe Collection Website",
+    text: "A modern, beautiful recipe collection website with photo galleries. Features responsive mobile/desktop design, fast Nuxt routing, and automatic GitHub Pages deployment.",
+    linkData: [
+      ["https://oglimmer.github.io/recipes/", "Web"],
+      ["https://github.com/oglimmer/recipes/", "source code"]
+    ],
+    techList: "[Nuxt 4, Vue 3, Tailwind CSS, TypeScript, GitHub Actions]"
+  },
+  {
     title: "Traefik OIDC Auth Plugin",
     text: "A Traefik middleware plugin that adds OpenID Connect (OIDC) authentication capabilities to your reverse proxy. Secure your services with OAuth2/OIDC authentication flows.",
     linkData: [
