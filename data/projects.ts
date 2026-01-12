@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Coffee Kcal Calculator",
+    text: "A simple web app to calculate the calories in your coffee drinks. Track your daily coffee intake and make informed choices about your caffeine habits.",
+    linkData: [
+      ["https://oglimmer.github.io/coffee-kcal-calc/", "Web"],
+      ["https://github.com/oglimmer/coffee-kcal-calc/", "source code"]
+    ],
+    techList: "[Vue 3, TypeScript, Vite]"
+  },
+  {
     title: "Picz2 - Image Sharing System",
     text: "A private photo sharing platform for vacation memories. Share with friends without social media hassle. Features slideshow mode with audio narration. No accounts needed for viewers.",
     linkData: [
