@@ -16,6 +16,14 @@ export const projects: Project[] = [
     techList: "[Vue 3, TypeScript, Vite]"
   },
   {
+    title: "Cybernight - Multiplayer Card Game",
+    text: "A cyberpunk-themed multiplayer card game focused on resource management. Play against others in a neon-lit future where strategy and card play determine your success.",
+    linkData: [
+      ["https://cybernight.oglimmer.com", "Web"]
+    ],
+    techList: "[Vue, TypeScript, Java, Spring, JPA]"
+  },
+  {
     title: "Picz2 - Image Sharing System",
     text: "A private photo sharing platform for vacation memories. Share with friends without social media hassle. Features slideshow mode with audio narration. No accounts needed for viewers.",
     linkData: [
