@@ -1,8 +1,10 @@
 <template>
   <div class="min-h-screen relative overflow-hidden">
-    <!-- Animated Background -->
-    <div class="fixed inset-0 bg-gradient-to-br from-navy-900 via-primary-900 to-navy-800 animate-gradient bg-[length:400%_400%]"/>
-    <div class="fixed inset-0 bg-grid-pattern opacity-20"/>
+    <!-- Connected Points Canvas Background -->
+    <div class="fixed inset-0 z-0 bg-[#16213e]" />
+    <ClientOnly>
+      <ConnectedPointsBackground />
+    </ClientOnly>
 
     <!-- Floating Orbs -->
     <div class="fixed top-20 left-10 w-72 h-72 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"/>

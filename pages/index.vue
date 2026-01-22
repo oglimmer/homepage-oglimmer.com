@@ -1,24 +1,7 @@
 <template>
   <div class="max-w-6xl mx-auto relative">
-    <!-- Shooting Stars -->
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      <div
-        v-for="star in activeShootingStars"
-        :key="star.id"
-        class="absolute shooting-star"
-        :style="{
-          top: star.top + 'px',
-          left: star.left + 'px',
-        }"
-      >
-        <div class="shooting-star-tail"/>
-      </div>
-    </div>
     <!-- Hero Section -->
     <section class="text-center py-20 relative">
-      <div class="absolute inset-0 flex items-center justify-center opacity-10">
-        <div class="text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] 2xl:text-[20rem] font-bold text-white select-none">oglimmer</div>
-      </div>
       <div class="relative z-10">
         <div class="inline-block mb-6">
           <div class="text-primary-300 text-sm font-mono mb-2 tracking-widest">WELCOME TO MY DIGITAL HOME</div>
@@ -245,98 +228,4 @@ const formatDate = (dateString: string) => {
   const date = new Date(dateString)
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 }
-
-// Shooting Stars logic
-interface ShootingStar {
-  id: number
-  top: number
-  left: number
-}
-
-const activeShootingStars = ref<ShootingStar[]>([])
-let starIdCounter = 0
-
-const createShootingStar = () => {
-  const star = {
-    id: starIdCounter++,
-    top: Math.random() * (window.innerHeight * 0.4), // Start from top 40% of screen
-    left: window.innerWidth + Math.random() * 100, // Start from right side, slightly off-screen
-  }
-
-  activeShootingStars.value.push(star)
-
-  // Remove star after animation completes
-  setTimeout(() => {
-    activeShootingStars.value = activeShootingStars.value.filter(s => s.id !== star.id)
-  }, 3000) // Match animation duration
-}
-
-const startShootingStars = () => {
-  // Create a shooting star every 3-8 seconds
-  const scheduleNextStar = () => {
-    const delay = Math.random() * 5000 + 3000 // 3-8 seconds
-    setTimeout(() => {
-      createShootingStar()
-      scheduleNextStar()
-    }, delay)
-  }
-
-  scheduleNextStar()
-}
-
-// Start shooting stars after 15 seconds
-onMounted(() => {
-  setTimeout(() => {
-    startShootingStars()
-  }, 15000) // 15 seconds
-})
 </script>
-
-<style scoped>
-.shooting-star {
-  animation: shooting 3s linear forwards;
-}
-
-.shooting-star-tail {
-  width: 150px;
-  height: 2px;
-  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8), transparent);
-  border-radius: 50%;
-  box-shadow:
-    0 0 10px rgba(255, 255, 255, 0.8),
-    0 0 20px rgba(255, 255, 255, 0.5),
-    0 0 30px rgba(255, 255, 255, 0.3);
-  transform: rotate(-45deg);
-  position: relative;
-}
-
-.shooting-star-tail::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  box-shadow:
-    0 0 10px rgba(255, 255, 255, 1),
-    0 0 20px rgba(200, 230, 255, 0.8),
-    0 0 30px rgba(150, 200, 255, 0.6);
-}
-
-@keyframes shooting {
-  0% {
-    transform: translate(0, 0);
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-800px, 800px);
-    opacity: 0;
-  }
-}
-</style>
