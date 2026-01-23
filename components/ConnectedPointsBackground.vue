@@ -28,7 +28,7 @@ function initPoints(canvas: HTMLCanvasElement) {
   points.length = 0
   for (let i = 0; i < numPoints; i++) {
     const angle = Math.random() * Math.PI * 2
-    const speed = 0.2 + Math.random() * 0.8
+    const speed = 0.1 + Math.random() * 0.4
     points.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
