@@ -53,9 +53,9 @@
   ],
   "ignoreTests": true,
   "lockFileMaintenance": {
-    "enabled": false,
+    "enabled": true,
     "schedule": [
-      "at any time"
+      "before 5am on monday"
     ],
     "automerge": true
   },
