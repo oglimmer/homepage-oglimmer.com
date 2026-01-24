@@ -61,6 +61,8 @@ function spawnFastPoint(canvas: HTMLCanvasElement) {
 function update(canvas: HTMLCanvasElement) {
   for (let i = points.length - 1; i >= 0; i--) {
     const point = points[i]
+    if (!point) continue
+
     point.x += point.vx
     point.y += point.vy
 
@@ -100,12 +102,18 @@ function draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
 
   // Draw lines between close points
   for (let i = 0; i < points.length; i++) {
+    const p1 = points[i]
+    if (!p1) continue
+
     for (let j = i + 1; j < points.length; j++) {
-      const dist = distance(points[i], points[j])
+      const p2 = points[j]
+      if (!p2) continue
+
+      const dist = distance(p1, p2)
       if (dist < CONNECTION_DISTANCE) {
         const distOpacity = 1 - (dist / CONNECTION_DISTANCE)
-        const pointOpacity = Math.min(points[i].opacity, points[j].opacity)
-        const hasFast = points[i].fast || points[j].fast
+        const pointOpacity = Math.min(p1.opacity, p2.opacity)
+        const hasFast = p1.fast || p2.fast
         if (hasFast) {
           ctx.strokeStyle = `rgba(255, 200, 100, ${distOpacity * 0.7 * pointOpacity})`
         }
@@ -113,8 +121,8 @@ function draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
           ctx.strokeStyle = `rgba(99, 182, 255, ${distOpacity * 0.5 * pointOpacity})`
         }
         ctx.beginPath()
-        ctx.moveTo(points[i].x, points[i].y)
-        ctx.lineTo(points[j].x, points[j].y)
+        ctx.moveTo(p1.x, p1.y)
+        ctx.lineTo(p2.x, p2.y)
         ctx.stroke()
       }
     }
