@@ -195,14 +195,14 @@ onMounted(async () => {
   // Start animation loop (will be empty until points spawn)
   animate(ctx, canvas)
 
-  // Spawn points after 20 seconds
+  // Spawn points after 3 seconds
   setTimeout(() => {
     initPoints(canvas)
 
     // Start spawning fast points 5-15 seconds after regular points appear
     const fastPointDelay = 5000 + Math.random() * 10000
     fastPointTimeout = setTimeout(() => spawnFastPoint(canvas), fastPointDelay)
-  }, 20000)
+  }, 3000)
 })
 
 onUnmounted(() => {
