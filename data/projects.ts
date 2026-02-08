@@ -7,6 +7,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "git-llm - AI Commit Message Helper",
+    text: "A Git extension that generates AI-powered commit messages using Simon Willison's llm CLI. Stage your changes, run git llm, and review the generated message before committing.",
+    linkData: [
+      ["https://github.com/oglimmer/git-llm-commit-message-helper", "source code"]
+    ],
+    techList: "[Shell, Git, LLM, AI]"
+  },
+  {
     title: "Coffee Kcal Calculator",
     text: "A simple web app to calculate the calories in your coffee drinks. Track your daily coffee intake and make informed choices about your caffeine habits.",
     linkData: [
