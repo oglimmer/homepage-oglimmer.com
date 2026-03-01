@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Boardwalk Billionaire - Property Trading Board Game",
+    text: "A digital board game where you compete against three AI opponents on a 40-space board. Buy properties, collect rent, build houses and hotels, and negotiate trades to become the last player standing.",
+    linkData: [
+      ["https://oglimmer.github.io/boardwalk-billionaire/", "play"],
+      ["https://github.com/oglimmer/boardwalk-billionaire", "source code"]
+    ],
+    techList: "[Vue 3, TypeScript, Pinia, Vite]"
+  },
+  {
     title: "git-llm - AI Commit Message Helper",
     text: "A Git extension that generates AI-powered commit messages using Simon Willison's llm CLI. Stage your changes, run git llm, and review the generated message before committing.",
     linkData: [
