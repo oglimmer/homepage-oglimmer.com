@@ -7,6 +7,22 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "git-ls - Git-Aware Directory Listing",
+    text: "A command-line utility that enhances the standard ls command by displaying directory listings with integrated git repository status information. Shows permissions, modification times, and color-coded indicators for staged changes, unstaged modifications, and untracked files.",
+    linkData: [
+      ["https://github.com/oglimmer/git-ls", "source code"]
+    ],
+    techList: "[Python, Git, CLI]"
+  },
+  {
+    title: "zed-crypt - Transparent Encryption for Zed Editor",
+    text: "Enables transparent encryption for the Zed editor. Edit encrypted .cpt files as if they were plaintext while they stay encrypted on disk. Decrypts files to a temporary location, opens them in Zed, monitors for changes, and re-encrypts automatically when saved.",
+    linkData: [
+      ["https://github.com/oglimmer/zed-crypt", "source code"]
+    ],
+    techList: "[Go, Zed, ccrypt, Homebrew]"
+  },
+  {
     title: "Boardwalk Billionaire - Property Trading Board Game",
     text: "A digital board game where you compete against three AI opponents on a 40-space board. Buy properties, collect rent, build houses and hotels, and negotiate trades to become the last player standing.",
     linkData: [
