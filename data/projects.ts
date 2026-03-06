@@ -259,16 +259,16 @@ export const projects: Project[] = [
       ["https://td.oglimmer.com/", "play"],
       ["https://github.com/oglimmer/yatdg", "source code"],
     ],
-    techList: "[HTML5(Canvas, Websockets via Atmosphere), JavaScript, Java]"
+    techList: "[Java, HTML5 Canvas, JavaScript, Maven, Docker, Kubernetes]"
   },
   {
     title: "Citybuilder",
-    text: "A card based multi player board game",
+    text: "A card-based multiplayer online board game with real-time competitive gameplay",
     linkData: [
       ["https://cb.oglimmer.com/", "play"],
       ["https://github.com/oglimmer/citybuilder", "source code"],
     ],
-    techList: "[HTML5(Canvas, Websockets via Socket.io), JavaScript / Node.js / jQuery, CouchDB]"
+    techList: "[Node.js, Vite, HTML5 Canvas, Socket.IO, JavaScript, CouchDB, Docker, Kubernetes]"
   },
   {
     title: "Told you so!",
@@ -286,7 +286,7 @@ export const projects: Project[] = [
       ["https://ggo.oglimmer.com/", "play"],
       ["https://github.com/oglimmer/ggo", "source code"],
     ],
-    techList: "[HTML5(Canvas, Websockets via Atmosphere), JavaScript, Java8, maven, Stripes, twitter-bootstrap, jQuery, Lombok]"
+    techList: "[Java, Spring Boot, HTML5 Canvas, JavaScript, WebSocket, Maven, Docker]"
   },
   {
     title: "Simple Card Game",
@@ -333,11 +333,11 @@ export const projects: Project[] = [
   },
   {
     title: "jFindPlus",
-    text: "A program to find files inside jars and spot duplicate classes inside jars",
+    text: "A command-line utility to search for class files inside JAR, EAR, and WAR archives. Lists all classes, detects duplicate classes across multiple archives, and compares two JAR files for differences.",
     linkData: [
       ["https://github.com/oglimmer/jfindplus", "source code"],
     ],
-    techList: "[Java]"
+    techList: "[Java 17, Maven, Homebrew]"
   },
   {
     title: "Experimental binary store",
