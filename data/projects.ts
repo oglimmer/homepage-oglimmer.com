@@ -234,25 +234,6 @@ export const projects: Project[] = [
     techList: "[HTML4, JavaScript, Java, Spring, JDBC, Lombok, Flyway]"
   },
   {
-    title: "oglimmer-commons",
-    text: "Prevent boilerplate code for random strings and names, SPI-based slf4j configuration, sophisticated property files, human readable representation of date differences and getting attributes from MANIFEST.FM files.",
-    linkData: [
-      ["https://github.com/oglimmer/utils", "source code"],
-      ["https://search.maven.org/artifact/de.oglimmer.utils/common-utils", "maven central"],
-    ],
-    techList: "[Java8, maven, Lombok]"
-  },
-  {
-    title: "fulgens",
-    text: "A build, local deploy and run script generator",
-    linkData: [
-      ["/blog/fulgens-build-deploy-script-generator", "blog post"],
-      ["https://github.com/oglimmer/fulgens", "source code"],
-      ["http://npmjs.com/package/fulgens", "npm repo"],
-    ],
-    techList: "[JavaScript, ES6, Node.js, Npm Registry, Bash, Docker, Vagrant]"
-  },
-  {
     title: "Yet Another Tower Defense Game",
     text: "A multiplayer tower-defense fantasy combat game",
     linkData: [
@@ -331,21 +312,16 @@ export const projects: Project[] = [
     ],
     techList: "[Java8, maven, Lombok]"
   },
+]
+
+export const legacyProjects: Project[] = [
   {
-    title: "jFindPlus",
-    text: "A command-line utility to search for class files inside JAR, EAR, and WAR archives. Lists all classes, detects duplicate classes across multiple archives, and compares two JAR files for differences.",
+    title: "podcast-human-syncer",
+    text: "Helps with 'who is talking' and 'who wants to talk next / now' for podcasts",
     linkData: [
-      ["https://github.com/oglimmer/jfindplus", "source code"],
+      ["https://github.com/oglimmer/podcast-human-syncer", "source code"],
     ],
-    techList: "[Java 17, Maven, Homebrew]"
-  },
-  {
-    title: "Experimental binary store",
-    text: "A binary store server, called ifcdb - 'infrequently changed data database'",
-    linkData: [
-      ["https://github.com/oglimmer/ifcdb", "source code"],
-    ],
-    techList: "[Java7, maven, JBoss-Weld, Hibernate]"
+    techList: "[JavaScript, ES6, Node.js, Svelte / Sapper]"
   },
   {
     title: "UASparser",
@@ -356,12 +332,39 @@ export const projects: Project[] = [
     techList: "[Java]"
   },
   {
-    title: "podcast-human-syncer",
-    text: "Helps with 'who is talking' and 'who wants to talk next / now' for podcasts",
+    title: "Experimental binary store",
+    text: "A binary store server, called ifcdb - 'infrequently changed data database'",
     linkData: [
-      ["https://github.com/oglimmer/podcast-human-syncer", "source code"],
+      ["https://github.com/oglimmer/ifcdb", "source code"],
     ],
-    techList: "[JavaScript, ES6, Node.js, Svelte / Sapper]"
+    techList: "[Java7, maven, JBoss-Weld, Hibernate]"
+  },
+  {
+    title: "jFindPlus",
+    text: "A command-line utility to search for class files inside JAR, EAR, and WAR archives. Lists all classes, detects duplicate classes across multiple archives, and compares two JAR files for differences.",
+    linkData: [
+      ["https://github.com/oglimmer/jfindplus", "source code"],
+    ],
+    techList: "[Java 17, Maven, Homebrew]"
+  },
+  {
+    title: "fulgens",
+    text: "A build, local deploy and run script generator",
+    linkData: [
+      ["/blog/fulgens-build-deploy-script-generator", "blog post"],
+      ["https://github.com/oglimmer/fulgens", "source code"],
+      ["http://npmjs.com/package/fulgens", "npm repo"],
+    ],
+    techList: "[JavaScript, ES6, Node.js, Npm Registry, Bash, Docker, Vagrant]"
+  },
+  {
+    title: "oglimmer-commons",
+    text: "Prevent boilerplate code for random strings and names, SPI-based slf4j configuration, sophisticated property files, human readable representation of date differences and getting attributes from MANIFEST.FM files.",
+    linkData: [
+      ["https://github.com/oglimmer/utils", "source code"],
+      ["https://search.maven.org/artifact/de.oglimmer.utils/common-utils", "maven central"],
+    ],
+    techList: "[Java8, maven, Lombok]"
   },
 ]
 
