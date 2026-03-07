@@ -272,12 +272,12 @@ export const projects: Project[] = [
   },
   {
     title: "Told you so!",
-    text: "A web offering for smart asses .... told you so!",
+    text: "A web app to document predictions with tamper-proof timestamps, preserving evidence of your foresight.",
     linkData: [
       ["https://toldyouso.oglimmer.com/", "web"],
       ["https://github.com/oglimmer/toldyouso", "source code"],
     ],
-    techList: "[Java8, maven, JSF, CouchDB]"
+    techList: "[Java, JSF, Bootstrap 5, CouchDB, Redis, Docker, Kubernetes]"
   },
   {
     title: "Grid Game One",
