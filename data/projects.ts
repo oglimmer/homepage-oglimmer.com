@@ -227,7 +227,7 @@ export const projects: Project[] = [
   },
   {
     title: "Junta Online",
-    text: "A classic board game played asynchronously via email",
+    text: "A classic board game played asynchronously via email. Source code is not publicly available due to the licensed nature of the original board game.",
     linkData: [
       ["https://junta-online.net/", "play"],
     ],
@@ -306,7 +306,7 @@ export const projects: Project[] = [
   },
   {
     title: "Shadowrun Crossfire",
-    text: "A card game simulator / trainer",
+    text: "A card game simulator / trainer. Source code is not publicly available due to the licensed nature of the original card game.",
     linkData: [
       ["https://www.youtube.com/watch?v=cnw0UfJFfiE", "demo video"],
     ],
