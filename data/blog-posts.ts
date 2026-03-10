@@ -8,6 +8,41 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'intent-driven-configuration-rethinking-the-renovate-onboarding-experience',
+    title: 'Intent-Driven Configuration: Rethinking the Renovate Onboarding Experience',
+    description: 'The motivation behind creating Renovate Initializr — a tool that lets you describe the behaviour you want and generates a usable renovate.json from it',
+    date: '2025-03-10',
+    content: `I built Renovate Initializr because I found settings up the Renove config for a project harder than it should be.
+    
+Renovate itself is a very useful tool. Once it is set up properly, it helps keep dependencies current, reduces manual maintenance, and generally does an important job in the background. But the setup experience can be frustrating. The documentation is detailed, which is good, but as a user you often have to translate a long list of technical parameters into the much simpler question you actually care about: what do I want Renovate to do?
+
+That is the part I didn't like.
+
+As a Renovate user, I do not want to become a Renovate engineer. I do not want to think in terms of every internal option and config key first. I want to decide how Renovate should behave. Should it open only a few PRs at a time? Should it run on weekends? Should it automerge patch updates? Should it group updates to reduce noise? Those are the questions I care about. The technical parameters should follow from that, not the other way around.
+
+That is the idea behind this project.
+
+A bit like Spring Initializr gives you a sensible way to start a Spring project, I wanted something similar for Renovate. Not a full replacement for the documentation, and not a tool for every advanced edge case, but a practical starting point for real users who simply want to get going.
+
+So I created Renovate Initializr at https://renovate.oglimmer.com/.
+
+The goal is straightforward: you describe the behaviour you want, and the service turns that into a usable renovate.json. Instead of dealing with raw configuration first, you work through the decisions in a more natural way. You choose things like schedule, timezone, PR limits, automerge policy, grouping, lock file maintenance, and vulnerability handling. The resulting configuration is shown live.
+
+That live preview matters because I did not want to hide the output. The point is not to abstract Renovate config away completely. The point is to make it easier to arrive at a good configuration without forcing users to think like tool maintainers. You still want to understand the JSON and stay in control, but the path to it is much more direct. It connects what you want to how it looks in JSON.
+
+I also wanted the result to be useful for most people without much effort. So the service starts from a sensible baseline, including config:recommended, vulnerability alerts, and the dependency dashboard. From there, users can adjust what matters for their own workflow. For many teams that will already be enough. Even when it is not the final configuration forever, it should at least be a very good starting point.
+
+That is really the standard I had in mind from the beginning: good enough for most users and a strong starting point for everyone else.
+
+I think that matters because many teams want the benefits of Renovate but do not want to invest unnecessary energy into understanding every detail up front. People often end up copying what the last project did or asking AI to generate a configuration. That can still miss what you actually intend if you do not know which options exist.
+
+This project exists because I wanted Renovate setup to begin with intent, not with parameter hunting. You should be able to say what you want Renovate to do, generate a solid configuration, and move on.
+
+If that sounds useful, you can try it at https://renovate.oglimmer.com/.
+
+Finally, I am not an expert on Renovate, just an enthusiastic user. If you have feedback about my service, please pass it on.`,
+  },
+  {
     slug: 'web-analytics-grafana-loki',
     title: 'Web analytics with Grafana Loki',
     description: 'Building a web analytics system using Grafana Loki, Traefik access logs, and Promtail for log processing and geolocation',
@@ -2138,13 +2173,9 @@ But for a showcase environment, with expectations on low operational cost, this 
     title: 'Fulgens: a build & local deploy & run script generator',
     description: 'A tool to consistently build, deploy, and run projects locally with support for Docker, Vagrant, and various technologies',
     date: '2019-01-03',
-    content: `# Fulgens: a 
-build & local deploy & run
- script generator
-
+    content: `This blog post and the related project are deprecated and archived. The setup described here has been superseded by Docker, Docker Compose, and Makefiles.
+    
 *Originally published on Medium, January 3, 2019*
-
-![Red panda (Ailurus fulgens)](https://miro.medium.com/max/1400/1*0)
 
 ## Motivation
 
