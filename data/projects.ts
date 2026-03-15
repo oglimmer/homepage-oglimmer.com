@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Easy Host K8s - Simple Web Content Hosting",
+    text: "A simple web content hosting service. Upload HTML and other files via API, and serve them on unique URLs. Built with a cloud-native architecture, designed for Kubernetes deployment.",
+    linkData: [
+      ["https://content.oglimmer.com/login", "Web"],
+      ["https://github.com/oglimmer/easy-host-k8s", "source code"]
+    ],
+    techList: "[Spring Boot, Java 21, MariaDB, Flyway, Thymeleaf, Docker, Kubernetes, Helm]"
+  },
+  {
     title: "git-ls - Git-Aware Directory Listing",
     text: "A command-line utility that enhances the standard ls command by displaying directory listings with integrated git repository status information. Shows permissions, modification times, and color-coded indicators for staged changes, unstaged modifications, and untracked files.",
     linkData: [
