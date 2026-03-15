@@ -142,19 +142,34 @@
       </div>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <article v-for="article in latestPosts" :key="article.slug" class="group backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/20">
-          <NuxtLink :to="`/blog/${article.slug}`" class="block">
+          <div v-if="getTranslation(article)" class="flex justify-end mb-2">
+            <div class="inline-flex rounded-full bg-white/5 border border-white/20 p-0.5">
+              <button
+                v-for="lang in ['en', 'de']"
+                :key="lang"
+                class="px-2 py-0.5 text-xs font-mono rounded-full transition-all duration-200"
+                :class="activeLang(article) === lang
+                  ? 'bg-primary-500/30 text-primary-200 border border-primary-400/40'
+                  : 'text-white/50 hover:text-white/80 border border-transparent'"
+                @click.prevent="toggleLang(article)"
+              >
+                {{ lang.toUpperCase() }}
+              </button>
+            </div>
+          </div>
+          <NuxtLink :to="`/blog/${displayPost(article).slug}`" class="block">
             <h3 class="text-xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors line-clamp-2">
-              {{ article.title }}
+              {{ displayPost(article).title }}
             </h3>
             <p class="text-white/70 mb-4 text-sm line-clamp-3">
-              {{ article.description }}
+              {{ displayPost(article).description }}
             </p>
             <div class="flex items-center justify-between text-xs">
-              <time :datetime="article.date" class="text-white/50 font-mono">
-                {{ formatDate(article.date) }}
+              <time :datetime="displayPost(article).date" class="text-white/50 font-mono">
+                {{ formatBlogDate(displayPost(article).date, activeLang(article)) }}
               </time>
               <span class="text-primary-300 font-semibold group-hover:text-primary-200">
-                Read →
+                {{ activeLang(article) === 'de' ? 'Lesen →' : 'Read →' }}
               </span>
             </div>
           </NuxtLink>
@@ -209,7 +224,7 @@
 </template>
 
 <script setup lang="ts">
-import { blogPosts } from '~/data/blog-posts'
+import { type BlogPost, getDeduplicatedPosts, getTranslation, formatBlogDate } from '~/data/blog-posts'
 import { projects as allProjects, parseTechList } from '~/data/projects'
 import { k8sPortalItems as allK8sPortalItems, parseTechList as parseK8sTechList } from '~/data/k8s-portal'
 
@@ -219,13 +234,30 @@ const projects = computed(() => allProjects.slice(0, 6))
 // Get first 3 K8S portal items for homepage
 const k8sPortalItemsPreview = computed(() => allK8sPortalItems.slice(0, 3))
 
-// Get latest 3 blog posts
+// Get latest 3 blog posts (deduplicated by translation group)
 const latestPosts = computed(() => {
-  return [...blogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3)
+  return [...getDeduplicatedPosts()].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3)
 })
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+const langOverrides = ref<Record<string, string>>({})
+
+function activeLang(article: BlogPost): string {
+  return langOverrides.value[article.slug] || article.lang || 'en'
 }
+
+function toggleLang(article: BlogPost) {
+  const current = activeLang(article)
+  langOverrides.value[article.slug] = current === 'en' ? 'de' : 'en'
+}
+
+function displayPost(article: BlogPost): BlogPost {
+  const lang = activeLang(article)
+  const articleLang = article.lang || 'en'
+  if (lang !== articleLang) {
+    const translation = getTranslation(article)
+    if (translation) return translation
+  }
+  return article
+}
+
 </script>

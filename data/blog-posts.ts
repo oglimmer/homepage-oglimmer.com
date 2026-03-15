@@ -4,9 +4,144 @@ export interface BlogPost {
   description: string
   date: string
   content: string
+  lang?: 'en' | 'de'
+  translationSlug?: string
+}
+
+export function getTranslation(post: BlogPost): BlogPost | undefined {
+  if (!post.translationSlug) return undefined
+  return blogPosts.find(p => p.slug === post.translationSlug)
+}
+
+/**
+ * Returns blog posts deduplicated by translation group.
+ * For posts with translations, only the English (default) version is kept.
+ */
+export function getDeduplicatedPosts(): BlogPost[] {
+  const translationSlugs = new Set(
+    blogPosts
+      .filter(p => (p.lang || 'en') !== 'en' && p.translationSlug)
+      .map(p => p.slug),
+  )
+  return blogPosts.filter(p => !translationSlugs.has(p.slug))
+}
+
+export function formatBlogDate(dateString: string, lang: string = 'en'): string {
+  const date = new Date(dateString)
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+  return date.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: 'from-documentary-to-infographic-an-ai-adventure',
+    title: 'From Documentary to Infographic: An AI Adventure',
+    description: 'How I turned an Arte TV documentary about ancient Egypt into a graphical info sheet using ffmpeg, Whisper, and Claude',
+    date: '2026-03-15',
+    translationSlug: 'von-der-doku-zur-infografik-ein-ki-abenteuer',
+    content: `I recently watched an Arte TV documentary about the fall of ancient Egypt — [Der Untergang des alten Ägypten](https://www.arte.tv/de/videos/127479-002-A/der-untergang-des-alten-aegypten-2-2/). It was fascinating, packed with information, and naturally I forgot half of it by the next morning. That got me thinking: could I turn a video documentary into a graphical overview that captures the key information in a way that is easy to revisit?
+
+Turns out, with a few tools and some AI, you absolutely can.
+
+## The pipeline
+
+The idea is simple: get the spoken content out of the video, transcribe it, and then use AI to generate a structured visual summary. Here is how I did it step by step.
+
+**Step 1: Download the video.** Arte makes its documentaries available in their media library, but downloading them directly is not straightforward. I used [MediathekViewWeb](https://mediathekviewweb.de/) to find and download the video file.
+
+**Step 2: Extract the audio.** I did not need the video itself, just the spoken content. A quick ffmpeg command strips the audio track from the video file:
+
+\`\`\`bash
+ffmpeg -i documentary.mp4 -vn -acodec aac output.aac
+\`\`\`
+
+**Step 3: Transcribe with Whisper.** OpenAI's Whisper model does an impressive job at speech-to-text, even with German audio. You can install it locally and run the transcription with just two commands:
+
+\`\`\`bash
+pip install -U openai-whisper
+whisper output.aac --model base
+\`\`\`
+
+The result was a surprisingly accurate transcript of the full documentary.
+
+**Step 4: Generate the infographic.** This is where it gets interesting. I fed the transcript into Claude and asked it to create a graphical info sheet summarizing the documentary's content. Claude generated a structured, visual HTML page covering the key events, timelines, and relationships described in the documentary.
+
+The result is available at [content.oglimmer.com/s/egypt](https://content.oglimmer.com/s/egypt) if you want to see it yourself.
+
+## What makes this fascinating
+
+The entire pipeline — from a two-hour documentary to a shareable visual summary — took maybe 30 minutes of hands-on work. Most of that was waiting for the transcription to finish. The actual creative and analytical heavy lifting was done by AI.
+
+What surprised me most was the quality. The transcript captured the narration accurately, and Claude did a remarkable job at extracting the important themes, organizing them visually, and presenting them in a way that genuinely helps you understand and remember the content.
+
+## Is this the end of school books?
+
+This experiment raises a bigger question. If anyone can take a documentary, a lecture, or any other educational content and turn it into personalized learning material in minutes — what does that mean for traditional educational resources?
+
+Today, students use textbooks that were written years ago, designed for a generic audience, and updated on slow publication cycles. But the tools now exist for students to create their own learning material. Watch a documentary, attend a lecture, read a paper — then use AI to generate summaries, infographics, flashcards, or whatever format works best for your own learning style.
+
+The material is not just consumed anymore. It is transformed, personalized, and made your own. That is a fundamentally different relationship with educational content.
+
+I am not saying school books will disappear tomorrow. But the direction is clear: the future of learning material is personal, AI-assisted, and created on demand. The internet provides the raw content. AI provides the transformation. The student decides the format.
+
+That is a fascinating shift, and we are just at the beginning of it.`,
+  },
+  {
+    slug: 'von-der-doku-zur-infografik-ein-ki-abenteuer',
+    title: 'Von der Doku zur Infografik: Ein KI-Abenteuer',
+    description: 'Wie ich eine Arte-Dokumentation über das alte Ägypten mit ffmpeg, Whisper und Claude in eine grafische Übersicht verwandelt habe',
+    date: '2026-03-15',
+    lang: 'de',
+    translationSlug: 'from-documentary-to-infographic-an-ai-adventure',
+    content: `*Dieser Text wurde mit Hilfe von KI aus dem Englischen übersetzt.*
+
+Ich habe mir kürzlich eine Arte-Dokumentation über den Untergang des alten Ägypten angeschaut — [Der Untergang des alten Ägypten](https://www.arte.tv/de/videos/127479-002-A/der-untergang-des-alten-aegypten-2-2/). Sie war faszinierend, vollgepackt mit Informationen, und natürlich hatte ich am nächsten Morgen die Hälfte davon wieder vergessen. Das brachte mich auf eine Idee: Könnte man eine Video-Dokumentation in eine grafische Übersicht verwandeln, die die wichtigsten Informationen so aufbereitet, dass man sie jederzeit wieder abrufen kann?
+
+Wie sich herausstellt: Mit ein paar Werkzeugen und etwas KI geht das tatsächlich.
+
+## Die Pipeline
+
+Die Idee ist einfach: Den gesprochenen Inhalt aus dem Video extrahieren, transkribieren und dann mit KI eine strukturierte visuelle Zusammenfassung erstellen. So habe ich es Schritt für Schritt gemacht.
+
+**Schritt 1: Das Video herunterladen.** Arte stellt seine Dokumentationen in der Mediathek zur Verfügung, aber ein direkter Download ist nicht ohne Weiteres möglich. Ich habe [MediathekViewWeb](https://mediathekviewweb.de/) benutzt, um die Videodatei zu finden und herunterzuladen.
+
+**Schritt 2: Audio extrahieren.** Ich brauchte nicht das Video selbst, nur den gesprochenen Inhalt. Ein kurzer ffmpeg-Befehl trennt die Audiospur aus der Videodatei:
+
+\`\`\`bash
+ffmpeg -i documentary.mp4 -vn -acodec aac output.aac
+\`\`\`
+
+**Schritt 3: Transkription mit Whisper.** OpenAIs Whisper-Modell leistet beeindruckende Arbeit bei der Spracherkennung, auch bei deutschem Audio. Man kann es lokal installieren und die Transkription mit nur zwei Befehlen starten:
+
+\`\`\`bash
+pip install -U openai-whisper
+whisper output.aac --model base
+\`\`\`
+
+Das Ergebnis war ein überraschend genaues Transkript der gesamten Dokumentation.
+
+**Schritt 4: Die Infografik generieren.** Hier wird es richtig spannend. Ich habe das Transkript in Claude eingegeben und darum gebeten, eine grafische Übersicht zu erstellen, die den Inhalt der Dokumentation zusammenfasst. Claude hat eine strukturierte, visuelle HTML-Seite generiert, die die wichtigsten Ereignisse, Zeitabläufe und Zusammenhänge aus der Dokumentation abdeckt.
+
+Das Ergebnis ist unter [content.oglimmer.com/s/egypt](https://content.oglimmer.com/s/egypt) verfügbar, falls ihr es euch selbst ansehen wollt.
+
+## Was das Ganze so faszinierend macht
+
+Die gesamte Pipeline — von einer zweistündigen Dokumentation zu einer teilbaren visuellen Zusammenfassung — hat vielleicht 30 Minuten aktive Arbeit gekostet. Das meiste davon war Warten auf die Transkription. Die eigentliche kreative und analytische Schwerstarbeit wurde von KI erledigt.
+
+Was mich am meisten überrascht hat, war die Qualität. Das Transkript hat die Erzählung genau erfasst, und Claude hat hervorragend die wichtigen Themen extrahiert, sie visuell aufbereitet und so präsentiert, dass es wirklich hilft, den Inhalt zu verstehen und zu behalten.
+
+## Ist das das Ende der Schulbücher?
+
+Dieses Experiment wirft eine größere Frage auf. Wenn jeder eine Dokumentation, eine Vorlesung oder beliebige andere Bildungsinhalte nehmen und in wenigen Minuten in personalisiertes Lernmaterial verwandeln kann — was bedeutet das für traditionelle Bildungsmedien?
+
+Heute nutzen Schüler und Studenten Lehrbücher, die vor Jahren geschrieben wurden, für ein allgemeines Publikum konzipiert sind und in langsamen Publikationszyklen aktualisiert werden. Aber die Werkzeuge existieren bereits, um eigenes Lernmaterial zu erstellen. Eine Dokumentation schauen, eine Vorlesung besuchen, ein Paper lesen — und dann mit KI Zusammenfassungen, Infografiken, Karteikarten oder welches Format auch immer am besten zum eigenen Lernstil passt, generieren.
+
+Das Material wird nicht mehr nur konsumiert. Es wird transformiert, personalisiert und zu etwas Eigenem gemacht. Das ist ein fundamental anderes Verhältnis zu Bildungsinhalten.
+
+Ich sage nicht, dass Schulbücher morgen verschwinden werden. Aber die Richtung ist klar: Die Zukunft des Lernmaterials ist persönlich, KI-gestützt und on demand erstellt. Das Internet liefert die Rohinhalte. KI liefert die Transformation. Der Lernende bestimmt das Format.
+
+Das ist ein faszinierender Wandel, und wir stehen erst am Anfang.`,
+  },
   {
     slug: 'rewriting-simple-build-server-in-go',
     title: 'Rewriting Simple Build Server in Go',
