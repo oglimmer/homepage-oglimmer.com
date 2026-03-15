@@ -167,10 +167,13 @@ export const projects: Project[] = [
     techList: "[TypeScript, Nodejs, Websockets, OCPP, FTP]"
   },
   {
-    title: "A (very) simple build server",
-    text: "An apache/cgi-bin/bash based build server. Still offers a simple UI.",
-    linkData: [["https://github.com/oglimmer/simple-build-server", "source code"]],
-    techList: "[Docker, apache, cgi-bin, bash, cron]"
+    title: "Simple Build Server",
+    text: "A lightweight, containerized build server written in Go. Triggers builds instantly via API or web dashboard with bearer token auth and bcrypt-hashed credentials.",
+    linkData: [
+      ["https://github.com/oglimmer/simple-build-server", "source code"],
+      ["/blog/rewriting-simple-build-server-in-go", "blog post"]
+    ],
+    techList: "[Go, Docker, REST API, Bootstrap]"
   },
   {
     title: "Linky",

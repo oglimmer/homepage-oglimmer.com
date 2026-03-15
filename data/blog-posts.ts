@@ -8,6 +8,49 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'rewriting-simple-build-server-in-go',
+    title: 'Rewriting Simple Build Server in Go',
+    description: 'Why I rewrote my Apache/CGI/bash build server as a single Go binary — and what improved along the way',
+    date: '2026-03-15',
+    content: `The original Simple Build Server was one of those projects that worked well enough for years. I first wrote about it in my [poor man's Continuous Deployment pipeline](/blog/poor-mans-continuous-deployment) post back in 2019. It used Apache with CGI-bin scripts written in bash, and a cron job that polled for changes every 60 seconds. It did the job: trigger a build, show the result in a simple web UI. But let's be honest — it's 2026 and the era of Apache with CGI-bin is long over.
+
+The real problem was the **attack surface**. Running Apache with CGI-bin meant exposing a full web server with all its configuration complexity, plus bash scripts directly handling HTTP requests. That is a lot of surface area for something that just needs to trigger a shell script and show the result. Every CVE for Apache or its CGI module was potentially relevant, and hardening the setup properly required more effort than the actual build logic.
+
+Beyond that, there were smaller annoyances:
+
+- **Polling delay**: Cron ran every 60 seconds, so builds never started instantly. That small delay added up when iterating quickly.
+- **No proper authentication**: The API had no real auth mechanism. Anyone who could reach the endpoint could trigger a build.
+- **Fragile scripting**: Bash scripts doing HTTP request handling via CGI-bin is clever, but debugging and extending them is painful.
+
+## The rewrite
+
+Claude was so kind to rewrite the whole thing as a single Go binary. No Apache, no cron, no CGI. The server handles HTTP directly using Go's standard library \`net/http\`, with the new Go 1.22 routing patterns for clean route definitions.
+
+Key improvements:
+
+**Instant builds.** The API endpoint triggers a build immediately. No polling, no delay. The server also cancels any in-progress build for the same app when a new one is triggered, so you never wait for a stale build to finish.
+
+**Proper authentication.** API calls require a bearer token verified against a bcrypt hash. The web dashboard uses HTTP Basic Auth, also with bcrypt-hashed passwords. Tokens and credentials are configured in a single \`config.yaml\` file.
+
+**Simpler architecture.** The entire server is a single Go file. It handles config loading, build execution, state persistence, and the dashboard UI. The Docker image uses a multi-stage build — the final image is Alpine with the compiled binary, around 50 MB plus whatever build tools you add.
+
+**Runs as non-root.** The container creates a dedicated user and runs the server without root privileges.
+
+## How it works
+
+The basic concept is still the same as the original solution. Each app gets a directory under \`/opt/<app-name>/\` with a \`build.sh\` script and optionally \`test.sh\`, \`get-git-url.sh\`, and \`get-git-hash.sh\`. The server calls these scripts when a build is triggered, captures the output into log files, and tracks the build state as JSON.
+
+The dashboard is a server-rendered HTML page using Go templates and Bootstrap. It shows each app's last build status, timing, git commit link, and lets you trigger rebuilds with a button. Build logs and the engine log are viewable directly from the dashboard.
+
+Triggering a build from CI is a one-liner:
+
+\`\`\`bash
+curl -X POST -H "Authorization: Bearer <token>" http://localhost:8080/api/rebuild/my-app
+\`\`\`
+
+The source code is on [GitHub](https://github.com/oglimmer/simple-build-server).`,
+  },
+  {
     slug: 'intent-driven-configuration-rethinking-the-renovate-onboarding-experience',
     title: 'Intent-Driven Configuration: Rethinking the Renovate Onboarding Experience',
     description: 'The motivation behind creating Renovate Initializr — a tool that lets you describe the behaviour you want and generates a usable renovate.json from it',
@@ -2076,6 +2119,10 @@ While this approach is certainly not the next industry standard, I would like to
 For my use-case of a showcase / demo host it works quite well and it minimizes the operational costs.
 
 The solution is very simple — so just 26 lines of code, an empty directory, a cron entry and Docker container running a php enabled webserver keep my server in sync with all of my github/bitbucket repositories.
+
+---
+
+**Update (March 2026):** The simple-build-server has been [rewritten in Go](/blog/rewriting-simple-build-server-in-go). Commit [917bcb8](https://github.com/oglimmer/simple-build-server/commit/917bcb8cbfd7f78e34411dd56fa3f4d752abce63) is the last one using the Apache/CGI/bash solution described in this post. Everything after that uses the new Go-based implementation.
 `
   },
   {
