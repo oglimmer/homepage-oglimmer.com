@@ -39,7 +39,7 @@ export const blogPosts: BlogPost[] = [
     description: 'How I turned an Arte TV documentary about ancient Egypt into a graphical info sheet using ffmpeg, Whisper, and Claude',
     date: '2026-03-15',
     translationSlug: 'von-der-doku-zur-infografik-ein-ki-abenteuer',
-    content: `I recently watched an Arte TV documentary about the fall of ancient Egypt — [Der Untergang des alten Ägypten](https://www.arte.tv/de/videos/127479-002-A/der-untergang-des-alten-aegypten-2-2/). It was fascinating, packed with information, and naturally I forgot half of it by the next morning. That got me thinking: could I turn a video documentary into a graphical overview that captures the key information in a way that is easy to revisit?
+    content: `I recently watched an Arte TV documentary about the fall of ancient Egypt - [Der Untergang des alten Ägypten](https://www.arte.tv/de/videos/127479-002-A/der-untergang-des-alten-aegypten-2-2/). It was fascinating, packed with information, and naturally I forgot half of it by the next morning. That got me thinking: could I turn a video documentary into a graphical overview that captures the key information in a way that is easy to revisit?
 
 Turns out, with a few tools and some AI, you absolutely can.
 
@@ -70,15 +70,15 @@ The result is available at [content.oglimmer.com/s/egypt](https://content.oglimm
 
 ## What makes this fascinating
 
-The entire pipeline — from a two-hour documentary to a shareable visual summary — took maybe 30 minutes of hands-on work. Most of that was waiting for the transcription to finish. The actual creative and analytical heavy lifting was done by AI.
+The entire pipeline - from a two-hour documentary to a shareable visual summary - took maybe 30 minutes of hands-on work. Most of that was waiting for the transcription to finish. The actual creative and analytical heavy lifting was done by AI.
 
 What surprised me most was the quality. The transcript captured the narration accurately, and Claude did a remarkable job at extracting the important themes, organizing them visually, and presenting them in a way that genuinely helps you understand and remember the content.
 
 ## Is this the end of school books?
 
-This experiment raises a bigger question. If anyone can take a documentary, a lecture, or any other educational content and turn it into personalized learning material in minutes — what does that mean for traditional educational resources?
+This experiment raises a bigger question. If anyone can take a documentary, a lecture, or any other educational content and turn it into personalized learning material in minutes - what does that mean for traditional educational resources?
 
-Today, students use textbooks that were written years ago, designed for a generic audience, and updated on slow publication cycles. But the tools now exist for students to create their own learning material. Watch a documentary, attend a lecture, read a paper — then use AI to generate summaries, infographics, flashcards, or whatever format works best for your own learning style.
+Today, students use textbooks that were written years ago, designed for a generic audience, and updated on slow publication cycles. But the tools now exist for students to create their own learning material. Watch a documentary, attend a lecture, read a paper - then use AI to generate summaries, infographics, flashcards, or whatever format works best for your own learning style.
 
 The material is not just consumed anymore. It is transformed, personalized, and made your own. That is a fundamentally different relationship with educational content.
 
@@ -95,7 +95,7 @@ That is a fascinating shift, and we are just at the beginning of it.`,
     translationSlug: 'from-documentary-to-infographic-an-ai-adventure',
     content: `*Dieser Text wurde mit Hilfe von KI aus dem Englischen übersetzt.*
 
-Ich habe mir kürzlich eine Arte-Dokumentation über den Untergang des alten Ägypten angeschaut — [Der Untergang des alten Ägypten](https://www.arte.tv/de/videos/127479-002-A/der-untergang-des-alten-aegypten-2-2/). Sie war faszinierend, vollgepackt mit Informationen, und natürlich hatte ich am nächsten Morgen die Hälfte davon wieder vergessen. Das brachte mich auf eine Idee: Könnte man eine Video-Dokumentation in eine grafische Übersicht verwandeln, die die wichtigsten Informationen so aufbereitet, dass man sie jederzeit wieder abrufen kann?
+Ich habe mir kürzlich eine Arte-Dokumentation über den Untergang des alten Ägypten angeschaut - [Der Untergang des alten Ägypten](https://www.arte.tv/de/videos/127479-002-A/der-untergang-des-alten-aegypten-2-2/). Sie war faszinierend, vollgepackt mit Informationen, und natürlich hatte ich am nächsten Morgen die Hälfte davon wieder vergessen. Das brachte mich auf eine Idee: Könnte man eine Video-Dokumentation in eine grafische Übersicht verwandeln, die die wichtigsten Informationen so aufbereitet, dass man sie jederzeit wieder abrufen kann?
 
 Wie sich herausstellt: Mit ein paar Werkzeugen und etwas KI geht das tatsächlich.
 
@@ -126,15 +126,15 @@ Das Ergebnis ist unter [content.oglimmer.com/s/egypt](https://content.oglimmer.c
 
 ## Was das Ganze so faszinierend macht
 
-Die gesamte Pipeline — von einer zweistündigen Dokumentation zu einer teilbaren visuellen Zusammenfassung — hat vielleicht 30 Minuten aktive Arbeit gekostet. Das meiste davon war Warten auf die Transkription. Die eigentliche kreative und analytische Schwerstarbeit wurde von KI erledigt.
+Die gesamte Pipeline - von einer zweistündigen Dokumentation zu einer teilbaren visuellen Zusammenfassung - hat vielleicht 30 Minuten aktive Arbeit gekostet. Das meiste davon war Warten auf die Transkription. Die eigentliche kreative und analytische Schwerstarbeit wurde von KI erledigt.
 
 Was mich am meisten überrascht hat, war die Qualität. Das Transkript hat die Erzählung genau erfasst, und Claude hat hervorragend die wichtigen Themen extrahiert, sie visuell aufbereitet und so präsentiert, dass es wirklich hilft, den Inhalt zu verstehen und zu behalten.
 
 ## Ist das das Ende der Schulbücher?
 
-Dieses Experiment wirft eine größere Frage auf. Wenn jeder eine Dokumentation, eine Vorlesung oder beliebige andere Bildungsinhalte nehmen und in wenigen Minuten in personalisiertes Lernmaterial verwandeln kann — was bedeutet das für traditionelle Bildungsmedien?
+Dieses Experiment wirft eine größere Frage auf. Wenn jeder eine Dokumentation, eine Vorlesung oder beliebige andere Bildungsinhalte nehmen und in wenigen Minuten in personalisiertes Lernmaterial verwandeln kann - was bedeutet das für traditionelle Bildungsmedien?
 
-Heute nutzen Schüler und Studenten Lehrbücher, die vor Jahren geschrieben wurden, für ein allgemeines Publikum konzipiert sind und in langsamen Publikationszyklen aktualisiert werden. Aber die Werkzeuge existieren bereits, um eigenes Lernmaterial zu erstellen. Eine Dokumentation schauen, eine Vorlesung besuchen, ein Paper lesen — und dann mit KI Zusammenfassungen, Infografiken, Karteikarten oder welches Format auch immer am besten zum eigenen Lernstil passt, generieren.
+Heute nutzen Schüler und Studenten Lehrbücher, die vor Jahren geschrieben wurden, für ein allgemeines Publikum konzipiert sind und in langsamen Publikationszyklen aktualisiert werden. Aber die Werkzeuge existieren bereits, um eigenes Lernmaterial zu erstellen. Eine Dokumentation schauen, eine Vorlesung besuchen, ein Paper lesen - und dann mit KI Zusammenfassungen, Infografiken, Karteikarten oder welches Format auch immer am besten zum eigenen Lernstil passt, generieren.
 
 Das Material wird nicht mehr nur konsumiert. Es wird transformiert, personalisiert und zu etwas Eigenem gemacht. Das ist ein fundamental anderes Verhältnis zu Bildungsinhalten.
 
@@ -145,9 +145,9 @@ Das ist ein faszinierender Wandel, und wir stehen erst am Anfang.`,
   {
     slug: 'rewriting-simple-build-server-in-go',
     title: 'Rewriting Simple Build Server in Go',
-    description: 'Why I rewrote my Apache/CGI/bash build server as a single Go binary — and what improved along the way',
+    description: 'Why I rewrote my Apache/CGI/bash build server as a single Go binary - and what improved along the way',
     date: '2026-03-15',
-    content: `The original Simple Build Server was one of those projects that worked well enough for years. I first wrote about it in my [poor man's Continuous Deployment pipeline](/blog/poor-mans-continuous-deployment) post back in 2019. It used Apache with CGI-bin scripts written in bash, and a cron job that polled for changes every 60 seconds. It did the job: trigger a build, show the result in a simple web UI. But let's be honest — it's 2026 and the era of Apache with CGI-bin is long over.
+    content: `The original Simple Build Server was one of those projects that worked well enough for years. I first wrote about it in my [poor man's Continuous Deployment pipeline](/blog/poor-mans-continuous-deployment) post back in 2019. It used Apache with CGI-bin scripts written in bash, and a cron job that polled for changes every 60 seconds. It did the job: trigger a build, show the result in a simple web UI. But let's be honest - it's 2026 and the era of Apache with CGI-bin is long over.
 
 The real problem was the **attack surface**. Running Apache with CGI-bin meant exposing a full web server with all its configuration complexity, plus bash scripts directly handling HTTP requests. That is a lot of surface area for something that just needs to trigger a shell script and show the result. Every CVE for Apache or its CGI module was potentially relevant, and hardening the setup properly required more effort than the actual build logic.
 
@@ -167,7 +167,7 @@ Key improvements:
 
 **Proper authentication.** API calls require a bearer token verified against a bcrypt hash. The web dashboard uses HTTP Basic Auth, also with bcrypt-hashed passwords. Tokens and credentials are configured in a single \`config.yaml\` file.
 
-**Simpler architecture.** The entire server is a single Go file. It handles config loading, build execution, state persistence, and the dashboard UI. The Docker image uses a multi-stage build — the final image is Alpine with the compiled binary, around 50 MB plus whatever build tools you add.
+**Simpler architecture.** The entire server is a single Go file. It handles config loading, build execution, state persistence, and the dashboard UI. The Docker image uses a multi-stage build - the final image is Alpine with the compiled binary, around 50 MB plus whatever build tools you add.
 
 **Runs as non-root.** The container creates a dedicated user and runs the server without root privileges.
 
@@ -188,7 +188,7 @@ The source code is on [GitHub](https://github.com/oglimmer/simple-build-server).
   {
     slug: 'intent-driven-configuration-rethinking-the-renovate-onboarding-experience',
     title: 'Intent-Driven Configuration: Rethinking the Renovate Onboarding Experience',
-    description: 'The motivation behind creating Renovate Initializr — a tool that lets you describe the behaviour you want and generates a usable renovate.json from it',
+    description: 'The motivation behind creating Renovate Initializr - a tool that lets you describe the behaviour you want and generates a usable renovate.json from it',
     date: '2025-03-10',
     content: `I built Renovate Initializr because I found settings up the Renove config for a project harder than it should be.
     
@@ -247,7 +247,7 @@ The architecture consists of:
 
 We have to enable access logs for traefik. Additionally it makes our life easier to write json instead of a common log format. Finally we want to see the User-Agent and Referer headers in the log.
 
-For the purpose of Web Analytics traefik also has to see the source IP of all incoming http requests. There are various ways to achieve this, one simple — but not recommended way in production — is to enable \`network_mode: host\`. You might want to look up how to enable the proxy protocol between your edge load balancers and traefik for a more secure way.
+For the purpose of Web Analytics traefik also has to see the source IP of all incoming http requests. There are various ways to achieve this, one simple - but not recommended way in production - is to enable \`network_mode: host\`. You might want to look up how to enable the proxy protocol between your edge load balancers and traefik for a more secure way.
 
 \`\`\`yaml
 # docker-compose.yml ...
@@ -403,7 +403,7 @@ As the TCP connections are terminated on the Reverse-Proxy and traffic is forwar
 
 ### Your application might be deployed under a different URL path prefix
 
-You might have developed your application — and thus always deployed it — as a myapp.war, so the context path — the prefix on the URL path — was \`/myapp/\`. Maybe your application is now running on a Reverse-Proxy, configured by an administrator who wants to run your application on a different path prefix or just without any in case of a host based routing scenario.
+You might have developed your application - and thus always deployed it - as a myapp.war, so the context path - the prefix on the URL path - was \`/myapp/\`. Maybe your application is now running on a Reverse-Proxy, configured by an administrator who wants to run your application on a different path prefix or just without any in case of a host based routing scenario.
 
 ### You see Http protocol is "http" even the user accesses your system via https
 
@@ -790,7 +790,7 @@ To do this you have to solve 2 problems:
 1. Your ISP frequently assigns you different IP addresses. Some ISPs do this every 24h, some only now and then, but as you don't have a fixed IP address you need some sort of dynamic DNS.
 2. Your ISP might not give you a public IPv4. This is called "DS Lite" (Dual Stack Lite) and basically means that your Router is behind a NAT gateway and you share your public IPv4 with other people. This makes you "not reachable" via IPv4 from the Internet and you need to use IPv6 for inbound connections.
 
-## Issue 1 — Dynamic DNS
+## Issue 1 - Dynamic DNS
 
 Usually your Router (DSL or Cable Modem) should support dynamic DNS. So you only need to pick a provider, set it up on their Webpage and finally configure it within your Router.
 
@@ -806,11 +806,11 @@ This requires the following components:
 
 - A 3rd party DNS server hosting our domain
 - A Router (DSL/Cable modem) allowing to call an HTTP endpoint when it gets a new public IP address
-- A host running at your home (like a RaspberryPi) — but that's also our home server we want to use as our web server
+- A host running at your home (like a RaspberryPi) - but that's also our home server we want to use as our web server
 
 To summarize it, we need to tell the Router to call an http endpoint when a new public IP is assigned. A script behind this endpoint will then use the new IP to update the DNS records on the DNS Server's API.
 
-## Issue 2 — ISP connects you via DS-Lite (a.k.a. no public IPv4)
+## Issue 2 - ISP connects you via DS-Lite (a.k.a. no public IPv4)
 
 Depending on your ISP you might not have a public IPv4, what means while you see a IPv4 on your Router, this IPv4 is behind a NAT gateway, thus you are sharing this IPv4 with other users / Routers on your ISP network.
 
@@ -1231,7 +1231,7 @@ Add this lambda to the API Gateways Authorizers section. Then go to /ingest POST
 
 As shown in the diagram, this lambda has 2 jobs:
 
-1. looking at the DynamoDB table "zoom-to-videoplatform-upload" and check for any finished transcoding on Vimeo, if so, find the right category on discourse — if this category doesn't exist yet, create it — then post the video on discourse, send a slack notification and delete the entry in "zoom-to-videoplatform-upload"
+1. looking at the DynamoDB table "zoom-to-videoplatform-upload" and check for any finished transcoding on Vimeo, if so, find the right category on discourse - if this category doesn't exist yet, create it - then post the video on discourse, send a slack notification and delete the entry in "zoom-to-videoplatform-upload"
 2. looking at the DynamoDB table "zoom-to-videoplatform-expiry" and for each expired entry, delete the respective Vimeo video and the discourse topic, then delete the entry in "zoom-to-videoplatform-expiry"
 
 To give this Lambda function the needed permission on the DynamoDB tables, add this to the execution role of your Lambda:
@@ -1296,7 +1296,7 @@ To support embedded Vimeo videos on discourse.org you have to allow iframes from
 
 ## AWS cost
 
-The AWS cost to run this setup is negligible. We usually pay in the area of 0.01 to 0.1 USD per month for this. All resources are paid by usage which makes them very cheap — of course only as long as you made sure to use On-Demand DynamoDB tables.`
+The AWS cost to run this setup is negligible. We usually pay in the area of 0.01 to 0.1 USD per month for this. All resources are paid by usage which makes them very cheap - of course only as long as you made sure to use On-Demand DynamoDB tables.`
   },
   {
     slug: 'hosting-website-home-fritzbox-ipv6',
@@ -1500,7 +1500,7 @@ Generally this approach works as fine as the first one, but the advantages and d
 
 - Still the basic underlying issue of a separated process tree still exists
 - The issue around WSL_INTEROP was very severe for me
-- Fish is not the default shell — only the gnome-terminal uses it by default`
+- Fish is not the default shell - only the gnome-terminal uses it by default`
   },
   {
     slug: 'wsl-dev-setup-endgame',
@@ -1515,7 +1515,7 @@ As my first two articles discussed, I have used Windows 10 with WSL 2 and Ubuntu
 
 Getting systemd to work comes with price to pay. For all the details read my last 2 articles, but I have to say that the price is too high. So instead of solving all the issues coming from having systemd within WSL, let us try to avoid having those problems.
 
-The main difference for this article is that we are using Debian instead of Ubuntu — as Debian is not using Snap, thus we should not need systemd.
+The main difference for this article is that we are using Debian instead of Ubuntu - as Debian is not using Snap, thus we should not need systemd.
 
 This guide shows step by step what I did to set up a Java/Node development environment with WSL+Debian.
 
@@ -1694,7 +1694,7 @@ This article was written before Microsoft introduced systemd for WSL as written 
 
 My development setup has two fundamental requirements: the availability of Unix shell scripting and corporate tools/compliance standards.
 
-Furthermore I need a couple of tools and programs and while the required tools vary from project to project, I always want to install IntelliJ IDEA as my Java / JavaScript IDE, Visual Studio Code as my general purpose editor, docker for containers, Microsoft Teams for collaboration, KeePass as a password manager, a terminal application for bash/fish scripting, Meld as a visual diff tool, Postman for testing REST APIs and an assorted choice of browsers, because — you know — browsers are the thing nowadays.
+Furthermore I need a couple of tools and programs and while the required tools vary from project to project, I always want to install IntelliJ IDEA as my Java / JavaScript IDE, Visual Studio Code as my general purpose editor, docker for containers, Microsoft Teams for collaboration, KeePass as a password manager, a terminal application for bash/fish scripting, Meld as a visual diff tool, Postman for testing REST APIs and an assorted choice of browsers, because - you know - browsers are the thing nowadays.
 
 So how can I get that with Windows as the host platform?
 
@@ -1702,13 +1702,13 @@ So how can I get that with Windows as the host platform?
 
 I was working with Ubuntu as my development system for the last 12 month and while I am pretty happy with the setup in general, I had to run it inside a VirtualBox VM to align with corporate compliance regulations.
 
-That again works quite well but there is one serious drawback: memory allocation between the host system and the virtual machine. VirtualBox, as well as VMware, require you to define the available — and the allocated — memory of the virtual machine before you start it.
+That again works quite well but there is one serious drawback: memory allocation between the host system and the virtual machine. VirtualBox, as well as VMware, require you to define the available - and the allocated - memory of the virtual machine before you start it.
 
-In situations where you have plenty of memory on the host system and your needs inside the virtual machine are limited, this is no issue at all. Unfortunately my use-case requires a lot of memory inside the VM and on top of that some flexibility for the host system — and that makes the whole setup some sort of a problem.
+In situations where you have plenty of memory on the host system and your needs inside the virtual machine are limited, this is no issue at all. Unfortunately my use-case requires a lot of memory inside the VM and on top of that some flexibility for the host system - and that makes the whole setup some sort of a problem.
 
 Originally I wanted to solely use the virtual machine and so I max'ed out the available memory to the guest operating system.
 
-My laptop has 32 GB of RAM and I assigned 24 GB of RAM to the Ubuntu VM. As said the original idea was to start all applications inside the VM to avoid any switching between the host and the VM, but there are things one cannot do (easily) inside a VM and that is for example video conferencing. We use Microsoft Teams which does exist as a (somewhat) native Linux application, but as VirtualBox does not support the camera — at least without commercial addons — I needed to start and use Teams on Windows.
+My laptop has 32 GB of RAM and I assigned 24 GB of RAM to the Ubuntu VM. As said the original idea was to start all applications inside the VM to avoid any switching between the host and the VM, but there are things one cannot do (easily) inside a VM and that is for example video conferencing. We use Microsoft Teams which does exist as a (somewhat) native Linux application, but as VirtualBox does not support the camera - at least without commercial addons - I needed to start and use Teams on Windows.
 
 ## A possible solution: WSL 2
 
@@ -1745,7 +1745,7 @@ chsh -s /usr/bin/fish
 At this point I would like to point out two arguable decisions I made:
 
 - all my configurations assume fish as the default shell
-- I will use remote X11 forwarding to show GUI Linux applications, but you could do that via VNC or RDP as well — it's just that I think X11 creates a more homogeneous experience and it completely eradicates multi-monitor issues
+- I will use remote X11 forwarding to show GUI Linux applications, but you could do that via VNC or RDP as well - it's just that I think X11 creates a more homogeneous experience and it completely eradicates multi-monitor issues
 
 Starting a Ubuntu VM with WSL 2 is super simple, but for a real-world usage, there are a couple of issue to overcome.
 
@@ -1779,7 +1779,7 @@ sudo apt update
 sudo apt install -y systemd-genie
 \`\`\`
 
-Now genie — aka systemd — can be started with \`genie -s\`. But before we do this let's look into a couple of other issues.
+Now genie - aka systemd - can be started with \`genie -s\`. But before we do this let's look into a couple of other issues.
 
 ## Issue 2: Changing PATH
 
@@ -1982,11 +1982,11 @@ You can use docker from Windows and Ubuntu as both share the same docker daemon 
 
 ## Conclusion
 
-A dream came true and I got the best of both worlds: the development tools from Linux and the corporate tools from Windows — everything working seamlessly together.
+A dream came true and I got the best of both worlds: the development tools from Linux and the corporate tools from Windows - everything working seamlessly together.
 
 ### Pros:
 
-- it mostly feels like one system — and not as two separated operating systems
+- it mostly feels like one system - and not as two separated operating systems
 - you can start Linux GUI applications and they are shown in Windows as a regular window
 - the setup is stable and never crashed for me
 - memory is handled automatically and without my interaction or attention
@@ -2113,7 +2113,7 @@ In this article I will write about how I built a very simple Continuous Deployme
 
 ## Why not use a standard CD pipeline?
 
-As some of my projects have private code, I cannot upload build artifacts into public repositories like Maven Central, NPM or Docker-Hub. For cost reasons, I also want to run all projects and their build processes on one host without the need of additional — resource hungry — build or repository applications.
+As some of my projects have private code, I cannot upload build artifacts into public repositories like Maven Central, NPM or Docker-Hub. For cost reasons, I also want to run all projects and their build processes on one host without the need of additional - resource hungry - build or repository applications.
 
 Therefore I came up with my own simple CD workflow.
 
@@ -2164,7 +2164,7 @@ MAILTO="my-email@address.com"
 * * * * * root /usr/local/bin/build-queue-processor.sh
 \`\`\`
 
-So the cron daemon will execute the script \`build-queue-processor.sh\` every minute, as we want to trigger a requested deployment — via a file in \`/var/opt/build-queue\` — as soon as possible.
+So the cron daemon will execute the script \`build-queue-processor.sh\` every minute, as we want to trigger a requested deployment - via a file in \`/var/opt/build-queue\` - as soon as possible.
 
 5. The yellow box is the main script called \`build-queue-processor.sh\` and contains the core code of the setup. The script loops over all files in \`/var/opt/build-queue\` and executes a \`docker-compose up -d --build\` on the project given through the file's content.
 
@@ -2232,7 +2232,7 @@ COPY --from=build-env /tmp/ggo-src/web/target/grid.war  /usr/local/tomcat/webapp
 
 This Dockerfile uses a multi-stage build.
 
-In stage 0 — called \`build-env\` — a maven build is executed after a git repository is cloned. This stage contains a neat trick to work around the docker image cache by adding \`/git/refs/heads/master\` into \`/tmp/version.json\`. So the cache is invalidated when the HEAD of the master branch had changed. No need to use \`--no-cache\`.
+In stage 0 - called \`build-env\` - a maven build is executed after a git repository is cloned. This stage contains a neat trick to work around the docker image cache by adding \`/git/refs/heads/master\` into \`/tmp/version.json\`. So the cache is invalidated when the HEAD of the master branch had changed. No need to use \`--no-cache\`.
 
 The final stage of the Dockerfile just copies the previously built WAR file into it. As mentioned in my last article I use OpenJ9 instead of Oracle's Hotspot JVM to minimize the memory usage.
 
@@ -2253,7 +2253,7 @@ While this approach is certainly not the next industry standard, I would like to
 
 For my use-case of a showcase / demo host it works quite well and it minimizes the operational costs.
 
-The solution is very simple — so just 26 lines of code, an empty directory, a cron entry and Docker container running a php enabled webserver keep my server in sync with all of my github/bitbucket repositories.
+The solution is very simple - so just 26 lines of code, an empty directory, a cron entry and Docker container running a php enabled webserver keep my server in sync with all of my github/bitbucket repositories.
 
 ---
 
@@ -2273,7 +2273,7 @@ As said in my previous article, I have written a couple of hobby or prototype pr
 
 Those 7 games, 3 management systems and my 'homepages' always ran on a single server. So for years they were deployed on a 2GB host, running as a single Tomcat, a single MySQL, a single CouchDB, a single Apache and two Nodejs processes.
 
-While this was working fine — and quite stable — all applications were deployed too close to each other, they were coupled too tightly and there were version dependencies between all of them.
+While this was working fine - and quite stable - all applications were deployed too close to each other, they were coupled too tightly and there were version dependencies between all of them.
 
 At the dawn of Containerization I asked myself, how much memory does the host need to run all applications in Docker containers?
 
@@ -2363,7 +2363,7 @@ But for a showcase environment, with expectations on low operational cost, this 
 
 Over the last 15 years I have built a couple of projects (all the stuff on www.oglimmer.de) and while it is very simple to build a Java project via a brain-friendly 'mvn package' it is always a bit cumbersome to start-up a project you haven't worked on for quite a while.
 
-Starting a project usually needs a build, a local deployment of the webserver and the database, an initial set up of the database and sometimes a couple of config changes to connect everything together — how this all is done heavily depends on the project and the used technologies.
+Starting a project usually needs a build, a local deployment of the webserver and the database, an initial set up of the database and sometimes a couple of config changes to connect everything together - how this all is done heavily depends on the project and the used technologies.
 
 I wanted to have a system which builds, locally deploys and runs all of my projects with a consistent syntax.
 
@@ -2379,7 +2379,7 @@ But how to start the software locally? 'npm start'? Oh wait, it needs a database
 
 ### But we have provisioning tools like Ansible/Chef/Puppet!
 
-These system tend to have a high complexity, as they have been built to solve a much bigger problem: installing infrastructure — not providing a local setup! Maybe Ansible is easy enough — at least it's just an SSH-based remote shell command executor. Still Ansible needs a whole bunch of configuration files and the execution mechanism was made for SSH connections, it's again too complex for what we actually want: just a simple local deployment.
+These system tend to have a high complexity, as they have been built to solve a much bigger problem: installing infrastructure - not providing a local setup! Maybe Ansible is easy enough - at least it's just an SSH-based remote shell command executor. Still Ansible needs a whole bunch of configuration files and the execution mechanism was made for SSH connections, it's again too complex for what we actually want: just a simple local deployment.
 
 ### Can't Docker spin up environments?
 
