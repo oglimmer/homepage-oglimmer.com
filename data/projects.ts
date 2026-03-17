@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Coffee Diary - Espresso Brewing Tracker",
+    text: "A web app for espresso enthusiasts to record beans, equipment, brewing parameters, and tasting notes. Log detailed brewing sessions, maintain inventories of coffee beans and filters, and refine your workflow over time.",
+    linkData: [
+      ["https://coffee.oglimmer.com/", "Web"],
+      ["https://github.com/oglimmer/coffee-diary", "source code"]
+    ],
+    techList: "[Spring Boot, Java 21, Vue 3, TypeScript, MariaDB, Flyway, Docker, Kubernetes, Helm]"
+  },
+  {
     title: "Easy Host K8s - Simple Web Content Hosting",
     text: "A simple web content hosting service. Upload HTML and other files via API, and serve them on unique URLs. Built with a cloud-native architecture, designed for Kubernetes deployment.",
     linkData: [
