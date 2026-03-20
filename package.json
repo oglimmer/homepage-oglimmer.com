@@ -15,7 +15,7 @@
   "dependencies": {
     "@nuxt/eslint": "^1.15.2",
     "eslint": "^9.39.4",
-    "marked": "^17.0.4",
+    "marked": "^17.0.5",
     "nuxt": "^4.4.2",
     "vue": "^3.5.30",
     "vue-router": "^4.6.4"
