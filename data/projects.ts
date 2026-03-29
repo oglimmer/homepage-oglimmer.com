@@ -195,7 +195,7 @@ export const projects: Project[] = [
   },
   {
     title: "Linky",
-    text: "A bookmark management system for organizing, searching, and tracking web links with tagging, full-text search, and RSS feed monitoring. Supports OAuth login via Google, GitHub, and more.",
+    text: "A bookmark management system for organizing, searching, and tracking web links with tagging, full-text search, and RSS feed monitoring.",
     linkData: [
       ["https://www.linky1.com", "go to linky"],
       ["https://github.com/oglimmer/linky", "source code"]],
