@@ -195,11 +195,11 @@ export const projects: Project[] = [
   },
   {
     title: "Linky",
-    text: "A link & surfing management application",
+    text: "A bookmark management system for organizing, searching, and tracking web links with tagging, full-text search, and RSS feed monitoring. Supports OAuth login via Google, GitHub, and more.",
     linkData: [
       ["https://www.linky1.com", "go to linky"],
       ["https://github.com/oglimmer/linky", "source code"]],
-    techList: "[JavaScript, ES6, Node.js, React, Redux, Nano, Isomorphic/Universal, Bootstrap, CouchDB]"
+    techList: "[Vue 3, TypeScript, Tailwind CSS, Pinia, Go, MariaDB, Docker, Helm]"
   },
   {
     title: "BlackJack REST API / JavaScript playground",
