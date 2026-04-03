@@ -7,6 +7,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Video Nicer - Video to MP4 Converter for macOS",
+    text: "A native macOS app that converts video files to MP4 using ffmpeg. Supports drag-and-drop, right-click Finder context menu, and \"Open With\" integration. Includes a Finder extension for seamless conversion without opening a separate window.",
+    linkData: [
+      ["https://github.com/oglimmer/macos-webpm-video-convert", "source code"]
+    ],
+    techList: "[Swift, SwiftUI, macOS, ffmpeg, Homebrew]"
+  },
+  {
     title: "Coffee Diary - Espresso Brewing Tracker",
     text: "A web app for espresso enthusiasts to record beans, equipment, brewing parameters, and tasting notes. Log detailed brewing sessions, maintain inventories of coffee beans and filters, and refine your workflow over time.",
     linkData: [
