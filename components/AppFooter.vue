@@ -17,6 +17,9 @@
           <NuxtLink to="/imprint" class="text-white/60 hover:text-white text-sm transition-colors duration-300">
             Imprint
           </NuxtLink>
+          <a href="/rss" class="text-white/60 hover:text-white text-sm transition-colors duration-300">
+            RSS
+          </a>
         </div>
       </div>
     </div>
