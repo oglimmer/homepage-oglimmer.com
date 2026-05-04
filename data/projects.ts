@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "NIST Randomness Beacon - Verifiable Dice Rolls",
+    text: "A single-page Vue 3 app that turns a public NIST beacon pulse plus a user-chosen seed into a SHA-256 hash and maps it to fair dice rolls. Anyone can re-fetch the same pulse and recompute the hash to verify the result — no trust required.",
+    linkData: [
+      ["https://oglimmer.github.io/nist-random/", "Web"],
+      ["https://github.com/oglimmer/nist-random", "source code"]
+    ],
+    techList: "[Vue 3, Web Crypto API, SHA-256, NIST Beacon, GitHub Pages]"
+  },
+  {
     title: "Video Nicer - Video to MP4 Converter for macOS",
     text: "A native macOS app that converts video files to MP4 using ffmpeg. Supports drag-and-drop, right-click Finder context menu, and \"Open With\" integration. Includes a Finder extension for seamless conversion without opening a separate window.",
     linkData: [
