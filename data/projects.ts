@@ -7,6 +7,24 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Trivia - Real-Time Multiplayer Trivia Game",
+    text: "A mobile-first, real-time trivia game where players upload a photo and a question, the host runs the round, everyone answers live, and scores are revealed with a podium finish. Live updates via WebSocket, time-bonus scoring, scheduled-start games, and optional magic-link email login so players can rejoin from any device.",
+    linkData: [
+      ["https://trivia.oglimmer.com/", "play"],
+      ["https://github.com/oglimmer/trivia", "source code"]
+    ],
+    techList: "[Vue 3, TypeScript, Vite, Pinia, Go, chi, gorilla/websocket, pgx, Postgres, Docker, Kubernetes, Helm]"
+  },
+  {
+    title: "Plugin Skill Hosting - Claude Code Plugin Marketplace",
+    text: "A self-hosted, token-gated Claude Code plugin marketplace for organizations to share plugins and skills. Authors edit skills via the web UI or a built-in MCP server, and the backend materialises every change into a bare git repo served over smart HTTP so updates are instantly available to every Claude Code user in the org.",
+    linkData: [
+      ["https://ai-plugins.oglimmer.com/", "Web"],
+      ["https://github.com/oglimmer/plugin-skill-hosting", "source code"]
+    ],
+    techList: "[Go 1.25, chi, gitkit, MCP, Vue 3, TypeScript, Vite, Pinia, Postgres 16, nginx, Docker, Kubernetes, Helm]"
+  },
+  {
     title: "NIST Randomness Beacon - Verifiable Dice Rolls",
     text: "A single-page Vue 3 app that turns a public NIST beacon pulse plus a user-chosen seed into a SHA-256 hash and maps it to fair dice rolls. Anyone can re-fetch the same pulse and recompute the hash to verify the result — no trust required.",
     linkData: [
