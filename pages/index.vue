@@ -97,7 +97,7 @@
       <!-- Featured project -->
       <NuxtLink
         v-if="featured"
-        :to="featured.linkData[0][0]"
+        :to="featured.linkData[0]?.[0] ?? '/projects'"
         target="_blank"
         rel="noopener noreferrer"
         class="group mt-10 block surface-interactive p-7 md:p-9"
