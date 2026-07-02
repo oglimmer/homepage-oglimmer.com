@@ -26,6 +26,14 @@ PUSH="${PUSH:-true}"
 HELP=false
 PLATFORM="${PLATFORM:-arm64}"
 
+# Kubernetes namespace for the deployment.
+K8S_NAMESPACE="${K8S_NAMESPACE:-default}"
+
+# Restart hook configuration. Used when kubectl is not available (e.g. CI build
+# runners that can't reach the cluster directly). The hook triggers an
+# in-cluster rollout; see restart_via_hook() below.
+RESTART_HOOK_URL="${RESTART_HOOK_URL:-https://restart.oglimmer.com/restart}"
+
 # Color output (only if terminal supports it)
 if [[ -t 1 ]] && command -v tput >/dev/null 2>&1; then
   BOLD="$(tput bold)"
@@ -128,6 +136,14 @@ ENVIRONMENT VARIABLES:
     DRY_RUN                 Enable dry-run mode (true/false)
     PUSH                    Enable/disable pushing to registry (true/false)
     RESTART                 Enable/disable Kubernetes restart (true/false)
+    K8S_NAMESPACE           Kubernetes namespace (default: default)
+    RESTART_TOKEN           Bearer token for the restart hook. Used to restart
+                            the deployment when kubectl is unavailable (e.g. CI).
+    RESTART_HOOK_URL        Restart hook base URL (default: https://restart.oglimmer.com/restart)
+
+RESTART BEHAVIOR:
+    When a restart is requested, kubectl is used if available; otherwise the
+    restart hook is called using RESTART_TOKEN. Pass --no-restart to skip.
 
 EOF
 }
@@ -242,11 +258,6 @@ check_prerequisites() {
     local tools=("docker")
     local missing_deps=()
 
-    # Add kubectl if we need to restart
-    if [[ "$RESTART" == true ]]; then
-        tools+=("kubectl")
-    fi
-
     for tool in "${tools[@]}"; do
         if ! command -v "$tool" >/dev/null 2>&1; then
             missing_deps+=("$tool")
@@ -256,6 +267,16 @@ check_prerequisites() {
     if [[ ${#missing_deps[@]} -gt 0 ]]; then
         log_error "Missing required dependencies: ${missing_deps[*]}"
         echo "Please install the missing dependencies and try again." >&2
+        exit 1
+    fi
+
+    # Restarting a deployment needs EITHER kubectl (direct rollout) OR a
+    # RESTART_TOKEN (to call the restart hook). CI build runners have neither
+    # cluster access nor kubectl and set RESTART_TOKEN instead. Fail early when a
+    # restart is requested but neither path is available.
+    if [[ "$RESTART" == true ]] && ! command -v kubectl >/dev/null 2>&1 && [[ -z "${RESTART_TOKEN:-}" ]]; then
+        log_error "Restart requested but kubectl is not available and RESTART_TOKEN is not set"
+        echo "Install kubectl, set RESTART_TOKEN, or pass --no-restart." >&2
         exit 1
     fi
 
@@ -384,19 +405,48 @@ build_image() {
     fi
 }
 
-# Restart Kubernetes deployment
+# Restart a deployment via the in-cluster restart hook. Used when kubectl is
+# not available (e.g. CI runners without cluster access). Never echoes the token.
+restart_via_hook() {
+    local deployment="$1"
+    local url="${RESTART_HOOK_URL}/${K8S_NAMESPACE}/${deployment}"
+
+    log_info "Restarting $deployment via hook: $url"
+
+    if [[ "$DRY_RUN" == true ]]; then
+        echo -e "${YELLOW}[DRY-RUN]${RESET} curl -fsS -X POST -H 'Authorization: Bearer ***' $url"
+        return 0
+    fi
+
+    if curl -fsS -X POST -H "Authorization: Bearer ${RESTART_TOKEN}" "$url" >/dev/null; then
+        log_success "Deployment $deployment restarted successfully (via hook)"
+    else
+        log_error "Failed to trigger restart for $deployment via hook"
+        exit 1
+    fi
+}
+
+# Restart Kubernetes deployment. Prefer kubectl when available (local/dev with
+# cluster access); otherwise fall back to the restart hook using RESTART_TOKEN
+# (CI runners without cluster access).
 restart_deployment() {
     local deployment="$1"
 
     log_info "Restarting deployment: $deployment"
 
-    if execute_cmd "kubectl rollout restart deployment/$deployment"; then
+    # No kubectl (e.g. CI) -> go through the restart hook.
+    if ! command -v kubectl >/dev/null 2>&1; then
+        restart_via_hook "$deployment"
+        return
+    fi
+
+    if execute_cmd "kubectl rollout restart deployment/$deployment -n $K8S_NAMESPACE"; then
         log_success "Deployment $deployment restarted successfully"
 
         # Wait for rollout to complete if verbose
-        if [[ "$VERBOSE" == true ]]; then
+        if [[ "$VERBOSE" == true && "$DRY_RUN" != true ]]; then
             log_info "Waiting for rollout to complete..."
-            kubectl rollout status deployment/"$deployment" --timeout=300s
+            kubectl rollout status deployment/"$deployment" -n "$K8S_NAMESPACE" --timeout=300s
         fi
     else
         log_error "Failed to restart deployment: $deployment"
