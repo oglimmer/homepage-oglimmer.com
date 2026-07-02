@@ -17,6 +17,13 @@ logs
 .DS_Store
 .fleet
 .idea
+.vscode
+
+# Local agent / skill tooling (not part of the site)
+.claude/
+.agents/
+.impeccable/
+skills-lock.json
 
 # Local env files
 .env
