@@ -1,90 +1,84 @@
 <template>
-  <div class="max-w-6xl mx-auto">
-    <div class="mb-12">
-      <div class="flex items-center mb-4">
-        <div class="w-1 h-16 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
-        <div>
-          <h1 class="text-5xl md:text-6xl font-bold text-white mb-2">
-            All Projects
-          </h1>
-          <p class="text-lg text-white/70">
-            A complete collection of my applications, games, and open source contributions
+  <div>
+    <header class="max-w-2xl py-10">
+      <p class="meta-label">the workbench</p>
+      <h1 class="mt-4 font-display text-5xl font-semibold tracking-tight text-bone md:text-6xl">
+        All projects
+      </h1>
+      <p class="mt-4 leading-relaxed text-bone/70">
+        Applications, web games, and open source experiments. Some are polished,
+        some are prototypes I built to learn something fast.
+      </p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <article
+        v-for="(project, i) in projects"
+        :key="project.title"
+        v-reveal="{ delay: (i % 3) * 70 }"
+        class="group flex flex-col surface-interactive p-6"
+      >
+        <h2 class="font-display text-xl font-semibold text-bone transition-colors group-hover:text-marigold-300">
+          {{ project.title }}
+        </h2>
+        <p class="mt-2.5 flex-1 text-sm leading-relaxed text-bone/65">
+          {{ project.text }}
+        </p>
+        <div v-if="project.techList" class="mt-4 flex flex-wrap gap-1.5">
+          <span v-for="tech in parseTechList(project.techList)" :key="tech" class="tag">{{ tech }}</span>
+        </div>
+        <div class="mt-5 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-bone/10 pt-4">
+          <a
+            v-for="[url, label] in project.linkData"
+            :key="url"
+            :href="url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-mono text-xs text-bone/60 transition-colors hover:text-marigold-300"
+          >{{ label }} <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+    </div>
+
+    <section class="mt-24">
+      <header class="max-w-2xl">
+        <h2 class="font-display text-3xl font-semibold tracking-tight text-bone/50 md:text-4xl">
+          Legacy projects
+        </h2>
+        <p class="mt-3 leading-relaxed text-bone/40">
+          Archived experiments and older projects, kept around as historical artifacts.
+        </p>
+      </header>
+
+      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <article
+          v-for="(project, i) in legacyProjects"
+          :key="project.title"
+          v-reveal="{ delay: (i % 3) * 70 }"
+          class="group flex flex-col rounded-2xl border border-bone/10 bg-ink-900 p-6 transition-colors duration-300 hover:border-bone/25"
+        >
+          <h3 class="font-display text-lg font-semibold text-bone/90">
+            {{ project.title }}
+          </h3>
+          <p class="mt-2.5 flex-1 text-sm leading-relaxed text-bone/55">
+            {{ project.text }}
           </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div v-for="project in projects" :key="project.title" class="group backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/20">
-        <div class="p-6 relative">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full filter blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"/>
-          <div class="relative">
-            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
-              {{ project.title }}
-            </h3>
-            <p class="text-white/70 mb-4 text-sm min-h-[3rem]">
-              {{ project.text }}
-            </p>
-            <div v-if="project.techList" class="flex flex-wrap gap-2 mb-4">
-              <span v-for="tech in parseTechList(project.techList)" :key="tech" class="text-xs bg-primary-500/20 border border-primary-400/30 text-primary-200 px-2 py-1 rounded-full backdrop-blur-sm">
-                {{ tech }}
-              </span>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-4">
-              <a v-for="[url, label] in project.linkData" :key="url" :href="url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-primary-300 hover:text-primary-200 font-semibold text-xs group/link">
-                {{ label }}
-                <svg class="w-3 h-3 ml-1 transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            </div>
+          <div v-if="project.techList" class="mt-4 flex flex-wrap gap-1.5">
+            <span v-for="tech in parseTechList(project.techList)" :key="tech" class="tag">{{ tech }}</span>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-20 mb-12">
-      <div class="flex items-center mb-4">
-        <div class="w-1 h-16 bg-gradient-to-b from-white/30 to-white/10 rounded-full mr-4"/>
-        <div>
-          <h2 class="text-3xl md:text-4xl font-bold text-white/60 mb-2">
-            Legacy Projects
-          </h2>
-          <p class="text-lg text-white/40">
-            Archived experiments and older projects, kept here as historical artifacts
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-70">
-      <div v-for="project in legacyProjects" :key="project.title" class="group backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl overflow-hidden hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/20">
-        <div class="p-6 relative">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-primary-500 rounded-full filter blur-3xl opacity-10 group-hover:opacity-20 transition-opacity"/>
-          <div class="relative">
-            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-primary-300 transition-colors">
-              {{ project.title }}
-            </h3>
-            <p class="text-white/70 mb-4 text-sm min-h-[3rem]">
-              {{ project.text }}
-            </p>
-            <div v-if="project.techList" class="flex flex-wrap gap-2 mb-4">
-              <span v-for="tech in parseTechList(project.techList)" :key="tech" class="text-xs bg-primary-500/20 border border-primary-400/30 text-primary-200 px-2 py-1 rounded-full backdrop-blur-sm">
-                {{ tech }}
-              </span>
-            </div>
-            <div class="flex flex-wrap gap-2 mt-4">
-              <a v-for="[url, label] in project.linkData" :key="url" :href="url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-primary-300 hover:text-primary-200 font-semibold text-xs group/link">
-                {{ label }}
-                <svg class="w-3 h-3 ml-1 transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            </div>
+          <div class="mt-5 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-bone/10 pt-4">
+            <a
+              v-for="[url, label] in project.linkData"
+              :key="url"
+              :href="url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-xs text-bone/55 transition-colors hover:text-marigold-300"
+            >{{ label }} <span aria-hidden="true">↗</span></a>
           </div>
-        </div>
+        </article>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 

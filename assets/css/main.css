@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ *
+ * Warm-workshop base. One theme, locked: warm ink surface, bone text,
+ * marigold accent. "coding is the new knitting."
+ * ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    color-scheme: dark;
+    --ease-craft: cubic-bezier(0.16, 1, 0.3, 1);   /* out-expo: confident */
+    --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);   /* out-quart: smooth */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink-900 text-bone font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: theme('colors.marigold.500');
+    color: theme('colors.ink.950');
+  }
+
+  /* Marigold focus ring, keyboard users only */
+  :focus-visible {
+    outline: 2px solid theme('colors.marigold.400');
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+
+@layer components {
+  /* Section eyebrow / mono meta label. Used sparingly (see design rules). */
+  .meta-label {
+    @apply font-mono text-[11px] uppercase tracking-[0.22em] text-marigold-500;
+  }
+
+  /* Solid raised surface (reads against the darker ink-900 page). */
+  .surface {
+    @apply rounded-2xl border border-bone/10 bg-ink-850;
+  }
+
+  /* Interactive surface: lifts, warms its border, casts a soft warm shadow. */
+  .surface-interactive {
+    @apply surface transition-[transform,border-color,box-shadow] duration-300;
+    transition-timing-function: var(--ease-craft);
+  }
+  .surface-interactive:hover {
+    transform: translateY(-3px);
+    border-color: theme('colors.marigold.400 / 40%');
+    box-shadow: 0 18px 44px -28px rgba(0, 0, 0, 0.85);
+  }
+
+  /* Primary CTA: solid marigold pill with a warm lift on hover. */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-marigold-400
+      px-6 py-3 font-medium text-ink-950 transition-[transform,background-color,box-shadow] duration-300;
+    transition-timing-function: var(--ease-craft);
+  }
+  .btn-primary:hover {
+    background-color: theme('colors.marigold.300');
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -10px rgba(230, 154, 44, 0.5);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* Secondary CTA: hairline pill */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-bone/20
+      px-6 py-3 font-medium text-bone transition-[transform,border-color,color] duration-300;
+    transition-timing-function: var(--ease-craft);
+  }
+  .btn-ghost:hover {
+    border-color: theme('colors.marigold.400 / 60%');
+    color: theme('colors.marigold.300');
+    transform: translateY(-2px);
+  }
+  .btn-ghost:active { transform: translateY(0); }
+
+  /* Move the arrow glyph on CTA hover for a touch of direction. */
+  .btn-primary [aria-hidden],
+  .btn-ghost [aria-hidden] {
+    transition: transform 0.3s var(--ease-craft);
+  }
+  .btn-ghost:hover [aria-hidden] { transform: translateX(3px); }
+  .btn-primary:hover [aria-hidden] { transform: translateY(2px); }
+
+  /* Tech tag pill */
+  .tag {
+    @apply rounded-full border border-marigold-400/20 bg-marigold-500/10 px-2.5 py-0.5
+      font-mono text-[11px] text-marigold-300;
+  }
+
+  /* Inline text link with an underline that draws in from the left on hover. */
+  .link-underline {
+    @apply relative inline-flex items-center gap-1.5 text-bone transition-colors duration-300;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s var(--ease-craft);
+  }
+  .link-underline:hover {
+    @apply text-marigold-300;
+  }
+  .link-underline:hover::after { transform: scaleX(1); }
+  .link-underline [aria-hidden] {
+    transition: transform 0.35s var(--ease-craft);
+  }
+  .link-underline:hover [aria-hidden] { transform: translateX(3px); }
+
+  /* Hero accent: a marigold "stitch" that draws itself under the name. */
+  .hero-accent {
+    position: relative;
+    white-space: nowrap;
+  }
+  .hero-accent::after {
+    content: '';
+    position: absolute;
+    left: 0.02em;
+    right: 0.12em;
+    bottom: 0.1em;
+    height: 0.055em;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.32;
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-accent::after {
+      transform: scaleX(0);
+      animation: draw-underline 0.85s var(--ease-craft) 0.55s forwards;
+    }
+  }
+}
+
+@layer utilities {
+  /* Warm paper grain, applied to a single fixed pointer-events-none layer only */
+  .grain-layer {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+  }
+
+  /* Scroll reveal for genuine lists/grids (sibling stagger). The hidden state
+   * is only applied by the v-reveal directive when JS + IntersectionObserver
+   * run, so no-JS and reduced-motion stay fully visible (never ships blank). */
+  .reveal-init {
+    opacity: 0;
+    transform: translateY(16px);
+    will-change: opacity, transform;
+  }
+  .reveal-init.reveal-in {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.6s var(--ease-craft),
+      transform 0.6s var(--ease-craft);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-init,
+    .reveal-init.reveal-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+@keyframes draw-underline {
+  to { transform: scaleX(1); }
+}
+
+/* Route crossfade (subtle, out-in so pages never overlap) */
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity 0.28s var(--ease-craft),
+    transform 0.28s var(--ease-craft);
+}
+.page-enter-from { opacity: 0; transform: translateY(8px); }
+.page-leave-to { opacity: 0; transform: translateY(-6px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-active,
+  .page-leave-active { transition: none; }
+  .page-enter-from,
+  .page-leave-to { opacity: 1; transform: none; }
+}

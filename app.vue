@@ -1,20 +1,24 @@
 <template>
-  <div class="min-h-screen relative overflow-hidden">
-    <!-- Connected Points Canvas Background -->
-    <div class="fixed inset-0 z-0 bg-[#16213e]" />
+  <div class="relative min-h-[100dvh] overflow-x-hidden bg-ink-900">
+    <!-- Signature generative background: warm "threads" between drifting points -->
+    <div class="fixed inset-0 z-0 bg-ink-900" />
     <ClientOnly>
       <ConnectedPointsBackground />
     </ClientOnly>
 
-    <!-- Floating Orbs -->
-    <div class="fixed top-20 left-10 w-72 h-72 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"/>
-    <div class="fixed top-40 right-10 w-72 h-72 bg-navy-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style="animation-delay: 2s;"/>
-    <div class="fixed bottom-20 left-1/2 w-72 h-72 bg-primary-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style="animation-delay: 4s;"/>
+    <!-- Warm radial vignette to seat the content over the canvas -->
+    <div
+      class="pointer-events-none fixed inset-0 z-0"
+      style="background: radial-gradient(120% 80% at 50% -10%, rgba(230,154,44,0.10), transparent 55%), linear-gradient(to bottom, rgba(18,14,10,0) 0%, rgba(18,14,10,0.55) 60%, rgba(18,14,10,0.9) 100%);"
+    />
+
+    <!-- Single grain overlay (fixed, non-interactive) -->
+    <div class="grain-layer pointer-events-none fixed inset-0 z-[60]" />
 
     <!-- Content -->
-    <div class="relative z-10">
+    <div class="relative z-10 flex min-h-[100dvh] flex-col">
       <AppHeader />
-      <main class="container mx-auto px-4 py-12">
+      <main class="mx-auto w-full max-w-6xl flex-1 px-5 pb-24 pt-10 sm:px-8">
         <NuxtPage />
       </main>
       <AppFooter />
@@ -25,13 +29,7 @@
 <script setup>
 useHead({
   htmlAttrs: {
-    lang: 'en'
+    lang: 'en',
   },
-  link: [
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap'
-    }
-  ]
 })
 </script>

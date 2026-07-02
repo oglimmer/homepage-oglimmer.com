@@ -1,63 +1,52 @@
 <template>
-  <div class="max-w-4xl mx-auto">
-    <div class="mb-12">
-      <div class="flex items-center mb-4">
-        <div class="w-1 h-16 bg-gradient-to-b from-primary-400 to-primary-600 rounded-full mr-4"/>
-        <div>
-          <h1 class="text-5xl md:text-6xl font-bold text-white mb-2">
-            Blog
-          </h1>
-          <p class="text-lg text-white/70">
-            Thoughts, tutorials, and insights on coding and technology
-          </p>
-        </div>
-      </div>
-    </div>
+  <div class="max-w-3xl">
+    <header class="py-10">
+      <p class="meta-label">field notes</p>
+      <h1 class="mt-4 font-display text-5xl font-semibold tracking-tight text-bone md:text-6xl">
+        Blog
+      </h1>
+      <p class="mt-4 leading-relaxed text-bone/70">
+        Thoughts, tutorials, and notes on coding, infrastructure, and building things.
+      </p>
+    </header>
 
-    <div v-if="articles && articles.length > 0" class="space-y-6">
-      <article v-for="article in articles" :key="article.slug" class="group backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary-500/20">
-        <div v-if="getTranslation(article)" class="flex justify-end mb-3">
-          <div class="inline-flex rounded-full bg-white/5 border border-white/20 p-0.5">
-            <button
-              v-for="lang in ['en', 'de']"
-              :key="lang"
-              class="px-3 py-1 text-xs font-mono rounded-full transition-all duration-200"
-              :class="activeLang(article) === lang
-                ? 'bg-primary-500/30 text-primary-200 border border-primary-400/40'
-                : 'text-white/50 hover:text-white/80 border border-transparent'"
-              @click.prevent="toggleLang(article)"
-            >
-              {{ lang.toUpperCase() }}
-            </button>
-          </div>
-        </div>
-        <NuxtLink :to="`/blog/${displayPost(article).slug}`" class="block">
-          <div class="flex items-start justify-between mb-4">
-            <h2 class="text-3xl font-bold text-white mb-2 group-hover:text-primary-300 transition-colors flex-1">
-              {{ displayPost(article).title }}
-            </h2>
-            <div class="text-primary-300 transform group-hover:translate-x-2 transition-transform ml-4">→</div>
-          </div>
-          <p class="text-white/70 mb-4 text-lg leading-relaxed">
-            {{ displayPost(article).description }}
-          </p>
-          <div class="flex items-center justify-between text-sm">
-            <time :datetime="displayPost(article).date" class="text-white/50 font-mono">
+    <ul v-if="articles && articles.length" class="divide-y divide-bone/10 border-y border-bone/10">
+      <li v-for="(article, i) in articles" :key="article.slug" v-reveal="{ delay: Math.min(i, 8) * 55 }" class="group transition-colors duration-300 hover:bg-ink-850/60">
+        <div class="flex items-start gap-4 py-7">
+          <NuxtLink :to="`/blog/${displayPost(article).slug}`" class="min-w-0 flex-1">
+            <time :datetime="displayPost(article).date" class="font-mono text-xs text-marigold-500">
               {{ formatBlogDate(displayPost(article).date, activeLang(article)) }}
             </time>
-            <span class="text-primary-300 font-semibold group-hover:text-primary-200">
-              {{ activeLang(article) === 'de' ? 'Weiterlesen' : 'Read more' }}
-            </span>
+            <h2 class="mt-2 font-display text-2xl font-semibold text-bone transition-colors group-hover:text-marigold-300 md:text-3xl">
+              {{ displayPost(article).title }}
+            </h2>
+            <p class="mt-2 leading-relaxed text-bone/60">
+              {{ displayPost(article).description }}
+            </p>
+          </NuxtLink>
+          <div class="flex flex-col items-end gap-3">
+            <div v-if="getTranslation(article)" class="inline-flex rounded-full border border-bone/15 p-0.5">
+              <button
+                v-for="lang in ['en', 'de']"
+                :key="lang"
+                class="rounded-full px-2.5 py-1 font-mono text-[11px] transition-colors duration-200"
+                :class="activeLang(article) === lang
+                  ? 'bg-marigold-500/20 text-marigold-300'
+                  : 'text-bone/40 hover:text-bone/70'"
+                @click.prevent="toggleLang(article)"
+              >
+                {{ lang.toUpperCase() }}
+              </button>
+            </div>
+            <span aria-hidden="true" class="text-bone/25 transition-all group-hover:translate-x-0.5 group-hover:text-marigold-400">→</span>
           </div>
-        </NuxtLink>
-      </article>
-    </div>
+        </div>
+      </li>
+    </ul>
 
-    <div v-else class="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-12 text-center">
-      <div class="text-6xl mb-4">📝</div>
-      <p class="text-white/70 text-lg">
-        No blog posts yet. Check back soon!
-      </p>
+    <div v-else class="rounded-2xl border border-bone/10 bg-ink-850 p-12 text-center">
+      <p class="font-display text-xl text-bone/80">No posts yet.</p>
+      <p class="mt-2 text-sm text-bone/50">Check back soon.</p>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvasRef" class="fixed inset-0 z-0 bg-[#16213e]" />
+  <canvas ref="canvasRef" class="fixed inset-0 z-0 bg-ink-900" />
 </template>
 
 <script setup lang="ts">
@@ -115,10 +115,12 @@ function draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
         const pointOpacity = Math.min(p1.opacity, p2.opacity)
         const hasFast = p1.fast || p2.fast
         if (hasFast) {
-          ctx.strokeStyle = `rgba(255, 200, 100, ${distOpacity * 0.7 * pointOpacity})`
+          // warm "spark" thread
+          ctx.strokeStyle = `rgba(246, 205, 115, ${distOpacity * 0.7 * pointOpacity})`
         }
         else {
-          ctx.strokeStyle = `rgba(99, 182, 255, ${distOpacity * 0.5 * pointOpacity})`
+          // warm wool thread (bone)
+          ctx.strokeStyle = `rgba(233, 214, 182, ${distOpacity * 0.42 * pointOpacity})`
         }
         ctx.beginPath()
         ctx.moveTo(p1.x, p1.y)
@@ -132,9 +134,10 @@ function draw(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
   ctx.shadowBlur = 0
   for (const point of points) {
     if (!point.fast) {
-      ctx.fillStyle = `rgba(99, 182, 255, ${point.opacity})`
+      // warm marigold node
+      ctx.fillStyle = `rgba(230, 175, 92, ${point.opacity * 0.9})`
       ctx.beginPath()
-      ctx.arc(point.x, point.y, 3, 0, Math.PI * 2)
+      ctx.arc(point.x, point.y, 2.4, 0, Math.PI * 2)
       ctx.fill()
     }
   }
@@ -190,6 +193,16 @@ onMounted(async () => {
   // Set canvas size immediately but delay spawning points
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
+
+  // Respect reduced-motion: render a single static "woven" frame, no loop.
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (prefersReduced) {
+    initPoints(canvas)
+    for (const p of points) p.opacity = 1
+    draw(ctx, canvas)
+    return
+  }
+
   window.addEventListener('resize', resize)
 
   // Start animation loop (will be empty until points spawn)
