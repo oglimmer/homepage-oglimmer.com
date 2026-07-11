@@ -150,6 +150,27 @@
       animation: draw-underline 0.85s var(--ease-craft) 0.55s forwards;
     }
   }
+
+  /* Blinking caret for the typewriter hero effect. */
+  .type-cursor {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.82em;
+    margin-left: 0.04em;
+    vertical-align: -0.08em;
+    background: currentColor;
+    animation: type-blink 0.9s steps(1) infinite;
+  }
+  .type-cursor-done {
+    animation: none;
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .type-cursor {
+      animation: none;
+      opacity: 0;
+    }
+  }
 }
 
 @layer utilities {
@@ -188,6 +209,11 @@
 
 @keyframes draw-underline {
   to { transform: scaleX(1); }
+}
+
+@keyframes type-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 /* Route crossfade (subtle, out-in so pages never overlap) */

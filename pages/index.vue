@@ -5,7 +5,11 @@
       <div class="max-w-3xl">
         <p class="meta-label animate-thread-in">coding is the new knitting</p>
         <h1 class="mt-5 font-display text-6xl font-semibold leading-[0.95] tracking-tight text-bone sm:text-7xl md:text-8xl animate-rise-in">
-          Hi, I'm <span class="hero-accent text-marigold-400">Oli</span>.
+          Hi, I'm
+          <span class="hero-accent text-marigold-400">
+            <span aria-hidden="true">{{ typedText }}<span class="type-cursor" :class="{ 'type-cursor-done': typingDone }" /></span>
+            <span class="sr-only">{{ heroName }}</span>
+          </span>.
         </h1>
         <p class="mt-7 max-w-xl text-lg leading-relaxed text-bone/70 animate-rise-in" style="animation-delay: 120ms;">
           I lead software engineering teams, and I build useful apps plus small
@@ -246,6 +250,29 @@
 import { type BlogPost, getDeduplicatedPosts, getTranslation, formatBlogDate } from '~/data/blog-posts'
 import { projects as allProjects, parseTechList } from '~/data/projects'
 import { k8sPortalItems as allK8sPortalItems } from '~/data/k8s-portal'
+import { runTypewriter } from '~/utils/typewriter'
+
+const heroName = 'Oli'
+const typedText = ref('')
+const typingDone = ref(false)
+let stopTypewriter: (() => void) | null = null
+
+onMounted(() => {
+  stopTypewriter = runTypewriter(heroName, (value) => {
+    typedText.value = value
+  }, {
+    speed: 90,
+    startDelay: 300,
+    onDone: () => {
+      typingDone.value = true
+    },
+  })
+})
+
+onBeforeUnmount(() => {
+  stopTypewriter?.()
+  stopTypewriter = null
+})
 
 const featured = computed(() => allProjects[0])
 const rest = computed(() => allProjects.slice(1, 6))
