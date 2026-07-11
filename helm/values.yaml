@@ -1,16 +1,13 @@
 # Default values for homepage-oglimmer-2025
 
-global:
-  imageRegistry: registry.oglimmer.com
-
-# Image pull secrets for private registry
-imagePullSecrets:
-  - name: oglimmerregistrykey
+# ghcr.io images are public, so no imagePullSecrets are needed. Add entries
+# here only if you mirror the image to a private registry.
+imagePullSecrets: []
 
 replicaCount: 2
 
 image:
-  repository: homepage-oglimmer-2025
+  repository: ghcr.io/oglimmer/homepage-oglimmer-2025
   pullPolicy: Always
   tag: "latest"
 

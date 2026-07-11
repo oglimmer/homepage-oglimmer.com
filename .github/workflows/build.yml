@@ -1,9 +1,9 @@
 name: Build & push image
 
-# Builds the homepage Docker image and pushes it to registry.oglimmer.com via
-# the repo's oglimmer.sh script, on the in-cluster self-hosted ARC runner
-# (arm64, Docker-in-Docker). The runner has no kubectl, so oglimmer.sh triggers
-# the rollout through the restart hook (restart.oglimmer.com) using the
+# Builds the homepage Docker image and pushes it to ghcr.io/oglimmer via the
+# repo's oglimmer.sh script, on the in-cluster self-hosted ARC runner (arm64,
+# Docker-in-Docker). The runner has no kubectl, so oglimmer.sh triggers the
+# rollout through the restart hook (restart.oglimmer.com) using the
 # RESTART_TOKEN secret passed in the environment.
 
 on:
@@ -18,6 +18,7 @@ concurrency:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   homepage:
@@ -25,12 +26,12 @@ jobs:
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
-      - name: Log in to registry.oglimmer.com
+      - name: Log in to ghcr.io
         uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4
         with:
-          registry: registry.oglimmer.com
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       # --platform auto -> plain `docker build` + `docker push` via the dind
       # daemon (native arm64). Avoids the buildx docker-container driver, whose

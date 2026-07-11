@@ -7,9 +7,14 @@ SCRIPT_NAME=$(basename "$0")
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Default configuration
-DEFAULT_REGISTRIES=("registry.oglimmer.com")
+DEFAULT_REGISTRIES=("ghcr.io/oglimmer")
 DEFAULT_DEPLOYMENT="http-homepage-oglimmer-2025"
 DEFAULT_IMAGE_NAME="homepage-oglimmer-2025"
+
+# Helm chart location (single chart in helm/). Also the semver source of truth
+# for `release` (Chart.yaml version/appVersion).
+CHART_DIR="$SCRIPT_DIR/helm"
+CHART_NAME="homepage-oglimmer-2025"
 
 # Configuration variables (can be overridden by parameters)
 REGISTRIES=("${DEFAULT_REGISTRIES[@]}")
@@ -25,6 +30,10 @@ RESTART="${RESTART:-true}"
 PUSH="${PUSH:-true}"
 HELP=false
 PLATFORM="${PLATFORM:-arm64}"
+RELEASE_MODE=false
+RELEASE_BUMP=""
+SHOW_VERSION=false
+DEV_COMMAND=""
 
 # Kubernetes namespace for the deployment.
 K8S_NAMESPACE="${K8S_NAMESPACE:-default}"
@@ -87,21 +96,32 @@ execute_cmd() {
     fi
 }
 
+# Read the chart version (semver source of truth) from helm/Chart.yaml.
+chart_version() {
+    grep '^version:' "$CHART_DIR/Chart.yaml" | head -1 | sed -E 's/version:[[:space:]]*//'
+}
+
 # Show usage information
 show_help() {
     cat << EOF
 Usage: ${SCRIPT_NAME} [OPTIONS] [COMMAND]
 
-Build and deploy homepage application.
+Build, deploy, and release the homepage application.
 
 COMMANDS:
     build               Build and deploy (default)
+    release             Bump semver (Chart.yaml), commit, tag, push & helm-push
+    helm-push           Package and push the Helm chart to ${DEFAULT_REGISTRIES[0]}
+    show                Show the current chart version
 
-OPTIONS:
+BUILD OPTIONS:
     -v, --verbose           Enable verbose output
     -n, --no-restart        Skip Kubernetes deployment restart
     --no-push               Skip pushing images to registry
     --dry-run               Show what would be done without executing
+
+RELEASE OPTIONS:
+    --bump major|minor|bugfix  Skip the interactive prompt and bump that semver part
 
     # Registry configuration options
     --registries "REG1,REG2"    Comma-separated list of registries to push to (default: ${DEFAULT_REGISTRIES[0]})
@@ -114,7 +134,7 @@ OPTIONS:
                                - amd64: Build for AMD64/x86_64 architecture
                                - arm64: Build for ARM64 architecture
                                - multi: Build for both amd64 and arm64 (multi-platform)
-                               - auto: Detect current platform automatically (default)
+                               - auto: Detect current platform automatically
 
     -h, --help              Show this help message
 
@@ -122,14 +142,15 @@ EXAMPLES:
     ${SCRIPT_NAME}                                          # Build and deploy with defaults
     ${SCRIPT_NAME} build -v                                 # Build and deploy with verbose output
     ${SCRIPT_NAME} build --registries my-registry.com       # Use custom registry
-    ${SCRIPT_NAME} build --registries "reg1.com,reg2.com"   # Push to multiple registries
     ${SCRIPT_NAME} build --no-push                          # Build without pushing
     ${SCRIPT_NAME} build --platform amd64                   # Build for AMD64 only
     ${SCRIPT_NAME} build --dry-run                          # Show what would be done
+    ${SCRIPT_NAME} release --bump minor                     # Non-interactive minor bump, tag & push
+    ${SCRIPT_NAME} show                                     # Show the current chart version
 
 ENVIRONMENT VARIABLES:
     DEPLOYMENT              Override default deployment name
-    IMAGE_NAME              Override default image name
+    IMAGE_NAME             Override default image name
     PLATFORM                Override default platform (amd64|arm64|multi|auto)
     DEFAULT_REGISTRIES_ENV  Override default registries (comma-separated)
     VERBOSE                 Enable verbose mode (true/false)
@@ -156,6 +177,19 @@ parse_args() {
             build)
                 BUILD=true
                 shift
+                ;;
+            release)
+                RELEASE_MODE=true
+                shift
+                ;;
+            show)
+                SHOW_VERSION=true
+                shift
+                ;;
+            helm-push)
+                DEV_COMMAND="$1"
+                shift
+                return
                 ;;
             help|-h|--help)
                 HELP=true
@@ -203,6 +237,10 @@ parse_args() {
                 PLATFORM="$2"
                 shift 2
                 ;;
+            --bump)
+                RELEASE_BUMP="$2"
+                shift 2
+                ;;
             -h|--help)
                 HELP=true
                 shift
@@ -246,6 +284,12 @@ parse_args() {
         exit 1
     fi
 
+    # Validate release bump parameter
+    if [[ -n "$RELEASE_BUMP" && ! "$RELEASE_BUMP" =~ ^(major|minor|bugfix|patch)$ ]]; then
+        log_error "Invalid --bump: $RELEASE_BUMP. Must be one of: major, minor, bugfix"
+        exit 1
+    fi
+
     # Validate conflicting options
     if [[ "$PUSH" == false && "$RESTART" == true ]]; then
         log_warning "Cannot restart deployment without pushing images. Setting --no-restart."
@@ -256,8 +300,16 @@ parse_args() {
 # Check if required tools are available
 check_prerequisites() {
     local tools=("docker")
-    local missing_deps=()
 
+    # Add tools needed for release / helm-push.
+    if [[ "$RELEASE_MODE" == true ]]; then
+        tools+=("git")
+    fi
+    if [[ "$RELEASE_MODE" == true || "$DEV_COMMAND" == "helm-push" ]]; then
+        tools+=("helm" "gh")
+    fi
+
+    local missing_deps=()
     for tool in "${tools[@]}"; do
         if ! command -v "$tool" >/dev/null 2>&1; then
             missing_deps+=("$tool")
@@ -268,6 +320,11 @@ check_prerequisites() {
         log_error "Missing required dependencies: ${missing_deps[*]}"
         echo "Please install the missing dependencies and try again." >&2
         exit 1
+    fi
+
+    # helm-push only needs helm + gh, not a Docker daemon.
+    if [[ "$DEV_COMMAND" == "helm-push" ]]; then
+        return
     fi
 
     # Restarting a deployment needs EITHER kubectl (direct rollout) OR a
@@ -328,6 +385,30 @@ get_platform_args() {
     echo "$platform_args"
 }
 
+# Bump a semantic version string
+bump_version() {
+    local current_version="$1"
+    local bump_type="$2"
+    IFS='.' read -r major minor patch <<< "$current_version"
+
+    case "$bump_type" in
+        major)
+            major=$((major + 1)); minor=0; patch=0;
+            ;;
+        minor)
+            minor=$((minor + 1)); patch=0;
+            ;;
+        bugfix|patch)
+            patch=$((patch + 1));
+            ;;
+        *)
+            echo "Unknown bump type: $bump_type" >&2
+            exit 1
+            ;;
+    esac
+    echo "$major.$minor.$patch"
+}
+
 # Build Docker image for multiple targets
 build_image() {
     local platform_args=$(get_platform_args)
@@ -343,11 +424,9 @@ build_image() {
     fi
 
     local build_cmd=""
-    local use_buildx=false
 
     # Use buildx for multi-platform builds or when platform is specified
     if [[ "$PLATFORM" == "multi" || (-n "$PLATFORM" && "$PLATFORM" != "auto") ]]; then
-        use_buildx=true
         build_cmd="docker buildx build $platform_args"
 
         # Add all tags
@@ -454,6 +533,37 @@ restart_deployment() {
     fi
 }
 
+# Package and push the Helm chart to ghcr.io/oglimmer as an OCI artifact.
+cmd_helm_push() {
+    local registry="${DEFAULT_REGISTRIES[0]}"
+    local version
+    version=$(chart_version)
+
+    log_info "Authenticating to GHCR via gh CLI..."
+    if ! gh auth token | helm registry login ghcr.io -u "$(gh api user --jq .login)" --password-stdin; then
+        log_error "Failed to authenticate to GHCR"
+        exit 1
+    fi
+
+    log_info "Packaging Helm chart v$version..."
+    local tmp_dir
+    tmp_dir=$(mktemp -d)
+    trap "rm -rf '$tmp_dir'" EXIT
+
+    if ! helm package "$CHART_DIR" -d "$tmp_dir"; then
+        log_error "Failed to package Helm chart"
+        exit 1
+    fi
+
+    log_info "Pushing Helm chart to oci://$registry..."
+    if helm push "$tmp_dir/${CHART_NAME}-${version}.tgz" "oci://$registry"; then
+        log_success "Helm chart v$version pushed to oci://$registry/${CHART_NAME}"
+    else
+        log_error "Failed to push Helm chart"
+        exit 1
+    fi
+}
+
 # Execute build process
 execute_build() {
     # Display configuration
@@ -485,6 +595,61 @@ execute_build() {
     echo -e "${BOLD}${GREEN}✓ All operations completed successfully${RESET}"
 }
 
+# Execute release process: bump the chart version, commit, tag and push. The
+# tag push triggers the GitHub Actions release workflow, which builds and
+# publishes the multi-arch image and creates the GitHub Release. The chart
+# itself is pushed to GHCR here.
+execute_release() {
+    log_info "Starting release process..."
+
+    local current_version
+    current_version=$(chart_version)
+    echo "Current chart version: $current_version"; echo
+
+    local bump
+    if [[ -n "$RELEASE_BUMP" ]]; then
+        bump="$RELEASE_BUMP"
+        log_info "Bump type from --bump: $bump"
+    else
+        echo "Select which part to bump (semantic versioning):"
+        echo "  1) major  - incompatible changes"
+        echo "  2) minor  - backwards-compatible new features"
+        echo "  3) bugfix - backwards-compatible bug fixes"
+        PS3="Enter choice (1-3): "
+        select bump in major minor bugfix; do
+            if [[ -n "$bump" ]]; then
+                echo "Chosen bump type: $bump"; break
+            else
+                echo "Invalid choice. Please select 1, 2, or 3.";
+            fi
+        done
+    fi
+
+    local new_version
+    new_version=$(bump_version "$current_version" "$bump")
+    log_info "Releasing version $new_version..."
+
+    # Update Helm chart version and appVersion (semver source of truth).
+    local chart_file="$CHART_DIR/Chart.yaml"
+    log_info "Updating Helm chart version to $new_version..."
+    sed -i '' "s/^version:.*/version: $new_version/" "$chart_file"
+    sed -i '' "s/^appVersion:.*/appVersion: \"$new_version\"/" "$chart_file"
+
+    # Commit, tag, and push — the tag push triggers the release workflow.
+    log_info "Committing version change and creating tag..."
+    git add "$chart_file"
+    git commit -m "Release v$new_version"
+    git tag -a "v$new_version" -m "Release v$new_version"
+
+    log_info "Pushing commit and tag to origin..."
+    git push origin HEAD
+    git push origin "v$new_version"
+
+    log_success "Release v$new_version tagged and pushed. GitHub Actions will build and publish the image."
+
+    cmd_helm_push
+}
+
 # Main execution function
 main() {
     # Show help if no arguments provided
@@ -500,8 +665,23 @@ main() {
         exit 0
     fi
 
+    if [[ "$SHOW_VERSION" == true ]]; then
+        echo "Chart version: $(chart_version)"
+        exit 0
+    fi
+
     check_prerequisites
-    execute_build
+
+    if [[ "$DEV_COMMAND" == "helm-push" ]]; then
+        cmd_helm_push
+        exit 0
+    fi
+
+    if [[ "$RELEASE_MODE" == true ]]; then
+        execute_release
+    else
+        execute_build
+    fi
 }
 
 # Run main function with all arguments

@@ -8,19 +8,18 @@ Helm chart for deploying the personal homepage built with Nuxt 3.
 - Helm 3.x
 - kubectl configured
 - cert-manager installed (for automatic TLS certificates)
-- Private registry secret created (see below)
 
-## Registry Secret
+## Container Image
 
-Create the image pull secret for the private registry:
+The image is published to GitHub Container Registry (public), so no image pull
+secret is required:
 
-```bash
-kubectl create secret docker-registry oglimmerregistrykey \
-  --docker-server=registry.oglimmer.com \
-  --docker-username=<your-username> \
-  --docker-password=<your-password> \
-  --docker-email=<your-email>
 ```
+ghcr.io/oglimmer/homepage-oglimmer-2025:latest
+```
+
+If you mirror the image to a private registry, add the pull secret to
+`imagePullSecrets` in `values.yaml`.
 
 ## Installation
 
@@ -62,10 +61,9 @@ helm uninstall homepage
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `global.imageRegistry` | Global image registry | `registry.oglimmer.com` |
-| `imagePullSecrets` | Image pull secrets for private registry | `[{name: oglimmerregistrykey}]` |
+| `imagePullSecrets` | Image pull secrets (public image needs none) | `[]` |
 | `replicaCount` | Number of replicas | `2` |
-| `image.repository` | Image repository (without registry) | `homepage-oglimmer-2025` |
+| `image.repository` | Full image repository (with registry) | `ghcr.io/oglimmer/homepage-oglimmer-2025` |
 | `image.pullPolicy` | Image pull policy | `Always` |
 | `image.tag` | Image tag | `latest` |
 | `service.type` | Service type | `ClusterIP` |
@@ -221,14 +219,8 @@ curl -v https://www.oglimmer.de
 ### Image Pull Errors
 
 ```bash
-# Check if secret exists
-kubectl get secret oglimmerregistrykey
-
-# Verify secret is configured correctly
-kubectl get secret oglimmerregistrykey -o yaml
-
-# Test pulling image manually
-docker pull registry.oglimmer.com/homepage-oglimmer-2025:latest
+# Test pulling image manually (the image is public)
+docker pull ghcr.io/oglimmer/homepage-oglimmer-2025:latest
 ```
 
 ### Certificate Issues
