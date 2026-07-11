@@ -1,8 +1,7 @@
 {
   "extends": "./.nuxt/tsconfig.node.json",
   "compilerOptions": {
-    "composite": true,
-    "types": ["vitest/globals", "node"]
+    "composite": true
   },
-  "include": ["vitest.config.ts", "tests/**/*.ts"]
+  "include": ["vitest.config.ts", "tests/**/*.ts", "types/vitest-shims.d.ts"]
 }
