@@ -112,6 +112,7 @@ COMMANDS:
     build               Build and deploy (default)
     release             Bump semver (Chart.yaml), commit, tag, push & helm-push
     helm-push           Package and push the Helm chart to ${DEFAULT_REGISTRIES[0]}
+    test                Install deps if needed, then run lint & build
     show                Show the current chart version
 
 BUILD OPTIONS:
@@ -146,6 +147,7 @@ EXAMPLES:
     ${SCRIPT_NAME} build --platform amd64                   # Build for AMD64 only
     ${SCRIPT_NAME} build --dry-run                          # Show what would be done
     ${SCRIPT_NAME} release --bump minor                     # Non-interactive minor bump, tag & push
+    ${SCRIPT_NAME} test                                     # Run lint & build (fresh-clone safe)
     ${SCRIPT_NAME} show                                     # Show the current chart version
 
 ENVIRONMENT VARIABLES:
@@ -186,7 +188,7 @@ parse_args() {
                 SHOW_VERSION=true
                 shift
                 ;;
-            helm-push)
+            helm-push|test)
                 DEV_COMMAND="$1"
                 shift
                 return
@@ -299,6 +301,15 @@ parse_args() {
 
 # Check if required tools are available
 check_prerequisites() {
+    # Tests only need Node/npm — no Docker, kubectl, helm or gh.
+    if [[ "$DEV_COMMAND" == "test" ]]; then
+        if ! command -v npm >/dev/null 2>&1; then
+            log_error "npm is required to run tests but was not found in PATH"
+            exit 1
+        fi
+        return
+    fi
+
     local tools=("docker")
 
     # Add tools needed for release / helm-push.
@@ -564,6 +575,27 @@ cmd_helm_push() {
     fi
 }
 
+# Run the project checks non-interactively. Designed to work on a fresh clone:
+# dependencies are installed from the lockfile (npm ci) when node_modules is
+# missing, then lint and build run. Both are deterministic from the lockfile —
+# the project has no separate unit-test suite. (typecheck is intentionally left
+# out: `nuxi typecheck` fetches its TypeScript/vue-tsc toolchain on demand via
+# npx rather than from the lockfile, so it isn't fresh-clone deterministic.)
+cmd_test() {
+    if [[ ! -d "$SCRIPT_DIR/node_modules" ]]; then
+        log_info "Installing dependencies (npm ci)..."
+        (cd "$SCRIPT_DIR" && npm ci)
+    fi
+
+    log_info "Running ESLint..."
+    (cd "$SCRIPT_DIR" && npm run lint)
+
+    log_info "Building project..."
+    (cd "$SCRIPT_DIR" && npm run build)
+
+    log_success "All checks passed"
+}
+
 # Execute build process
 execute_build() {
     # Display configuration
@@ -674,6 +706,11 @@ main() {
 
     if [[ "$DEV_COMMAND" == "helm-push" ]]; then
         cmd_helm_push
+        exit 0
+    fi
+
+    if [[ "$DEV_COMMAND" == "test" ]]; then
+        cmd_test
         exit 0
     fi
 

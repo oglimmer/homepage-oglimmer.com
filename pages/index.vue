@@ -42,6 +42,7 @@
                 rel="noopener noreferrer"
                 class="group flex items-center gap-2.5 text-sm text-bone/70 transition-colors hover:text-marigold-300"
               >
+                <!-- eslint-disable-next-line vue/no-v-html -- s.icon is a static, hardcoded inline SVG (see socials below), not user input -->
                 <span class="text-bone/40 transition-colors group-hover:text-marigold-400" v-html="s.icon" />
                 {{ s.label }}
                 <span aria-hidden="true" class="ml-auto text-bone/20 transition-transform group-hover:translate-x-0.5 group-hover:text-marigold-400">↗</span>
