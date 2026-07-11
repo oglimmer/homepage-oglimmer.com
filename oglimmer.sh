@@ -112,7 +112,7 @@ COMMANDS:
     build               Build and deploy (default)
     release             Bump semver (Chart.yaml), commit, tag, push & helm-push
     helm-push           Package and push the Helm chart to ${DEFAULT_REGISTRIES[0]}
-    test                Install deps if needed, then run lint & build
+    test                Install deps if needed, then run lint, typecheck & build
     show                Show the current chart version
 
 BUILD OPTIONS:
@@ -147,7 +147,7 @@ EXAMPLES:
     ${SCRIPT_NAME} build --platform amd64                   # Build for AMD64 only
     ${SCRIPT_NAME} build --dry-run                          # Show what would be done
     ${SCRIPT_NAME} release --bump minor                     # Non-interactive minor bump, tag & push
-    ${SCRIPT_NAME} test                                     # Run lint & build (fresh-clone safe)
+    ${SCRIPT_NAME} test                                     # Run lint, typecheck & build (fresh-clone safe)
     ${SCRIPT_NAME} show                                     # Show the current chart version
 
 ENVIRONMENT VARIABLES:
@@ -577,10 +577,10 @@ cmd_helm_push() {
 
 # Run the project checks non-interactively. Designed to work on a fresh clone:
 # dependencies are installed from the lockfile (npm ci) when node_modules is
-# missing, then lint and build run. Both are deterministic from the lockfile —
-# the project has no separate unit-test suite. (typecheck is intentionally left
-# out: `nuxi typecheck` fetches its TypeScript/vue-tsc toolchain on demand via
-# npx rather than from the lockfile, so it isn't fresh-clone deterministic.)
+# missing, then lint, typecheck and build run — the same checks CI runs (the
+# project has no separate unit-test suite). All three are deterministic from the
+# lockfile: typescript and vue-tsc are pinned devDependencies, so `nuxi
+# typecheck` uses the local toolchain instead of fetching it on demand via npx.
 cmd_test() {
     if [[ ! -d "$SCRIPT_DIR/node_modules" ]]; then
         log_info "Installing dependencies (npm ci)..."
@@ -589,6 +589,9 @@ cmd_test() {
 
     log_info "Running ESLint..."
     (cd "$SCRIPT_DIR" && npm run lint)
+
+    log_info "Running type-check..."
+    (cd "$SCRIPT_DIR" && npm run typecheck)
 
     log_info "Building project..."
     (cd "$SCRIPT_DIR" && npm run build)
