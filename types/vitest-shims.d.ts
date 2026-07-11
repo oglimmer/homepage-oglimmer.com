@@ -8,9 +8,20 @@
 declare module 'vitest' {
   export const describe: (name: string, fn: () => void) => void
   export const it: (name: string, fn: () => void | Promise<void>) => void
-  export const expect: unknown
+
+  interface ExpectMatchers {
+    toBe: (expected: unknown) => void
+    toEqual: (expected: unknown) => void
+    toHaveBeenCalledTimes: (times: number) => void
+  }
+
+  export const expect: (actual: unknown) => ExpectMatchers
+
   export const vi: {
-    fn: (...args: unknown[]) => unknown
+    fn: (...args: unknown[]) => {
+      (...args: unknown[]): unknown
+      [key: string]: unknown
+    }
     [key: string]: unknown
   }
 }
