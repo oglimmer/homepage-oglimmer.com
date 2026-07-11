@@ -250,14 +250,18 @@
 import { type BlogPost, getDeduplicatedPosts, getTranslation, formatBlogDate } from '~/data/blog-posts'
 import { projects as allProjects, parseTechList } from '~/data/projects'
 import { k8sPortalItems as allK8sPortalItems } from '~/data/k8s-portal'
-import { runTypewriter } from '~/utils/typewriter'
+import { runTypewriter, typedSlice } from '~/utils/typewriter'
 
 const heroName = 'Oli'
-const typedText = ref('')
-const typingDone = ref(false)
+// Render the full name for SSR / no-JS so the greeting is never blank,
+// then reset to the first slice before the client-side animation starts.
+const typedText = ref(typedSlice(heroName, heroName.length))
+const typingDone = ref(true)
 let stopTypewriter: (() => void) | null = null
 
 onMounted(() => {
+  typedText.value = typedSlice(heroName, 0)
+  typingDone.value = false
   stopTypewriter = runTypewriter(heroName, (value) => {
     typedText.value = value
   }, {
