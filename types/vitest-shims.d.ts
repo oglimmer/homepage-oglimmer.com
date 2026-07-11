@@ -8,12 +8,15 @@
 declare module 'vitest' {
   export const describe: (name: string, fn: () => void) => void
   export const it: (name: string, fn: () => void | Promise<void>) => void
-  export const expect: any
-  export const vi: any
+  export const expect: unknown
+  export const vi: {
+    fn: (...args: unknown[]) => unknown
+    [key: string]: unknown
+  }
 }
 
 declare module 'vitest/config' {
-  export function defineConfig(config: any): any
+  export function defineConfig(config: Record<string, unknown>): Record<string, unknown>
 }
 
 declare module 'node:url' {
