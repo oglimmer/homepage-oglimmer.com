@@ -35,7 +35,7 @@ describe('runTypewriter', () => {
     const updates: string[] = []
     const onDone = vi.fn()
 
-    runTypewriter('Oli', (value) => updates.push(value), {
+    runTypewriter("Hi, I'm Oli.", (value) => updates.push(value), {
       speed: 5,
       onDone: () => {
         onDone()
@@ -44,13 +44,40 @@ describe('runTypewriter', () => {
 
     // startDelay defaults to 0, so the first character fires at time 0.
     vi.advanceTimersByTime(1)
-    expect(updates).toEqual(['O'])
+    expect(updates).toEqual(['H'])
 
     vi.advanceTimersByTime(5)
-    expect(updates).toEqual(['O', 'Ol'])
+    expect(updates).toEqual(['H', 'Hi'])
 
     vi.advanceTimersByTime(5)
-    expect(updates).toEqual(['O', 'Ol', 'Oli'])
+    expect(updates).toEqual(['H', 'Hi', 'Hi,'])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, '])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm "])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O", "Hi, I'm Ol"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O", "Hi, I'm Ol", "Hi, I'm Oli"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O", "Hi, I'm Ol", "Hi, I'm Oli", "Hi, I'm Oli."])
     expect(onDone).toHaveBeenCalledTimes(1)
   })
 
