@@ -19,9 +19,9 @@ describe('typedSlice', () => {
   })
 
   it('produces the frame-by-frame sequence used by the hero typing effect', () => {
-    const name = 'Oli'
+    const name = "Hi, I'm Oli."
     const frames = Array.from({ length: name.length + 1 }, (_, i) => typedSlice(name, i))
-    expect(frames).toEqual(['', 'O', 'Ol', 'Oli'])
+    expect(frames).toEqual(['', 'H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O", "Hi, I'm Ol", "Hi, I'm Oli", "Hi, I'm Oli."])
   })
 })
 
