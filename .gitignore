@@ -25,6 +25,9 @@ logs
 .impeccable/
 skills-lock.json
 
+# TypeScript incremental build info
+*.tsbuildinfo
+
 # Local env files
 .env
 .env.*
