@@ -8,6 +8,7 @@
 declare module 'vitest' {
   export const describe: (name: string, fn: () => void) => void
   export const it: (name: string, fn: () => void | Promise<void>) => void
+  export const afterEach: (fn: () => void) => void
 
   interface ExpectMatchers {
     toBe: (expected: unknown) => void
@@ -17,12 +18,16 @@ declare module 'vitest' {
 
   export const expect: (actual: unknown) => ExpectMatchers
 
-  export const vi: {
-    fn: (...args: unknown[]) => {
-      (...args: unknown[]): unknown
-      [key: string]: unknown
-    }
+  interface Mock {
+    (...args: unknown[]): unknown
     [key: string]: unknown
+  }
+
+  export const vi: {
+    fn: (...args: unknown[]) => Mock
+    useFakeTimers: () => void
+    useRealTimers: () => void
+    advanceTimersByTime: (ms: number) => void
   }
 }
 

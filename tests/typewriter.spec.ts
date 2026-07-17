@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi, afterEach } from 'vitest'
 import { runTypewriter, typedSlice } from '../utils/typewriter'
 
 // `typedSlice` is the core of the typing effect and is what the hero page uses
@@ -19,55 +19,96 @@ describe('typedSlice', () => {
   })
 
   it('produces the frame-by-frame sequence used by the hero typing effect', () => {
-    const name = 'Oli'
+    const name = "Hi, I'm Oli."
     const frames = Array.from({ length: name.length + 1 }, (_, i) => typedSlice(name, i))
-    expect(frames).toEqual(['', 'O', 'Ol', 'Oli'])
+    expect(frames).toEqual(['', 'H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O", "Hi, I'm Ol", "Hi, I'm Oli", "Hi, I'm Oli."])
   })
 })
 
 describe('runTypewriter', () => {
-  it('types out the text one character at a time and calls onDone', async () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('types out the text one character at a time and calls onDone', () => {
+    vi.useFakeTimers()
     const updates: string[] = []
     const onDone = vi.fn()
 
-    await new Promise<void>((resolve) => {
-      runTypewriter('Oli', (value) => updates.push(value), {
-        speed: 5,
-        onDone: () => {
-          onDone()
-          resolve()
-        },
-      })
+    runTypewriter("Hi, I'm Oli.", (value) => updates.push(value), {
+      speed: 5,
+      onDone: () => {
+        onDone()
+      },
     })
 
-    expect(updates).toEqual(['O', 'Ol', 'Oli'])
+    // startDelay defaults to 0, so the first character fires at time 0.
+    vi.advanceTimersByTime(1)
+    expect(updates).toEqual(['H'])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi'])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,'])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, '])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm "])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O", "Hi, I'm Ol"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O", "Hi, I'm Ol", "Hi, I'm Oli"])
+
+    vi.advanceTimersByTime(5)
+    expect(updates).toEqual(['H', 'Hi', 'Hi,', 'Hi, ', "Hi, I", "Hi, I'", "Hi, I'm", "Hi, I'm ", "Hi, I'm O", "Hi, I'm Ol", "Hi, I'm Oli", "Hi, I'm Oli."])
     expect(onDone).toHaveBeenCalledTimes(1)
   })
 
-  it('stops updating after the returned cleanup function is called', async () => {
+  it('stops updating after the returned cleanup function is called', () => {
+    vi.useFakeTimers()
     const updates: string[] = []
 
     const stop = runTypewriter('Hello', (value) => updates.push(value), { speed: 5 })
 
     // Let the first character render, then cancel.
-    await new Promise<void>((resolve) => setTimeout(resolve, 8))
+    vi.advanceTimersByTime(1)
+    expect(updates).toEqual(['H'])
     stop()
 
-    const countAfterStop = updates.length
-    await new Promise<void>((resolve) => setTimeout(resolve, 40))
-    expect(updates.length).toBe(countAfterStop)
+    // Advance well past the next tick — no more updates should fire.
+    vi.advanceTimersByTime(100)
     expect(updates).toEqual(['H'])
   })
 
-  it('respects startDelay before beginning', async () => {
+  it('respects startDelay before beginning', () => {
+    vi.useFakeTimers()
     const updates: string[] = []
 
     runTypewriter('Hi', (value) => updates.push(value), { speed: 5, startDelay: 40 })
 
-    await new Promise<void>((resolve) => setTimeout(resolve, 20))
+    // At 20 ms the startDelay has not elapsed yet.
+    vi.advanceTimersByTime(20)
     expect(updates).toEqual([])
 
-    await new Promise<void>((resolve) => setTimeout(resolve, 40))
+    // Advance past the 40 ms startDelay — the first character should fire.
+    vi.advanceTimersByTime(21)
     expect(updates).toEqual(['H'])
   })
 })
