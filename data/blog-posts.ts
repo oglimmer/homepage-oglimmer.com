@@ -34,6 +34,53 @@ export function formatBlogDate(dateString: string, lang: string = 'en'): string 
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'coding-guidelines-that-ai-actually-reads',
+    title: 'Coding Guidelines That AI Actually Reads',
+    description: 'Why I wrote my coding conventions as standalone markdown docs and wrapped them in a skill that feeds AI only the ones a task actually needs',
+    date: '2026-07-20',
+    content: `Every time I start a new project - or even just a new AI coding session on an old one - I end up re-explaining the same things. Layered packages: \`controller\` to \`service\` to \`repository\`, nothing skipping a layer. An \`@Entity\` never crosses the controller boundary - every request and response is a DTO. No MapStruct; I let the AI write the entity-to-DTO mapping out by hand so it shows up in the diff. Lombok for the boilerplate. Multi-stage Docker build, run as non-root.
+
+None of this is written down anywhere an AI can see it. It lives in my head and, implicitly, in a dozen existing repos. So an agent starting fresh does what agents always do: it reaches for the most generic, most average version of whatever I asked for. Different router, a logging framework I don't use, a config library I don't use, a project layout that isn't mine.
+
+The code works. It just doesn't look like mine. And then I spend the review nudging it back toward how I actually build things. Every single time.
+
+So I wrote it all down.
+
+## One file per concept
+
+The result is a small repo of markdown files - one per concept. Go backend, Java Spring backend, Vue frontend, Nuxt frontend, Postgres from Go, Postgres from Spring, Docker, Helm, GitHub Actions, Renovate, pre-commit, observability, MCP servers, testing, versioning, and my \`oglimmer.sh\` deploy script. Sixteen documents at the moment.
+
+Each one is precise and opinionated on purpose. It doesn't describe every option that exists - it states what I build toward. The Spring Boot doc, for example, opens with its philosophy and then gets blunt:
+
+> No MariaDB, no form-login-only auth, no ad-hoc \`RestTemplate\` — unless a project has a specific reason.
+
+That single line saves a whole round of nudging the AI back toward how I actually do it. The docs are deliberately repo-agnostic - they assume no particular layout beyond the paths they name - so the same Go doc applies whether I'm scaffolding something new or extending a five-year-old service.
+
+Writing them was more valuable than I expected. You cannot write "this is how we do Postgres access" without actually deciding how you do Postgres access. A lot of my conventions had never been stated out loud; they were just habits. Putting them on paper forced me to notice where two of my repos disagreed and pick a winner.
+
+## Don't make the AI read all sixteen
+
+Sixteen documents is too much context to dump into every session, and most of it is irrelevant to any given task. A Nuxt static site doesn't care about the pgx pooler settings.
+
+So the conventions are wrapped in a small skill whose entire job is routing. Before it reads anything, it answers three questions: what are we doing (scaffolding, extending, or reviewing), which layers does the task actually touch, and is this a repo I already have notes on. It detects the stack from markers in the repo - a \`go.mod\`, a \`nuxt.config.ts\`, a \`Chart.yaml\` - and then reads only the matching docs.
+
+That's the whole trick. The AI gets my exact conventions for the two or three layers it's working on, and none of the noise. It builds in my style from the first attempt instead of the third.
+
+## Keeping myself honest
+
+The last piece is a set of assessments - a folder that audits my live repos against these guidelines. For each project it records the stack, which docs apply, where the repo matches the target, and where it drifts. There's an adoption matrix with a lot of ⚠️ and ❌ in it.
+
+This part is not aspirational marketing; it's a to-do list. It tells me which repo is still on an old action pin, which one has no Renovate config, which one's CI is stale. The guidelines say what good looks like, and the assessment says how far each repo is from it. Both the AI and I use it: when the agent works on a known repo, its actual state overrides the generic advice, so it fixes the real gap instead of imposing the ideal wholesale.
+
+## The point
+
+This is the same idea I keep coming back to, most recently with [Renovate Initializr](/blog/intent-driven-configuration-rethinking-the-renovate-onboarding-experience): I don't want to re-derive a decision I've already made. I made these choices once. I shouldn't have to re-argue them with a fresh AI session every week.
+
+None of this is universal truth - it's my house style, opinionated on purpose, and yours would look different. But that's exactly why it has to be written down. An AI agent will happily match your conventions, if it can find them. Mine used to be invisible. Now they're sixteen markdown files and a skill that hands over the right two.
+
+The nice side effect: the docs are just as useful for the human. When I forget how I decided to handle context paths or migrations, I read my own guideline. Turns out writing things down so the machine understands them makes them clearer for me too.`,
+  },
+  {
     slug: 'from-documentary-to-infographic-an-ai-adventure',
     title: 'From Documentary to Infographic: An AI Adventure',
     description: 'How I turned an Arte TV documentary about ancient Egypt into a graphical info sheet using ffmpeg, Whisper, and Claude',
