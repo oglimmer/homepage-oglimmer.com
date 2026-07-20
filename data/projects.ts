@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "ID5 IRL Attendance App",
+    text: "A web app for collecting attendee information ahead of company offsites (\"IRLs\"). Admins (IRL team) configure an event once; employees sign in with Google SSO (restricted to @oglimmer.com) and submit attendance + travel details via a form with conditional logic. The app tracks non-responders, sends invitations + tz-aware reminders over email or Slack, logs all activity, and exports responses. Events can carry a cover image, and the admin activity timeline is filterable by participant vs. admin actions.",
+    linkData: [
+      ["https://irl-planner.oglimmer.com/", "Web"],
+      ["https://github.com/oglimmer/irl-planner-pro", "source code"]
+    ],
+    techList: "[Go, Vue, TypeScript, Shell, CSS, Go Template]"
+  },
+  {
     title: "Coding Agent - Self-Service Feature Development Platform",
     text: "Self-service platform where authenticated users request features against configured GitHub repositories and an autonomous coding agent implements them end-to-end — with tests — opens a pull request, waits for the repository's GitHub Action review, and fixes the findings. It then auto-merges the approved PR, or — if the requester turns auto-merge off — stops at an approved, green PR and leaves the final merge to a human.",
     linkData: [

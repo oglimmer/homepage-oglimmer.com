@@ -5,6 +5,45 @@ function findProject(title: string, list: Project[]): Project | undefined {
   return list.find(p => p.title === title)
 }
 
+describe('Data: ID5 IRL Attendance App project', () => {
+  const irlPlannerProject = findProject('ID5 IRL Attendance App', projects)
+
+  it('is present in the projects array', () => {
+    expect(irlPlannerProject !== undefined).toBe(true)
+  })
+
+  it('has the correct title', () => {
+    expect(irlPlannerProject!.title).toBe('ID5 IRL Attendance App')
+  })
+
+  it('has two links', () => {
+    expect(irlPlannerProject!.linkData.length).toBe(2)
+  })
+
+  it('has the Web link to irl-planner.oglimmer.com', () => {
+    const webLink = irlPlannerProject!.linkData.find(([, label]) => label === 'Web')
+    expect(webLink !== undefined).toBe(true)
+    expect(webLink![0]).toBe('https://irl-planner.oglimmer.com/')
+  })
+
+  it('has the source code link to the GitHub repo', () => {
+    const sourceLink = irlPlannerProject!.linkData.find(([, label]) => label === 'source code')
+    expect(sourceLink !== undefined).toBe(true)
+    expect(sourceLink![0]).toBe('https://github.com/oglimmer/irl-planner-pro')
+  })
+
+  it('lists the technologies from the repository', () => {
+    expect(irlPlannerProject!.techList).toBe('[Go, Vue, TypeScript, Shell, CSS, Go Template]')
+  })
+
+  it('mentions Google SSO, offsites, and conditional logic in the description', () => {
+    const text = irlPlannerProject!.text
+    expect(text.includes('Google SSO')).toBe(true)
+    expect(text.includes('offsites')).toBe(true)
+    expect(text.includes('conditional logic')).toBe(true)
+  })
+})
+
 describe('Data: coding-agent project', () => {
   const codingAgentProject = findProject('Coding Agent - Self-Service Feature Development Platform', projects)
 
