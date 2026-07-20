@@ -48,7 +48,7 @@ So I wrote it all down.
 
 ## One file per concept
 
-The result is a small repo of markdown files - one per concept. Go backend, Java Spring backend, Vue frontend, Nuxt frontend, Postgres from Go, Postgres from Spring, Docker, Helm, GitHub Actions, Renovate, pre-commit, observability, MCP servers, testing, versioning, and my \`oglimmer.sh\` deploy script. Sixteen documents at the moment.
+The result is [a small repo of markdown files](https://github.com/oglimmer/coding-guidelines) - one per concept. Go backend, Java Spring backend, Vue frontend, Nuxt frontend, Postgres from Go, Postgres from Spring, Docker, Helm, GitHub Actions, Renovate, pre-commit, observability, MCP servers, testing, versioning, and my \`oglimmer.sh\` deploy script. Sixteen documents at the moment.
 
 Each one is precise and opinionated on purpose. It doesn't describe every option that exists - it states what I build toward. The Spring Boot doc, for example, opens with its philosophy and then gets blunt:
 
@@ -78,7 +78,9 @@ This is the same idea I keep coming back to, most recently with [Renovate Initia
 
 None of this is universal truth - it's my house style, opinionated on purpose, and yours would look different. But that's exactly why it has to be written down. An AI agent will happily match your conventions, if it can find them. Mine used to be invisible. Now they're sixteen markdown files and a skill that hands over the right two.
 
-The nice side effect: the docs are just as useful for the human. When I forget how I decided to handle context paths or migrations, I read my own guideline. Turns out writing things down so the machine understands them makes them clearer for me too.`,
+The nice side effect: the docs are just as useful for the human. When I forget how I decided to handle context paths or migrations, I read my own guideline. Turns out writing things down so the machine understands them makes them clearer for me too.
+
+The guidelines are public if you want to borrow the idea (or the conventions themselves): [github.com/oglimmer/coding-guidelines](https://github.com/oglimmer/coding-guidelines).`,
   },
   {
     slug: 'from-documentary-to-infographic-an-ai-adventure',
