@@ -98,6 +98,16 @@ export const k8sPortalItems: K8sPortalItem[] = [
     linkData: [["https://argocd.oglimmer.com/", "Dashboard"]],
     techList: "[k8s, continuous-deployment, git, deployment]",
   },
+  {
+    imageSrc: "pgadmin.jpeg",
+    title: "pgAdmin",
+    text: "Web-based administration and management tool for PostgreSQL databases",
+    linkData: [
+      ["https://pgadmin.oglimmer.com/", "Dashboard"],
+      ["https://www.pgadmin.org/", "Home page"],
+    ],
+    techList: "[k8s, postgres, database, pgadmin]",
+  },
 ]
 
 // Helper function to parse tech list string (same as in projects.ts)
