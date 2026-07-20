@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Coding Agent - Self-Service Feature Development Platform",
+    text: "Self-service platform where authenticated users request features against configured GitHub repositories and an autonomous coding agent implements them end-to-end — with tests — opens a pull request, waits for the repository's GitHub Action review, and fixes the findings. It then auto-merges the approved PR, or — if the requester turns auto-merge off — stops at an approved, green PR and leaves the final merge to a human.",
+    linkData: [
+      ["https://coding-agent.oglimmer.com/", "Web"],
+      ["https://github.com/oglimmer/coding-agent", "source code"]
+    ],
+    techList: "[Go, Shell, Vue, TypeScript, Docker, CSS]"
+  },
+  {
     title: "Trivia - Real-Time Multiplayer Trivia Game",
     text: "A mobile-first, real-time trivia game where players upload a photo and a question, the host runs the round, everyone answers live, and scores are revealed with a podium finish. Live updates via WebSocket, time-bonus scoring, scheduled-start games, and optional magic-link email login so players can rejoin from any device.",
     linkData: [

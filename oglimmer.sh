@@ -593,6 +593,9 @@ cmd_test() {
     log_info "Running type-check..."
     (cd "$SCRIPT_DIR" && npm run typecheck)
 
+    log_info "Running tests (vitest)..."
+    (cd "$SCRIPT_DIR" && npm run test)
+
     log_info "Building project..."
     (cd "$SCRIPT_DIR" && npm run build)
 
