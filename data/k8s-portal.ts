@@ -68,13 +68,6 @@ export const k8sPortalItems: K8sPortalItem[] = [
     techList: "[k8s, mvn, maven, repository]",
   },
   {
-    imageSrc: "git-deploy-control.jpeg",
-    title: "Release Management UI",
-    text: "Custom build system for git based version control",
-    linkData: [["https://git-deploy-control.oglimmer.com/", "Dashboard"]],
-    techList: "[k8s, continuous-deployment, git, deployment]",
-  },
-  {
     imageSrc: "haproxy.jpeg",
     title: "HAProxy",
     text: "Network load balancer / layer 4 reverse proxy",
