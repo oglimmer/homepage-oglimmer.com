@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import IndexPage from '~/pages/index.vue'
+import { vReveal, vCount } from '../utils/directives'
 
 describe('Landing page', () => {
   it('contains the pun tagline', () => {
@@ -14,16 +15,8 @@ describe('Landing page', () => {
           },
         },
         directives: {
-          reveal: {
-            getSSRProps: () => ({}),
-            mounted: () => {},
-            unmounted: () => {},
-          },
-          count: {
-            getSSRProps: () => ({}),
-            mounted: () => {},
-            unmounted: () => {},
-          },
+          reveal: vReveal,
+          count: vCount,
         },
       },
     })
