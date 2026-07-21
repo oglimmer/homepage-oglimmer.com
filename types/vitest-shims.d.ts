@@ -13,6 +13,7 @@ declare module 'vitest' {
   interface ExpectMatchers {
     toBe: (expected: unknown) => void
     toEqual: (expected: unknown) => void
+    toContain: (expected: string) => void
     toHaveBeenCalledTimes: (times: number) => void
   }
 
@@ -37,4 +38,12 @@ declare module 'vitest/config' {
 
 declare module 'node:url' {
   export function fileURLToPath(url: string | URL): string
+}
+
+declare module 'node:fs' {
+  export function readFileSync(path: string, encoding: string): string
+}
+
+declare module 'node:path' {
+  export function resolve(...paths: string[]): string
 }
