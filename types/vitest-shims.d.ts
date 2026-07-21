@@ -40,10 +40,22 @@ declare module 'node:url' {
   export function fileURLToPath(url: string | URL): string
 }
 
-declare module 'node:fs' {
-  export function readFileSync(path: string, encoding: string): string
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<Record<string, unknown>, Record<string, unknown>, unknown>
+  export default component
 }
 
-declare module 'node:path' {
-  export function resolve(...paths: string[]): string
+declare module '@vue/test-utils' {
+  interface MountOptions {
+    global?: {
+      stubs?: Record<string, unknown>
+      directives?: Record<string, unknown>
+    }
+  }
+  interface VueWrapper {
+    text: () => string
+  }
+  export function mount<T>(component: T, options?: MountOptions): VueWrapper
 }
+

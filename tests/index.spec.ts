@@ -1,14 +1,32 @@
+// @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest'
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { mount } from '@vue/test-utils'
+import IndexPage from '~/pages/index.vue'
 
 describe('Landing page', () => {
-  const __dirname = fileURLToPath(new URL('.', import.meta.url))
-  const indexPath = resolve(__dirname, '../pages/index.vue')
-  const content = readFileSync(indexPath, 'utf-8')
-
   it('contains the pun tagline', () => {
-    expect(content).toContain('This page intentionally left punny')
+    const wrapper = mount(IndexPage, {
+      global: {
+        stubs: {
+          NuxtLink: {
+            template: '<a :href="to"><slot /></a>',
+            props: ['to'],
+          },
+        },
+        directives: {
+          reveal: {
+            getSSRProps: () => ({}),
+            mounted: () => {},
+            unmounted: () => {},
+          },
+          count: {
+            getSSRProps: () => ({}),
+            mounted: () => {},
+            unmounted: () => {},
+          },
+        },
+      },
+    })
+    expect(wrapper.text()).toContain('This page intentionally left punny')
   })
 })
