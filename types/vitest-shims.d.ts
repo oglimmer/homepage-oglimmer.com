@@ -13,6 +13,7 @@ declare module 'vitest' {
   interface ExpectMatchers {
     toBe: (expected: unknown) => void
     toEqual: (expected: unknown) => void
+    toContain: (expected: string) => void
     toHaveBeenCalledTimes: (times: number) => void
   }
 
@@ -38,3 +39,23 @@ declare module 'vitest/config' {
 declare module 'node:url' {
   export function fileURLToPath(url: string | URL): string
 }
+
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<Record<string, unknown>, Record<string, unknown>, unknown>
+  export default component
+}
+
+declare module '@vue/test-utils' {
+  interface MountOptions {
+    global?: {
+      stubs?: Record<string, unknown>
+      directives?: Record<string, unknown>
+    }
+  }
+  interface VueWrapper {
+    text: () => string
+  }
+  export function mount<T>(component: T, options?: MountOptions): VueWrapper
+}
+

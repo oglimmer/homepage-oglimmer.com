@@ -14,6 +14,9 @@
           I lead software engineering teams, and I build useful apps plus small
           web experiments for the pure joy of making things.
         </p>
+        <p class="mt-6 font-mono text-sm text-marigold-400/60 animate-rise-in" style="animation-delay: 170ms;">
+          // This page intentionally left punny
+        </p>
         <div class="mt-9 flex flex-wrap items-center gap-4 animate-rise-in" style="animation-delay: 220ms;">
           <a href="#work" class="btn-primary">See the work <span aria-hidden="true">↓</span></a>
           <NuxtLink to="/blog" class="btn-ghost">Read the blog <span aria-hidden="true">→</span></NuxtLink>
