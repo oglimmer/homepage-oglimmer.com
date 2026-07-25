@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Registry Cleaner - Docker Registry Retention & GC",
+    text: "A Helm chart that deploys a Kubernetes CronJob to keep a distribution/registry (Docker Registry v2) lean: for every repository it keeps the newest few manifests per a configurable retention policy (named vs. unnamed tags) and deletes the rest via the registry API, then reclaims disk by running registry garbage-collect inside the registry pod. An optional always-on viewer walks the registry itself to show live inventory, an always-on dry-run preview of what the next run would prune, last-run status, and an inline retention-policy editor. The viewer is a single distroless Go binary that talks to the Kubernetes API directly with a tightly-scoped in-cluster ServiceAccount.",
+    linkData: [
+      ["https://registry-cleaner.oglimmer.com/", "Web"],
+      ["https://github.com/oglimmer/registry-cleaner", "source code"]
+    ],
+    techList: "[Go, HTML, Shell, Helm, Kubernetes, CronJob, distroless, Docker]"
+  },
+  {
     title: "ID5 IRL Attendance App",
     text: "A web app for collecting attendee information ahead of company offsites (\"IRLs\"). Admins (IRL team) configure an event once; employees sign in with Google SSO (restricted to @oglimmer.com) and submit attendance + travel details via a form with conditional logic. The app tracks non-responders, sends invitations + tz-aware reminders over email or Slack, logs all activity, and exports responses. Events can carry a cover image, and the admin activity timeline is filterable by participant vs. admin actions.",
     linkData: [
