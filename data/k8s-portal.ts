@@ -43,6 +43,7 @@ export const k8sPortalItems: K8sPortalItem[] = [
     text: "Simple and secure container image registry",
     linkData: [
       ["https://registry.oglimmer.com/ui/", "Dashboard"],
+      ["https://registry-cleaner.oglimmer.com/", "Cleaner"],
       ["https://distribution.github.io/distribution/", "Home page"],
     ],
     techList: "[k8s, docker, container-registry, container]",

@@ -8,7 +8,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: "Registry Cleaner - Docker Registry Retention & GC",
-    text: "A Helm chart that deploys a Kubernetes CronJob to keep a distribution/registry (Docker Registry v2) lean: for every repository it keeps the newest few manifests per a configurable retention policy (named vs. unnamed tags) and deletes the rest via the registry API, then reclaims disk by running registry garbage-collect inside the registry pod. An optional always-on viewer walks the registry itself to show live inventory, an always-on dry-run preview of what the next run would prune, last-run status, and an inline retention-policy editor. The viewer is a single distroless Go binary that talks to the Kubernetes API directly with a tightly-scoped in-cluster ServiceAccount.",
+    text: "A Helm chart deploying a Kubernetes CronJob that keeps a Docker Registry v2 lean: it prunes old manifests per a configurable retention policy, then runs registry garbage-collect to reclaim disk. An optional viewer (a single distroless Go binary talking to the Kubernetes API) shows live inventory, a dry-run preview of what the next run would prune, last-run status, and an inline policy editor.",
     linkData: [
       ["https://registry-cleaner.oglimmer.com/", "Web"],
       ["https://github.com/oglimmer/registry-cleaner", "source code"]
