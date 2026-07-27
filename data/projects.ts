@@ -7,6 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Wisp - Folder-Based Markdown Note Editor",
+    text: "A lightweight Electron note editor for macOS that keeps notes as plain Markdown files in a folder you pick — no database, no index, no rendering: what you see is exactly what's on disk. Ships a file tree, raw-text editor with find & replace, unsaved-change indicator, and date-based reminders (daily/weekly/monthly/yearly) stored as JSON next to the notes. Hardened by default with context isolation, Node integration off, and path-traversal guards.",
+    linkData: [
+      ["https://oglimmer.github.io/wisp-homepage/", "Web"],
+      ["https://github.com/oglimmer/wisp", "source code"]
+    ],
+    techList: "[Electron, JavaScript, Node.js, electron-builder, Homebrew, macOS, GitHub Actions]"
+  },
+  {
     title: "Registry Cleaner - Docker Registry Retention & GC",
     text: "A Helm chart deploying a Kubernetes CronJob that keeps a Docker Registry v2 lean: it prunes old manifests per a configurable retention policy, then runs registry garbage-collect to reclaim disk. An optional viewer (a single distroless Go binary talking to the Kubernetes API) shows live inventory, a dry-run preview of what the next run would prune, last-run status, and an inline policy editor.",
     linkData: [
