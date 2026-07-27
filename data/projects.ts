@@ -8,12 +8,12 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: "Wisp - Folder-Based Markdown Note Editor",
-    text: "A lightweight Electron note editor for macOS that keeps notes as plain Markdown files in a folder you pick — no database, no index, no rendering: what you see is exactly what's on disk. Ships a file tree, raw-text editor with find & replace, unsaved-change indicator, and date-based reminders (daily/weekly/monthly/yearly) stored as JSON next to the notes. Hardened by default with context isolation, Node integration off, and path-traversal guards.",
+    text: "A macOS Markdown editor with Claude wired into it: type a thought into one box and Claude works out which note it belongs in and where, showing a diff you approve before anything is written. Ask a question instead and it answers from the vault alone, citing every file it read. Paste a screenshot and it lands in the vault with a written description; mention a date and it proposes a reminder. Notes stay plain Markdown in a folder you pick — no database, no index, no rendering. Wisp shells out to the claude CLI on your own machine under your own account, so the app itself opens no connection at all.",
     linkData: [
       ["https://oglimmer.github.io/wisp-homepage/", "Web"],
       ["https://github.com/oglimmer/wisp", "source code"]
     ],
-    techList: "[Electron, JavaScript, Node.js, electron-builder, Homebrew, macOS, GitHub Actions]"
+    techList: "[Electron, JavaScript, Node.js, Claude CLI, AI, electron-builder, Homebrew, macOS, GitHub Actions]"
   },
   {
     title: "Registry Cleaner - Docker Registry Retention & GC",
