@@ -34,6 +34,259 @@ export function formatBlogDate(dateString: string, lang: string = 'en'): string 
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'the-big-deal-c64-back-in-the-kitchen',
+    title: 'Floyd Is Back in the Kitchen: Bringing a 1986 C64 Game to the Browser with Claude',
+    description: 'How a childhood C64 game went from an old disk image to an emulator, a decompiled JavaScript rewrite, readable code and a new look in three days with Claude',
+    date: '2026-09-10',
+    content: `> **Note:** This post mentions code files and directories from the project. The repository is not public. If you want access, mail me at [oglimmer@gmail.com](mailto:oglimmer@gmail.com).
+
+**▶ Play it: <https://the-big-deal.oglimmer.com>**
+
+I was twelve. The Commodore 64 was the center of my world, and one game on it stuck with me for
+the rest of my life: **The Big Deal – Floyd in der Küche**, a German game from 1986 by Radarsoft,
+published by Ariolasoft.
+
+Floyd is a kitchen robot in a small diner. Customers sit down and order. You get Floyd to walk,
+ride his lift, take things out of the cupboard and the fridge, wash, cut, fry, bake, and serve,
+all while the clock runs and the customers get more and more impatient. Nobody else made a game
+like it, and I never forgot it.
+
+![The original C64 loading picture](/images/big-deal-01-c64-loading.png)
+
+This post is about how that game came back to life in a web browser over three days in September
+2026. First as the original in an emulator, then as a full JavaScript rewrite, and finally with a
+completely new look. I did it together with Claude, Anthropic's AI coding agent. I brought the
+nostalgia and watched. Claude did the work.
+
+## All I had was a disk image
+
+There is no source code for The Big Deal. As far as I know, it was never released. All I had was
+\`BIGDEA-D.D64\`: a 174 KB image of a 5¼" floppy disk.
+
+A D64 file is a byte-for-byte copy of a C64 floppy. Inside it there is a packed program. When you
+unpack it, you get about 60 KB of code, custom graphics, a SID tune and German text in a custom
+encoding. No names, no comments, no symbols. Only bytes.
+
+![The C64 title screen](/images/big-deal-02-c64-title.png)
+
+## Step 1: The original, in an emulator
+
+The first question was simple: what is the fastest way to play this in a browser at all?
+
+The answer was an emulator. [EmulatorJS](https://emulatorjs.org) runs VICE, the best-known C64
+emulator, compiled to WebAssembly. You give it a disk image and it boots a virtual C64 in the page.
+
+There was one problem. The disk started with an intro that wanted a press of the space bar, and EmulatorJS maps the
+space bar to the joystick. So the game never started. Claude's fix was to build a new disk: a
+116-byte boot loader plus the already-unpacked game, which jumps straight to the game's entry
+point. No intro, straight to the title picture.
+
+That is in \`webapp/\`, and it took hours, not weeks. I could play The Big Deal in a browser tab
+again. Real graphics, real SID music, real rules.
+
+But it was a black box. I could not change anything: not the controls, not the look, not the
+difficulty. And the controls were the hard part. The game hides its menus on diagonals: fire +
+up, fire + down, fire + left, fire + right. That is fine with a joystick in 1986. It is not fine
+on a laptop keyboard.
+
+So we wrote down the decision (\`docs/decisions/0001-…\`) and went one step further.
+
+## Step 2: A real rewrite, from the bytes
+
+The goal of step two was the game itself in JavaScript. No emulator, no CPU simulation, just
+code that I can read and change.
+
+We had three options:
+
+1. Play the game a lot, write down the rules, and build a look-alike.
+2. Translate every 6502 instruction to JavaScript. That gives you an emulator in disguise.
+3. Find out how the code was made, and decompile it.
+
+Option 3 won, because of one lucky discovery.
+
+### The lucky discovery
+
+The Big Deal was not written in hand-made assembly. Most of it was written in BASIC and then
+compiled by a BASIC compiler. That compiler produced very regular machine code: every statement
+is a fixed pattern of calls into a small runtime library at the start of memory. Push this
+number. Pop that one. Compare. Jump.
+
+Regular patterns are what a computer is good at. So Claude wrote a decompiler in Python
+(\`rewrite/tools/decompile.py\`). It walks through the machine code, keeps track of what the
+compiler put on its stack, and writes out JavaScript. The result is \`src/game_code.js\`: 165
+functions, one per original procedure, about 7,300 lines. The old \`GOTO\` statements became a
+\`switch\` on a label.
+
+The rest was ported by hand:
+
+| Piece | What it does |
+|---|---|
+| \`src/rt.js\` | the compiler's runtime: text, strings, windows, math |
+| \`src/ml.js\` | the hand-written machine code: raster interrupts, sprites, kitchen scroll, sound, timers |
+| \`src/vic.js\` | the picture, rebuilt from the same bytes the C64 graphics chip read |
+| \`src/sid.js\` | the music (with jsSID) and the sound effects (with Web Audio) |
+
+One idea holds it all together. **Everything lives in one 64 KB memory image, at the original
+C64 addresses.** The ported code writes the same bytes that the 6502 wrote. So we can compare
+the rewrite with the emulator byte by byte and pixel by pixel.
+
+And we did. The first day ended with the rewrite drawing the kitchen, and 62,905 of 64,000
+pixels matched a VICE screenshot. The rest was animation phase.
+
+![The original kitchen on the C64](/images/big-deal-03-c64-kitchen.png)
+
+### Bugs, found by comparing
+
+Comparing against the original found five bugs on the first day. My favourite: in the
+decompiler, a \`CASE\` statement used up its own value after the first test. So in a list like
+"is it left? is it right? is it up?", only the first question could ever be true. That is why
+only one station in the whole kitchen reacted to the joystick.
+
+Some bugs were not in the game at all, but in the web platform. The music was silent on the
+first visit to the live site, but fine on my machine. The reason is the browser's autoplay rule:
+the game asked for its title tune before the first click, and the audio library made its own
+audio context and never woke it up. On a site you visit often, Chrome is more relaxed, so I
+never saw it locally.
+
+At the end of the first day, the rewrite was live on my Kubernetes cluster at
+<https://the-big-deal.oglimmer.com>.
+
+## Step 3: Making the code readable
+
+Now we had a faithful game, but ugly code. The generated code said \`M[0x817a]\` where a human
+would say \`DAY\`. For me this is also a learning project, so I wanted the code to read like prose.
+
+### Change nothing, and prove it
+
+The hard rule for this step: **the behavior must not change by a single byte.** So before any
+refactor, Claude built a test for it. \`tools/headless.mjs\` runs the game in Node.js, with no
+browser, a fixed clock and a seeded random number generator. Two runs with the same input give
+the same result. \`tools/diff_baseline.mjs\` runs the same session on the current code and on an
+older git commit, and compares all 65,536 RAM bytes and all 64,000 pixels.
+
+With that safety net, \`ml.js\` and \`rt.js\` got names for every C64 address, JSDoc comments, and
+long functions split into named steps. The test said: identical.
+
+### Watching the game to learn what it means
+
+How do you find out what byte \`$817A\` is for? You can read 60 KB of compiled BASIC. Or you can
+watch.
+
+Because the headless runs are reproducible, any difference between two runs has exactly one
+cause. \`tools/hunt_vars.mjs\` uses that. It runs the game once with the joystick idle and once
+with "left" pressed, and prints the bytes that are different. It logs every character the game
+prints. It walks Floyd across the whole kitchen and presses a button at each stop, so every
+appliance tells you its name.
+
+Every name we added was confirmed twice: once by watching, once in the code. After that, the
+decompiled listing said \`DAY\` instead of \`V817A\`.
+
+### A bug from 1986
+
+Then we wrote down the rules of the game in plain words (\`rewrite/notes/gameplay.md\`): five days
+on a clock that starts at 08:50, five seats, 23 dishes, how cooking works, how points are given.
+Every sentence says where it comes from: measured or read in the code.
+
+One rule did not make sense. Some ingredients must be seasoned (*gewürzt*). But nothing in the
+whole program ever set the "seasoned" bit.
+
+So Claude did an experiment. For each dish, it built the best plate the kitchen can actually
+make, and asked the game's own judging routine to rate it. Result: **only 9 of 23 dishes could
+ever be accepted.** Every rejection was "wrong preparation" on an ingredient that needs seasoning.
+
+Then it changed one single byte: a mask at address \`$BB1C\`, from \`$C0\` to \`$C1\`. Now: 23 of 23,
+every ingredient with full points.
+
+That is a bug in the original game from 1986. With that one wrong byte, more than half of the
+menu could never be served. If some dishes never worked for you back then: it was not you. The
+rewrite fixes this byte. It is the only deliberate change to the original rules.
+
+### Things I never knew
+
+Watching the game closely showed me things I never noticed as a kid:
+
+- An angry customer who leaves throws something at Floyd on the way out: a **mop, a bar stool or
+  a bottle**, chosen at random. If it hits him, he needs a repair.
+- The far left end of the kitchen is not a door. It is a box dispenser.
+- The box Floyd carries has two positions. In one, an item from the fridge drops straight into
+  the box. In the other, Floyd keeps it in his hand. The game never tells you this.
+
+## Step 4: A new look
+
+With the game state named and understood, we could finally build what I wanted from the start:
+the same game, with a new face.
+
+The design has one seam. \`src/state.js\` reads the 64 KB memory, never writes it, and returns a
+plain object: the time, the scores, where Floyd is, what is in the box, what each customer
+ordered and how long they have waited. Everything new is built on top of that object. The
+original game logic underneath stays byte-exact.
+
+On top of that seam:
+
+- **One key per action.** \`E\` uses the appliance in front of Floyd, \`M\` opens the menu, \`F\`
+  serves, the arrow keys walk and ride the lift. Number keys pick a menu row directly. Under the
+  hood, a number key is a small macro that holds the joystick until the game's own cursor
+  reaches the row, and then presses fire.
+- **Menus as real HTML.** The menu text is not rebuilt. It comes from a mirror of the C64 text
+  screen, so it is exactly what the game just printed. But now you can click it, select it and
+  zoom it.
+- **The whole kitchen at once.** The original scrolls a 40-column window over the kitchen. The
+  new view shows all of it.
+- **The hidden numbers.** The game always knew how cooked each item was, which preparation step
+  was missing, and how long each customer had waited. Now you can see it.
+- **A recipe book.** Press \`R\` and a cookbook opens next to the kitchen, with every dish, where
+  each ingredient is and what to do with it. The data is extracted from the game image.
+- **Double patience.** In the original, a customer waits about two and a quarter minutes per
+  plate. With a keyboard that is not much fun. The page gives customers twice as long.
+  \`?geduld=1\` gives you the 1986 timing.
+
+And it got faster. The new page does not draw the C64 picture at all. That step was the most
+expensive thing in each frame: **186 µs per frame with the C64 picture, 2 µs without.** Press \`V\`
+and the original picture comes back, for comparison.
+
+Last, the artwork. The first new view was functional, but plain. So the final step was a cozy
+diner: mint appliances, peach accents, a tiled wall, a wooden counter, plants, pendant lights,
+five illustrated customers, and Floyd as a small robot chef. It is all drawn as vector art on a
+canvas: no image files, no external fonts, no extra libraries.
+
+![The new welcome screen](/images/big-deal-04-new-welcome.png)
+
+![The new kitchen: five tables with their orders, the whole kitchen, the box and the game's own message window](/images/big-deal-05-new-kitchen.png)
+
+## Working with Claude
+
+What surprised me most: the big transformation just worked. From disk image to emulator, and from
+bytes to a JavaScript rewrite. Smooth, easy, straight out of the box.
+
+The details are where the problems are. There are still tons of small issues and glitches.
+
+My part? Mostly observing. Claude did the work, and I watched. And watching it work was the fun
+part. Nothing about it was annoying. It was pure fun to watch Claude work.
+
+Would I do a project like this again? Yes. AI is the only way, at least for me ;)
+
+## The numbers
+
+| | |
+|---|---|
+| Time | 3 days, 8 to 10 September 2026 |
+| Commits | 35 |
+| Input | one 174 KB disk image |
+| Generated game code | 165 procedures, about 7,300 lines of JavaScript |
+| Hand-written JavaScript | about 4,300 lines |
+| Bugs in the 1986 original found | 1 (one byte, 14 dishes) |
+| Pixels matching the original on day one | 62,905 of 64,000 |
+
+## Play it
+
+**<https://the-big-deal.oglimmer.com>**
+
+Press a key, press space, and help Floyd get through his day.
+
+All credit for the game goes to the people who made it in 1986: Edwin Neuteboom (code), Wijo Koek
+(graphics) and Jeroen Kimmel (music). Thank you for a game that a twelve-year-old never forgot.`,
+  },
+  {
     slug: 'coding-guidelines-that-ai-actually-reads',
     title: 'Coding Guidelines That AI Actually Reads',
     description: 'Why I wrote my coding conventions as standalone markdown docs and wrapped them in a skill that feeds AI only the ones a task actually needs',
